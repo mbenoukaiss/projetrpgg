@@ -16,7 +16,7 @@ public class Ability implements Describable{
 
     @Override
     public String describe() {
-        return this.name + ", does " + this.damage + " damages. It is a " + this.type + " attack, and it " +
+        return this.name + " : does " + this.damage + " damages. It is a " + this.type + " attack, and it " +
                 "requires lvl " + this.minLevelRequired + " in order to learn it.";
     }
 

@@ -27,4 +27,8 @@ public class mainMap {
     public ArrayList<Region> getRegions() {
         return regions;
     }
+
+    public int getHumanCount() {
+        return humanCount;
+    }
 }

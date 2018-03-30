@@ -51,4 +51,8 @@ public class Inventory implements Describable{
     public int availableSize() {
         return maxCapacity-items.size();
     }
+
+    public void increaseCapacity(int n) {
+        this.maxCapacity += n;
+    }
 }
