@@ -89,9 +89,4 @@ public class Player extends Entity implements Describable, Damageable, Attacker{
         this.inventory.add(i);
     }
 
-    public void interact(Entity other) {
-        if (other instanceof Item) {
-            this.pickUp((Item) other);
-        }
-    }
 }
