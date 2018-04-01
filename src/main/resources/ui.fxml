@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -21,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -65,7 +64,7 @@
                   <ListView id="inventory" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
-            <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <VBox GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.vgrow="ALWAYS">
                <children>
                   <Label id="location" text="location" />
                   <TextFlow id="regionDescription" prefWidth="200.0" VBox.vgrow="ALWAYS" />
@@ -73,14 +72,14 @@
                </children>
             </VBox>
             <TextField promptText="%command.field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-              <buttons>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+               <children>
                 <Button id="save" mnemonicParsing="false" text="%save" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" />
+                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button id="titleScreen" mnemonicParsing="false" text="%title.screen" />
                   <Button id="quit" mnemonicParsing="false" text="%quit" />
-              </buttons>
-            </ButtonBar>
+               </children>
+            </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowSpan="3">
                <children>
                   <Label text="%mission" />
