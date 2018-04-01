@@ -1,10 +1,13 @@
+package projetrpg.entities.items;
+
+import projetrpg.Describable;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created by mhevin on 29/03/18.
  */
-public class Inventory implements Describable{
+public class Inventory implements Describable {
     private int maxCapacity;
     private ArrayList<Item> items = new ArrayList<>();
 

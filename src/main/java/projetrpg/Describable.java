@@ -1,3 +1,5 @@
+package projetrpg;
+
 /**
  * Created by mhevin on 29/03/18.
  */

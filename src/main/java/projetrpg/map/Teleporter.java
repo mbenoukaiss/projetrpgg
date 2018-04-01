@@ -1,3 +1,7 @@
+package projetrpg.map;
+
+import projetrpg.entities.items.Item;
+
 import java.util.ArrayList;
 
 /**

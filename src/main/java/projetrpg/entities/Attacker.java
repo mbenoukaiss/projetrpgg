@@ -1,3 +1,5 @@
+package projetrpg.entities;
+
 /**
  * Created by mhevin on 29/03/18.
  */

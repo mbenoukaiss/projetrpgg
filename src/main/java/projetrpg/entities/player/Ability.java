@@ -1,7 +1,11 @@
+package projetrpg.entities.player;
+
+import projetrpg.Describable;
+
 /**
  * Created by mhevin on 29/03/18.
  */
-public class Ability implements Describable{
+public class Ability implements Describable {
     private String name;
     private int minLevelRequired;
     private double damage;

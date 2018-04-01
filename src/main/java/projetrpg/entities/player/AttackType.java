@@ -1,3 +1,5 @@
+package projetrpg.entities.player;
+
 /**
  * Created by mhevin on 29/03/18.
  */

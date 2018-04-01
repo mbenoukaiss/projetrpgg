@@ -1,10 +1,20 @@
+package projetrpg.entities.player;
+
+import projetrpg.*;
+import projetrpg.entities.Attacker;
+import projetrpg.entities.Damageable;
+import projetrpg.entities.Entity;
+import projetrpg.entities.items.Inventory;
+import projetrpg.entities.items.Item;
+import projetrpg.map.Region;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
  * Created by mhevin on 28/03/18.
  */
-public class Player extends Entity implements Describable, Damageable, Attacker{
+public class Player extends Entity implements Describable, Damageable, Attacker {
     private String name;
     private int experience;
     private Region location;

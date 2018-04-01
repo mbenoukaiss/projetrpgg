@@ -1,3 +1,10 @@
+package projetrpg.map;
+
+import projetrpg.*;
+import projetrpg.entities.Entity;
+import projetrpg.entities.items.Inventory;
+import projetrpg.entities.items.Item;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -5,7 +12,7 @@ import java.util.HashSet;
 /**
  * Created by mhevin on 28/03/18.
  */
-public class Region implements Describable{
+public class Region implements Describable {
 
     private HashMap<Direction, Region> regionOnDirection = new HashMap<>();
     private HashSet<Region> containedRegions = new HashSet<>();

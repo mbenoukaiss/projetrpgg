@@ -1,3 +1,5 @@
+package projetrpg.map;
+
 import java.util.ArrayList;
 
 /**

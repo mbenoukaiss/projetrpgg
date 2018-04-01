@@ -1,7 +1,13 @@
+package projetrpg.entities.items;
+
+import projetrpg.Describable;
+import projetrpg.entities.Entity;
+import projetrpg.map.Region;
+
 /**
  * Created by mhevin on 29/03/18.
  */
-public class Item extends Entity implements Describable{
+public class Item extends Entity implements Describable {
     private String name;
     private int damage;
     private ItemType type;
