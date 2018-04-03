@@ -10,20 +10,49 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * Created by mhevin on 28/03/18.
+ * Represents any kind of location, a solar system,
+ * a planet, an area on a planet, a spaceship...
  */
 public class Region implements Describable {
 
+    /**
+     * The adjacent regions.
+     */
     private HashMap<Direction, Region> regionOnDirection = new HashMap<>();
+
+    /**
+     * The parent region, containing this region.
+     */
+    private Region parent;
+
+    /**
+     * The regions DIRECTLY contained in this region.
+     */
     private HashSet<Region> containedRegions = new HashSet<>();
-    private Region regionContainedIn;
+
+    /**
+     * Name of the region
+     */
     private String name;
+
+    /**
+     * All the entities DIRECTLY contained in this region.
+     */
     private ArrayList<Entity> entities = new ArrayList<>();
+
+    /**
+     * All the teleporters DIRECTLY contained in this region.
+     */
     private ArrayList<Teleporter> teleporters = new ArrayList<>();
+
+    /**
+     * The inventory of this region : all the items DIRECTLY
+     * containe in this region..
+     */
     private Inventory inventory;
 
-    public Region(Region regionContainedIn, String name, Inventory inventory) {
-        this.regionContainedIn = regionContainedIn;
+    public Region(Region parent, String name, Inventory inventory) {
+        this.parent = parent;
         this.name = name;
         this.inventory = inventory;
     }
@@ -34,8 +63,8 @@ public class Region implements Describable {
         for(Item i: this.inventory.getAll()) {
             d+=i.getName() +", ";
         }
-        String r = d.substring(0, d.length()-2);
-        return r;
+
+        return d.substring(0, d.length()-2);
     }
 
     public Region getRegionTowards(Direction d) {
@@ -50,12 +79,8 @@ public class Region implements Describable {
         return containedRegions;
     }
 
-    public Region getRegionContainedIn() {
-        return regionContainedIn;
-    }
-
-    public String getName() {
-        return name;
+    public Region getParent() {
+        return parent;
     }
 
     public ArrayList<Entity> getEntities() {
@@ -68,5 +93,9 @@ public class Region implements Describable {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public String getName() {
+        return name;
     }
 }

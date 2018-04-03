@@ -3,12 +3,29 @@ package projetrpg.map;
 import java.util.ArrayList;
 
 /**
- * Created by mhevin on 29/03/18.
+ * Represents the whole map used in the game.
  */
 public class MainMap {
+
+    /**
+     * The name of the map.
+     */
     private String name;
+
+    /**
+     * The region where the player spawns in.
+     */
     private Region spawnPoint;
+
+    /**
+     * All the regions at the top of the tree.
+     * In our case, solar systems.
+     */
     private ArrayList<Region> regions = new ArrayList<>();
+
+    /**
+     * The amount of humans left on this map.
+     */
     private int humanCount;
 
     public MainMap(String name, Region spawnPoint, ArrayList<Region> regions, int humanCount) {

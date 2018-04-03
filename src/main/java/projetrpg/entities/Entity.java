@@ -7,10 +7,16 @@ import projetrpg.map.Region;
  */
 public abstract class Entity {
 
-    private Region location;
+    protected final String name;
+    protected Region location;
 
-    public Entity(Region location) {
+    public Entity(String name, Region location) {
+        this.name = name;
         this.location = location;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Region getLocation() {

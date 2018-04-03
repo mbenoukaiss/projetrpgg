@@ -15,20 +15,39 @@ import java.util.HashSet;
  * Created by mhevin on 28/03/18.
  */
 public class Player extends Entity implements Describable, Damageable, Attacker {
-    private String name;
+
+    /**
+     * The experience of the player.
+     */
     private int experience;
-    private Region location;
-    private ArrayList<Entity> nearbyEntities = new ArrayList<>();
+
+    /**
+     * The inventory of the player.
+     */
     private Inventory inventory;
+
+    /**
+     * The item in their main hand.
+     */
     private Item itemInHand;
-    private HashSet<Ability> abilities = new HashSet<>();
+
+    /**
+     * Their abilities.
+     */
+    private HashSet<Ability> abilities;
+
+    /**
+     * The health of the player.
+     */
     private int hp;
+
+    /**
+     * The damage it deals without any weapon.
+     */
     private int baseDamage;
-    private int trueDamage = baseDamage + itemInHand.getDamage();
 
     public Player(String name, int experience, Region location, Inventory inventory, Item itemInHand, HashSet<Ability> abilities, int hp, int baseDamage) {
-        super(location);
-        this.name = name;
+        super(name, location);
         this.experience = experience;
         this.inventory = inventory;
         this.itemInHand = itemInHand;
@@ -82,17 +101,14 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         return abilities;
     }
 
-    public ArrayList<Entity> getNearbyEntities() {
-        return this.nearbyEntities;
-    }
-
     @Override
     public boolean attack(Damageable target) {
-        return (target.damage(this.trueDamage));
+        return target.damage(this.baseDamage + itemInHand.getDamage());
     }
 
-    public void levelUp() {
+    private void levelUp() {
         this.hp+=50;
+        this.baseDamage++;
     }
 
     public void pickUp(Item i) {

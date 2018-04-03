@@ -1,8 +1,14 @@
 package projetrpg;
 
 /**
- * Created by mhevin on 29/03/18.
+ * Can describe itself.
  */
 public interface Describable {
-    public String describe();
+
+    /**
+     * Ask the object to describe itself.
+     *
+     * @return The description.
+     */
+    String describe();
 }

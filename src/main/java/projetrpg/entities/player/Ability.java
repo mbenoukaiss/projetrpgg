@@ -3,12 +3,30 @@ package projetrpg.entities.player;
 import projetrpg.Describable;
 
 /**
- * Created by mhevin on 29/03/18.
+ * Represents a special ability of a player.
  */
 public class Ability implements Describable {
+
+    /**
+     * The name that should be displayed.
+     */
     private String name;
+
+    /**
+     * The minimum level required before
+     * the player can get this ability.
+     */
     private int minLevelRequired;
+
+    /**
+     * The amount of damages this ability
+     * should deal.
+     */
     private double damage;
+
+    /**
+     * The type of the attack.
+     */
     private AttackType type;
 
     public Ability(String name, int minLevelRequired, double damage, AttackType type) {

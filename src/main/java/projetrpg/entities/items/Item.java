@@ -5,17 +5,28 @@ import projetrpg.entities.Entity;
 import projetrpg.map.Region;
 
 /**
- * Created by mhevin on 29/03/18.
+ * An item.
  */
 public class Item extends Entity implements Describable {
-    private String name;
+
+    /**
+     * The amount of additional damage this
+     * item should deal if used as weapon.
+     */
     private int damage;
+
+    /**
+     * The type of the item.
+     */
     private ItemType type;
+
+    /**
+     * Where the items originates from.
+     */
     private Region defaultLocation;
 
     public Item(String name, int damage, ItemType type, Region defaultLocation) {
-        super(defaultLocation);
-        this.name = name;
+        super(name, defaultLocation);
         this.damage = damage;
         this.type = type;
     }
@@ -25,10 +36,12 @@ public class Item extends Entity implements Describable {
         return this.name + ", damages : " + this.damage + ", type : " + this.type;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
+    /**
+     * Accessor for the amount of additional
+     * damage.
+     *
+     * @return The damage.
+     */
     public int getDamage() {
         return damage;
     }
