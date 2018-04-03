@@ -19,7 +19,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         ResourceBundle resources = ResourceBundle.getBundle("bundles/game", Locale.ENGLISH);
-        Parent root = FXMLLoader.load(getClass().getResource("ui.fxml"), resources);
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("ui.fxml"), resources);
 
         Scene scene = new Scene(root, 900, 600);
 
