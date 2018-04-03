@@ -52,6 +52,7 @@ public class Region implements Describable {
     private Inventory inventory;
 
     public Region(Region parent, String name, Inventory inventory) {
+        if (parent != null) parent.containedRegions.add(this);
         this.parent = parent;
         this.name = name;
         this.inventory = inventory;

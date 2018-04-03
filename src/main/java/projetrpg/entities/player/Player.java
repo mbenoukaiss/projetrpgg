@@ -91,6 +91,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         return this.baseDamage;
     }
 
+    public int gettrueDamage() {
+        return this.baseDamage+this.itemInHand.getDamage();
+    }
+
     @Override
     public boolean damage(int value) {
         this.hp-=value;

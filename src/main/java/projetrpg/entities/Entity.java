@@ -15,6 +15,7 @@ public abstract class Entity {
         this.location = location;
     }
 
+
     public String getName() {
         return name;
     }

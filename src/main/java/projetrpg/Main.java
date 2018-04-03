@@ -5,7 +5,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import projetrpg.entities.items.Inventory;
+import projetrpg.entities.items.Item;
+import projetrpg.entities.items.ItemType;
+import projetrpg.entities.player.Ability;
+import projetrpg.entities.player.AttackType;
+import projetrpg.entities.player.Player;
+import projetrpg.map.MainMap;
+import projetrpg.map.Region;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -18,6 +28,36 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        Item hatchet = new Item("Hatchet", 10, ItemType.DMG);
+        Item light = new Item("Light", 0, ItemType.UTILS);
+        ArrayList<Item> inventoryItems = new ArrayList<>();
+        inventoryItems.add(hatchet);
+        inventoryItems.add(light);
+
+        Inventory inventory = new Inventory(10, inventoryItems);
+        Region earth = new Region(null, "Earth", inventory);
+        Region moon = new Region(null, "Moon", inventory);
+        ArrayList<Region> regions = new ArrayList<>();
+        regions.add(earth);
+        regions.add(moon);
+
+        Region aquitaine = new Region(earth, "Aquitaine", inventory);
+        Region cratere = new Region(moon, "Cratère", inventory);
+
+        Ability fireBall = new Ability("FireBall", 0, 20, AttackType.LINE);
+        HashSet<Ability> abilities = new HashSet<>();
+        abilities.add(fireBall);
+        ArrayList<Item> Inventory = new ArrayList<>();
+        Inventory.add(light);
+        Inventory playerInventory = new Inventory(10, Inventory);
+
+        Player mainCharacter = new Player("Hervé", 0, earth, playerInventory, light, abilities, 100, 10);
+
+        MainMap mainMap = new MainMap("Systeme solaire", earth, regions, 100000);
+
+        Partie partie = new Partie(mainMap, mainCharacter);
+
         ResourceBundle resources = ResourceBundle.getBundle("bundles/game", Locale.ENGLISH);
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("ui.fxml"), resources);
 
