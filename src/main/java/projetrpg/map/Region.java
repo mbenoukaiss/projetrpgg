@@ -5,9 +5,7 @@ import projetrpg.entities.Entity;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Represents any kind of location, a solar system,
@@ -15,20 +13,12 @@ import java.util.HashSet;
  */
 public class Region implements Describable {
 
-    /**
-     * The adjacent regions.
-     */
-    private HashMap<Direction, Region> regionOnDirection = new HashMap<>();
+    private static final int DEFAULT_ROOM_ITEM_CAPACITY = 10;
 
     /**
-     * The parent region, containing this region.
+     * Id of the region
      */
-    private Region parent;
-
-    /**
-     * The regions DIRECTLY contained in this region.
-     */
-    private HashSet<Region> containedRegions = new HashSet<>();
+    private int id;
 
     /**
      * Name of the region
@@ -36,14 +26,29 @@ public class Region implements Describable {
     private String name;
 
     /**
+     * The parent region, containing this region.
+     */
+    private Region parent;
+
+    /**
+     * The adjacent regions.
+     */
+    private Map<Direction, Region> regionOnDirection;
+
+    /**
+     * The regions DIRECTLY contained in this region.
+     */
+    private Set<Region> containedRegions;
+
+    /**
      * All the entities DIRECTLY contained in this region.
      */
-    private ArrayList<Entity> entities = new ArrayList<>();
+    private List<Entity> entities;
 
     /**
      * All the teleporters DIRECTLY contained in this region.
      */
-    private ArrayList<Teleporter> teleporters = new ArrayList<>();
+    private List<Teleporter> teleporters;
 
     /**
      * The inventory of this region : all the items DIRECTLY
@@ -51,11 +56,27 @@ public class Region implements Describable {
      */
     private Inventory inventory;
 
-    public Region(Region parent, String name, int maxCapacity) {
-        if (parent != null) parent.containedRegions.add(this);
-        this.parent = parent;
+    public Region(int id, String name, Region parent) {
+        this.id = id;
         this.name = name;
-        inventory = new Inventory(maxCapacity);
+        this.regionOnDirection = new HashMap<>();
+        this.containedRegions = new HashSet<>();
+        this.entities = new ArrayList<>();
+        this.teleporters = new ArrayList<>();
+        this.inventory = new Inventory(DEFAULT_ROOM_ITEM_CAPACITY);
+    }
+
+    public Region(int id, String name, Region parent,
+                  Set<Region> containedRegions, List<Entity> entities,
+                  List<Teleporter> teleporters, Inventory inventory) {
+        this.id = id;
+        this.name = name;
+        this.parent = parent;
+        this.regionOnDirection = new HashMap<>();
+        this.containedRegions = containedRegions;
+        this.entities = entities;
+        this.teleporters = teleporters;
+        this.inventory = inventory;
     }
 
     @Override
@@ -76,11 +97,11 @@ public class Region implements Describable {
         return regionOnDirection.get(d);
     }
 
-    public HashMap<Direction, Region> getRegionOnDirection() {
+    public Map<Direction, Region> getRegionOnDirection() {
         return regionOnDirection;
     }
 
-    public HashSet<Region> getContainedRegions() {
+    public Set<Region> getContainedRegions() {
         return containedRegions;
     }
 
@@ -88,11 +109,15 @@ public class Region implements Describable {
         return parent;
     }
 
-    public ArrayList<Entity> getEntities() {
+    public void setParent(Region parent) {
+        this.parent = parent;
+    }
+
+    public List<Entity> getEntities() {
         return entities;
     }
 
-    public ArrayList<Teleporter> getTeleporters() {
+    public List<Teleporter> getTeleporters() {
         return teleporters;
     }
 
@@ -100,8 +125,22 @@ public class Region implements Describable {
         return inventory;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void addContainedRegion(Region r) {
+        if(r == this) throw new IllegalArgumentException("A region can't contain itself");
+        r.parent = this;
+        containedRegions.add(r);
+    }
+
+    public void addRegionTowards(Direction d, Region r) {
+        regionOnDirection.put(d, r);
     }
 
     public void addTeleporter(Teleporter t) {
@@ -146,4 +185,5 @@ public class Region implements Describable {
                 break;
         }
     }
+    
 }

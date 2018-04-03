@@ -22,7 +22,7 @@ public class Inventory implements Describable {
 
     public Inventory(int maxCapacity) {
         this.maxCapacity = maxCapacity;
-        items = new ArrayList<>();
+        this.items = new ArrayList<>();
     }
 
     @Override

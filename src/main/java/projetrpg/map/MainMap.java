@@ -28,11 +28,13 @@ public class MainMap {
      */
     private int humanCount;
 
-    public MainMap(String name, Region spawnPoint, ArrayList<Region> regions, int humanCount) {
+
+
+    public MainMap(String name) {
         this.name = name;
-        this.spawnPoint = spawnPoint;
-        this.regions = regions;
-        this.humanCount = humanCount;
+        spawnPoint = null;
+        regions = new ArrayList<>();
+        humanCount = 0;
     }
 
     public String getName() {
@@ -49,5 +51,17 @@ public class MainMap {
 
     public int getHumanCount() {
         return humanCount;
+    }
+
+    public void addRegion(Region r) {
+        regions.add(r);
+    }
+
+    public void setSpawnPoint(Region spawnPoint) {
+        this.spawnPoint = spawnPoint;
+    }
+
+    public void setHumanCount(int humanCount) {
+        this.humanCount = humanCount;
     }
 }
