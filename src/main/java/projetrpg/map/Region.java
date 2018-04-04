@@ -105,4 +105,11 @@ public class Region implements Describable {
             this.teleporters.add(t);
         }
     }
+
+    public void addEntity(Entity e) {
+        if (!this.entities.contains(e)) {
+            this.entities.add(e);
+        }
+
+    }
 }

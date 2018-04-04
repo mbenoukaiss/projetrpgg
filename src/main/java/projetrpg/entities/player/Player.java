@@ -38,23 +38,17 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
     private HashSet<Ability> abilities;
 
     /**
-     * The health of the player.
-     */
-    private int hp;
-
-    /**
      * The damage it deals without any weapon.
      */
     private int baseDamage;
 
     public Player(String name, int experience, Region location, Inventory inventory, Item itemInHand,
                   HashSet<Ability> abilities, int hp, int baseDamage, EntityType type, boolean isHostile) {
-        super(name, location, type, isHostile);
+        super(name, location, type, isHostile, hp);
         this.experience = experience;
         this.inventory = inventory;
         this.itemInHand = itemInHand;
         this.abilities = abilities;
-        this.hp = hp;
         this.baseDamage = baseDamage;
     }
 
@@ -72,7 +66,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     @Override
     public int getHp() {
-        return this.hp;
+        return this.hps;
     }
 
     @Override
@@ -99,8 +93,8 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     @Override
     public boolean damage(int value) {
-        this.hp-=value;
-        return (this.hp <= 0);
+        this.hps-=value;
+        return (this.hps <= 0);
     }
 
     public HashSet<Ability> getAbilities() {
@@ -113,7 +107,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
     }
 
     private void levelUp() {
-        this.hp+=50;
+        this.hps+=50;
         this.baseDamage++;
     }
 

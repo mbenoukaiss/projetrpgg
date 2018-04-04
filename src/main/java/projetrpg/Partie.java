@@ -22,10 +22,10 @@ public class Partie {
 
     public void lancementJeu() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Vous vous appelez hervé, vous êtes dans le poste de pilotage de votre vaisseau.");
+        System.out.println("Vous vous appelez hervé, vous êtes sur terre.");
         String cmd = sc.nextLine();
         CommandParser parser = new CommandParser();
-        //parser.registerCommand(cmd, Entity.class, (arg)-> new);
+        //parser.registerCommand(cmd, Entity.class, (arg) -> );
         try {
             Command c = parser.parse(cmd);
 

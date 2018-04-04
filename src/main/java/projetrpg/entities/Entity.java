@@ -10,13 +10,16 @@ public abstract class Entity {
     protected final String name;
     protected Region location;
     protected EntityType type;
+    protected int hps;
     protected boolean isHostile;
 
-    public Entity(String name, Region location, EntityType type, Boolean isHostile) {
+    public Entity(String name, Region location, EntityType type, Boolean isHostile, int hps) {
         this.name = name;
         this.location = location;
         this.type = type;
         this.isHostile = isHostile;
+        this.hps = hps;
+        location.addEntity(this);
     }
 
 

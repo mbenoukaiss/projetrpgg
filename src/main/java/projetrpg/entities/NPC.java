@@ -8,16 +8,16 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
 
     private int experienceRewarded;
     private Inventory inventory;
-    private int hps;
     private int baseDamage;
     private boolean isKillable;
 
     public NPC(String name, Region location, EntityType type, Boolean isHostile, int experienceRewarded, int hps,
-               int baseDamage) {
-        super(name, location, type, isHostile);
+               int baseDamage, boolean isKillable) {
+        super(name, location, type, isHostile, hps);
         this.experienceRewarded = experienceRewarded;
         this.hps = hps;
         this.baseDamage = baseDamage;
+        this.isKillable = isKillable;
     }
 
     @Override

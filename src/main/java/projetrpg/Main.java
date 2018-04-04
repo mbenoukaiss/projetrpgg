@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import projetrpg.entities.EntityType;
+import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
@@ -38,11 +39,15 @@ public class Main extends Application {
         inventoryItems.add(light);
 
         Inventory inventory = new Inventory(10, inventoryItems);
+
         Region earth = new Region(null, "Earth", inventory);
         Region moon = new Region(null, "Moon", inventory);
         ArrayList<Region> regions = new ArrayList<>();
         regions.add(earth);
         regions.add(moon);
+
+        NPC jean = new NPC("Jean", earth, EntityType.VILLAGER, false, 10, 150, 0, false);
+        NPC zorg = new NPC("Zorg", earth, EntityType.VAMPIRE, true, 100, 150, 50, true);
 
         Region aquitaine = new Region(earth, "Aquitaine", inventory);
         Region cratere = new Region(moon, "Cratère", inventory);
