@@ -1,8 +1,11 @@
 package projetrpg.commands;
 
+import projetrpg.entities.player.Player;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -172,7 +175,7 @@ public class CommandParser {
      * @param scanner Function scanning for the object targetted
      *                by the command depending on the argument.
      */
-    public <T> void registerCommand(String command, Class<T> argType, Function<String, T> scanner) {
+    public <T> void registerCommand(String command, Class<T> argType, BiFunction<Player, String, T> scanner) {
         commands.put(command, new CommandFragment<>(command, argType, scanner));
     }
 

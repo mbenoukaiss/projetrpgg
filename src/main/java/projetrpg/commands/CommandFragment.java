@@ -1,5 +1,8 @@
 package projetrpg.commands;
 
+import projetrpg.entities.player.Player;
+
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -23,9 +26,9 @@ public class CommandFragment<T> {
      * The functions that has to scan to get the
      * right object based on a string (argument).
      */
-    private final Function<String, T> scanner;
+    private final BiFunction<Player, String, T> scanner;
 
-    CommandFragment(String command, Class<T> argumentType, Function<String, T> scanner) {
+    CommandFragment(String command, Class<T> argumentType, BiFunction<Player, String, T> scanner) {
         this.command = command;
         this.argumentType = argumentType;
         this.scanner = scanner;
@@ -34,11 +37,12 @@ public class CommandFragment<T> {
     /**
      * Generates the right object by calling the function.
      *
+     * @param player The player
      * @param argument The command argument
      * @return An object.
      */
-    public T process(String argument) {
-        return scanner.apply(argument);
+    public T process(Player player, String argument) {
+        return scanner.apply(player, argument);
     }
 
     /**
