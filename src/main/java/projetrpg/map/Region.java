@@ -24,7 +24,7 @@ public class Region implements Describable {
      * Name of the region
      */
     private String name;
-
+    
     /**
      * The parent region, containing this region.
      */
