@@ -1,5 +1,7 @@
 package projetrpg.commands;
 
+import projetrpg.entities.player.Player;
+
 import java.util.*;
 
 /**
@@ -13,15 +15,18 @@ public class Command {
      */
     private final CommandParser parser;
 
+    private Player player;
+
     /**
      * Map of the command fragments with their
      * argument used in this command.
      */
     private final Map<CommandFragment, String> commands;
 
-    Command(CommandParser parser) {
+    Command(CommandParser parser, Player player) {
         this.parser = parser;
         this.commands = new LinkedHashMap<>(); //Keeping insertion order required
+        this.player = player;
     }
 
     /**
@@ -44,7 +49,7 @@ public class Command {
         Map<Object, Class> args = new HashMap<>();
 
         for(Map.Entry<CommandFragment, String> centry : commands.entrySet()) {
-            args.put(centry.getKey().process(centry.getValue()), centry.getKey().getArgumentType());
+            args.put(centry.getKey().process(this.player, centry.getValue()), centry.getKey().getArgumentType());
         }
 
         return args;

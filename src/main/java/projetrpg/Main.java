@@ -13,6 +13,7 @@ import projetrpg.entities.items.ItemType;
 import projetrpg.entities.player.Ability;
 import projetrpg.entities.player.AttackType;
 import projetrpg.entities.player.Player;
+import projetrpg.map.Direction;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
 import projetrpg.map.Teleporter;
@@ -46,11 +47,17 @@ public class Main extends Application {
         regions.add(earth);
         regions.add(moon);
 
-        NPC jean = new NPC("Jean", earth, EntityType.VILLAGER, false, 10, 150, 0, false);
-        NPC zorg = new NPC("Zorg", earth, EntityType.VAMPIRE, true, 100, 150, 50, true);
+        NPC jean = new NPC("Jean", earth, EntityType.VILLAGER, false, 150, 0,
+                false);
+        NPC zorg = new NPC("Zorg", earth, EntityType.VAMPIRE, true, 150, 50,
+                true);
 
         Region aquitaine = new Region(earth, "Aquitaine", inventory);
-        Region cratere = new Region(moon, "Cratère", inventory);
+        Region cratere = new Region(earth, "cratere", inventory);
+        Region dordogne = new Region(earth, "dordogne", inventory);
+        aquitaine.getRegionOnDirection().put(Direction.SOUTH, cratere);
+        regions.add(aquitaine);
+        regions.add(cratere);
 
         Teleporter earthT = new Teleporter("EarthTeleporter", aquitaine);
         Teleporter moonT = new Teleporter("MoonTeleporter", cratere);
@@ -62,14 +69,16 @@ public class Main extends Application {
         Inventory.add(light);
         Inventory playerInventory = new Inventory(10, Inventory);
 
-        Player mainCharacter = new Player("Hervé", 0, earth, playerInventory, light,
+        Player mainCharacter = new Player("Hervé", 0, aquitaine, playerInventory, light,
                 abilities, 100, 10, EntityType.PLAYER, false);
+
+        mainCharacter.equip(light);
 
         MainMap mainMap = new MainMap("Systeme solaire", earth, regions, 100000);
 
         Partie partie = new Partie(mainMap, mainCharacter);
 
-        partie.lancementJeu();
+        partie.lauchGame();
 
         ResourceBundle resources = ResourceBundle.getBundle("bundles/game", Locale.ENGLISH);
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("ui.fxml"), resources);

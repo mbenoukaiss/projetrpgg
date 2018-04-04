@@ -50,8 +50,8 @@ public class CommandParser {
      * @param command Command as a string
      * @return Corresponding command object
      */
-    public Command parse(String command) throws InvalidCommandException {
-        Command c = new Command(this);
+    public Command parse(Player player, String command) throws InvalidCommandException {
+        Command c = new Command(this, player);
         String[] carray = command.split(" ");
 
         CommandFragment currentFragment = null;

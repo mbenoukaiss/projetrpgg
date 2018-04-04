@@ -112,4 +112,8 @@ public class Region implements Describable {
         }
 
     }
+
+    public boolean estAdjacente(Region re) {
+        return this.regionOnDirection.containsValue(re);
+    }
 }

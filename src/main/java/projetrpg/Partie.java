@@ -1,9 +1,8 @@
 package projetrpg;
 
-import projetrpg.commands.Command;
-import projetrpg.commands.CommandParser;
-import projetrpg.commands.InvalidCommandException;
+import projetrpg.commands.*;
 import projetrpg.entities.Entity;
+import projetrpg.entities.NPC;
 import projetrpg.entities.player.Player;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
@@ -20,14 +19,40 @@ public class Partie {
         this.mainCharacter = p;
     }
 
-    public void lancementJeu() {
+    public void lauchGame() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Vous vous appelez hervé, vous êtes sur terre.");
-        String cmd = sc.nextLine();
         CommandParser parser = new CommandParser();
-        //parser.registerCommand(cmd, Entity.class, (arg) -> );
+
+        parser.registerCommand("attack", Entity.class, (player, arg)-> {
+            for (Entity e : player.getLocation().getEntities()) {
+                if (e.getName().toLowerCase().equals(arg.toLowerCase())) {
+                    return e;
+                }
+            }
+            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+        });
+
+        parser.registerCommand("moveto", Region.class, (player, arg)-> {
+            for (Region r : player.getLocation().getContainedRegions()) {
+                if (r.getName().toLowerCase().equals(arg.toLowerCase())) {
+                    return r;
+                }
+            }
+            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+        });
+
         try {
-            Command c = parser.parse(cmd);
+            parser.registerListener(new CommandListener(mainCharacter), CommandListener.class);
+        } catch (InvalidAnnotationException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            System.out.println("Vous vous appelez hervé, vous êtes sur terre.");
+            while(sc.hasNext()) {
+                String cmd = sc.nextLine();
+                parser.parse(this.mainCharacter, cmd).send();
+            }
 
         } catch (InvalidCommandException e) {
             System.out.println(e.getMessage());

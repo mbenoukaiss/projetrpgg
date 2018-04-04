@@ -44,7 +44,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
 
     @Override
     public boolean damage(int value) {
-        if (!this.isKillable) {
+        if (this.isKillable) {
             this.hps -= value;
             return (this.hps <= 0);
         } return false;
