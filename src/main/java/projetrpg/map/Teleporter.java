@@ -39,6 +39,7 @@ public class Teleporter {
         this.name = name;
         this.region = region;
         this.repaired = false;
+        region.addTeleporter(this);
     }
 
     public String getName() {

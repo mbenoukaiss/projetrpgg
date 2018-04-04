@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import projetrpg.entities.EntityType;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
@@ -13,6 +14,7 @@ import projetrpg.entities.player.AttackType;
 import projetrpg.entities.player.Player;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
+import projetrpg.map.Teleporter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,6 +47,9 @@ public class Main extends Application {
         Region aquitaine = new Region(earth, "Aquitaine", inventory);
         Region cratere = new Region(moon, "Cratère", inventory);
 
+        Teleporter earthT = new Teleporter("EarthTeleporter", aquitaine);
+        Teleporter moonT = new Teleporter("MoonTeleporter", cratere);
+
         Ability fireBall = new Ability("FireBall", 0, 20, AttackType.LINE);
         HashSet<Ability> abilities = new HashSet<>();
         abilities.add(fireBall);
@@ -52,11 +57,14 @@ public class Main extends Application {
         Inventory.add(light);
         Inventory playerInventory = new Inventory(10, Inventory);
 
-        Player mainCharacter = new Player("Hervé", 0, earth, playerInventory, light, abilities, 100, 10);
+        Player mainCharacter = new Player("Hervé", 0, earth, playerInventory, light,
+                abilities, 100, 10, EntityType.PLAYER, false);
 
         MainMap mainMap = new MainMap("Systeme solaire", earth, regions, 100000);
 
         Partie partie = new Partie(mainMap, mainCharacter);
+
+        partie.lancementJeu();
 
         ResourceBundle resources = ResourceBundle.getBundle("bundles/game", Locale.ENGLISH);
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("ui.fxml"), resources);

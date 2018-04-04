@@ -4,6 +4,7 @@ import projetrpg.*;
 import projetrpg.entities.Attacker;
 import projetrpg.entities.Damageable;
 import projetrpg.entities.Entity;
+import projetrpg.entities.EntityType;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.map.Region;
@@ -46,8 +47,9 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
      */
     private int baseDamage;
 
-    public Player(String name, int experience, Region location, Inventory inventory, Item itemInHand, HashSet<Ability> abilities, int hp, int baseDamage) {
-        super(name, location);
+    public Player(String name, int experience, Region location, Inventory inventory, Item itemInHand,
+                  HashSet<Ability> abilities, int hp, int baseDamage, EntityType type, boolean isHostile) {
+        super(name, location, type, isHostile);
         this.experience = experience;
         this.inventory = inventory;
         this.itemInHand = itemInHand;
@@ -117,6 +119,12 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     public void pickUp(Item i) {
         this.inventory.add(i);
+    }
+
+    public void equip(Item i) {
+        if (this.inventory.getAll().contains(i)) {
+            this.itemInHand = i;
+        }
     }
 
 }

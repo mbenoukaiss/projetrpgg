@@ -1,4 +1,4 @@
-package commands;
+package projetrpg.commands;
 
 public class InvalidAnnotationException extends Throwable {
 

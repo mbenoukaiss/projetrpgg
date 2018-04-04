@@ -1,4 +1,4 @@
-package commands;
+package projetrpg.commands;
 
 public class InvalidCommandException extends Throwable {
 

@@ -99,4 +99,10 @@ public class Region implements Describable {
     public String getName() {
         return name;
     }
+
+    public void addTeleporter(Teleporter t) {
+        if (!this.teleporters.contains(t)) {
+            this.teleporters.add(t);
+        }
+    }
 }
