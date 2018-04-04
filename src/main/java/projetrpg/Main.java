@@ -33,50 +33,40 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Item hatchet = new Item("Hatchet", 10, ItemType.DMG);
-        Item light = new Item("Light", 0, ItemType.UTILS);
-        ArrayList<Item> inventoryItems = new ArrayList<>();
-        inventoryItems.add(hatchet);
-        inventoryItems.add(light);
+        Item hatchet = new Item("Hatchet", 20, ItemType.DMG);
+        Item light = new Item("Light", 20, ItemType.UTILS);
+        Item apple = new Item("Apple", 0, ItemType.UTILS);
 
-        Inventory inventory = new Inventory(10, inventoryItems);
-
-        Region earth = new Region(null, "Earth", inventory);
-        Region moon = new Region(null, "Moon", inventory);
         ArrayList<Region> regions = new ArrayList<>();
-        regions.add(earth);
-        regions.add(moon);
+        Region centerRegion = new Region(null, "Center", 50);
+        regions.add(centerRegion);
+        Region northRegion = new Region(null, "North", 50);
+        regions.add(northRegion);
+        Region southRegion = new Region(null, "South", 50);
+        regions.add(southRegion);
+        Region estRegion = new Region(null, "Est", 50);
+        regions.add(estRegion);
+        Region westRegion = new Region(null, "West", 50);
+        regions.add(westRegion);
 
-        NPC jean = new NPC("Jean", earth, EntityType.VILLAGER, false, 150, 0,
-                false);
-        NPC zorg = new NPC("Zorg", earth, EntityType.VAMPIRE, true, 150, 50,
+        centerRegion.linkToDirection(northRegion, Direction.NORTH);
+        centerRegion.linkToDirection(southRegion, Direction.SOUTH);
+        centerRegion.linkToDirection(estRegion, Direction.EST);
+        centerRegion.linkToDirection(westRegion, Direction.WEST);
+
+        northRegion.addItemToInventory(hatchet);
+        southRegion.addItemToInventory(apple);
+        estRegion.addItemToInventory(light);
+
+        NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 100, 100,
                 true);
 
-        Region aquitaine = new Region(earth, "Aquitaine", inventory);
-        Region cratere = new Region(earth, "cratere", inventory);
-        Region dordogne = new Region(earth, "dordogne", inventory);
-        aquitaine.getRegionOnDirection().put(Direction.SOUTH, cratere);
-        regions.add(aquitaine);
-        regions.add(cratere);
+        Player player = new Player("Hervé", 0, centerRegion, null, 100,  10,
+                EntityType.PLAYER, false, 50);
 
-        Teleporter earthT = new Teleporter("EarthTeleporter", aquitaine);
-        Teleporter moonT = new Teleporter("MoonTeleporter", cratere);
+        MainMap mainMap = new MainMap("FacticeMap",centerRegion, regions, 100);
 
-        Ability fireBall = new Ability("FireBall", 0, 20, AttackType.LINE);
-        HashSet<Ability> abilities = new HashSet<>();
-        abilities.add(fireBall);
-        ArrayList<Item> Inventory = new ArrayList<>();
-        Inventory.add(light);
-        Inventory playerInventory = new Inventory(10, Inventory);
-
-        Player mainCharacter = new Player("Hervé", 0, aquitaine, playerInventory, light,
-                abilities, 100, 10, EntityType.PLAYER, false);
-
-        mainCharacter.equip(light);
-
-        MainMap mainMap = new MainMap("Systeme solaire", earth, regions, 100000);
-
-        Partie partie = new Partie(mainMap, mainCharacter);
+        Partie partie = new Partie(mainMap, player);
 
         partie.lauchGame();
 

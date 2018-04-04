@@ -16,6 +16,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
         super(name, location, type, isHostile, hps);
         this.baseDamage = baseDamage;
         this.isKillable = isKillable;
+        location.addEntity(this);
     }
 
     @Override

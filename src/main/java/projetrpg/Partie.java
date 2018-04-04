@@ -3,6 +3,7 @@ package projetrpg;
 import projetrpg.commands.*;
 import projetrpg.entities.Entity;
 import projetrpg.entities.NPC;
+import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
@@ -20,6 +21,7 @@ public class Partie {
     }
 
     public void lauchGame() {
+
         Scanner sc = new Scanner(System.in);
         CommandParser parser = new CommandParser();
 
@@ -32,10 +34,28 @@ public class Partie {
             return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
         });
 
-        parser.registerCommand("moveto", Region.class, (player, arg)-> {
-            for (Region r : player.getLocation().getContainedRegions()) {
+        parser.registerCommand("move", Region.class, (player, arg)-> {
+            for (Region r : player.getLocation().getRegionOnDirection().values()) {
                 if (r.getName().toLowerCase().equals(arg.toLowerCase())) {
                     return r;
+                }
+            }
+            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+        });
+
+        parser.registerCommand("pickup", Item.class, (player, arg)-> {
+            for (Item i : player.getLocation().getInventory().getAll()) {
+                if (i.getName().toLowerCase().equals(arg.toLowerCase())) {
+                    return i;
+                }
+            }
+            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+        });
+
+        parser.registerCommand("equip", Item.class, (player, arg)-> {
+            for (Item i : player.getInventory().getAll()) {
+                if (i.getName().toLowerCase().equals(arg.toLowerCase())) {
+                    return i;
                 }
             }
             return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
@@ -48,7 +68,7 @@ public class Partie {
         }
 
         try {
-            System.out.println("Vous vous appelez hervé, vous êtes sur terre.");
+            System.out.println("Vous vous appelez hervé, vous êtes au centre. Vous pouvez aller au nord, sud, est ouest.");
             while(sc.hasNext()) {
                 String cmd = sc.nextLine();
                 parser.parse(this.mainCharacter, cmd).send();

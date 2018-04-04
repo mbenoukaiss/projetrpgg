@@ -51,11 +51,11 @@ public class Region implements Describable {
      */
     private Inventory inventory;
 
-    public Region(Region parent, String name, Inventory inventory) {
+    public Region(Region parent, String name, int maxCapacity) {
         if (parent != null) parent.containedRegions.add(this);
         this.parent = parent;
         this.name = name;
-        this.inventory = inventory;
+        inventory = new Inventory(maxCapacity);
     }
 
     @Override
@@ -115,5 +115,30 @@ public class Region implements Describable {
 
     public boolean estAdjacente(Region re) {
         return this.regionOnDirection.containsValue(re);
+    }
+
+    public void addItemToInventory(Item item) {
+        this.inventory.add(item);
+    }
+
+    public void linkToDirection(Region r, Direction direction) {
+        switch (direction) {
+            case EST:
+                this.regionOnDirection.put(Direction.EST, r);
+                r.regionOnDirection.put(Direction.WEST, this);
+                break;
+            case WEST:
+                this.regionOnDirection.put(Direction.WEST, r);
+                r.regionOnDirection.put(Direction.EST, this);
+                break;
+            case NORTH:
+                this.regionOnDirection.put(Direction.NORTH, r);
+                r.regionOnDirection.put(Direction.SOUTH, this);
+                break;
+            case SOUTH:
+                this.regionOnDirection.put(Direction.SOUTH, r);
+                r.regionOnDirection.put(Direction.NORTH, this);
+                break;
+        }
     }
 }

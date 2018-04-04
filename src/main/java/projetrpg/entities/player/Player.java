@@ -42,14 +42,13 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
      */
     private int baseDamage;
 
-    public Player(String name, int experience, Region location, Inventory inventory, Item itemInHand,
-                  HashSet<Ability> abilities, int hp, int baseDamage, EntityType type, boolean isHostile) {
+    public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage, EntityType type, boolean isHostile, int maxCapacity) {
         super(name, location, type, isHostile, hp);
         this.experience = experience;
-        this.inventory = inventory;
         this.itemInHand = itemInHand;
-        this.abilities = abilities;
         this.baseDamage = baseDamage;
+        abilities = new HashSet<>();
+        inventory = new Inventory(maxCapacity);
     }
 
     public int getExperience() {
@@ -58,6 +57,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     public int getLevel() {
         return (int) ((this.experience*this.experience)*0.04);
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     public Item getItemInHand() {
@@ -103,7 +106,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     @Override
     public boolean attack(Damageable target) {
-        return target.damage(this.baseDamage + itemInHand.getDamage());
+        return target.damage(this.baseDamage + ((itemInHand == null)? 0 : itemInHand.getDamage()));
     }
 
     private void levelUp() {
@@ -119,6 +122,14 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         if (this.inventory.getAll().contains(i)) {
             this.itemInHand = i;
         }
+    }
+
+    public void addItemToInventory(Item item) {
+        this.inventory.add(item);
+    }
+
+    public void addAbilityToAbilities(Ability ability) {
+        this.abilities.add(ability);
     }
 
 }

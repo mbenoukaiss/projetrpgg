@@ -20,9 +20,9 @@ public class Inventory implements Describable {
      */
     private ArrayList<Item> items;
 
-    public Inventory(int maxCapacity, ArrayList<Item> items) {
+    public Inventory(int maxCapacity) {
         this.maxCapacity = maxCapacity;
-        this.items = items;
+        items = new ArrayList<>();
     }
 
     @Override
