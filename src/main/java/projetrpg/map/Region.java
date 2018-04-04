@@ -119,6 +119,7 @@ public class Region implements Describable {
 
     public void addItemToInventory(Item item) {
         this.inventory.add(item);
+        item.setLocation(this);
     }
 
     public void linkToDirection(Region r, Direction direction) {

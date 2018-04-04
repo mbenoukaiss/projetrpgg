@@ -61,6 +61,22 @@ public class Partie {
             return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
         });
 
+        parser.registerCommand("ditch", Item.class, (player, arg)-> {
+            for (Item i : player.getInventory().getAll()) {
+                if (i.getName().toLowerCase().equals(arg.toLowerCase())) {
+                    return i;
+                }
+            }
+            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+        });
+
+        parser.registerCommand("unequip", Item.class, (player, arg)-> {
+            if (player.getItemInHand() != null && player.getItemInHand().getName().equalsIgnoreCase(arg)) {
+                return player.getItemInHand();
+            }
+            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+        });
+
         try {
             parser.registerListener(new CommandListener(mainCharacter), CommandListener.class);
         } catch (InvalidAnnotationException e) {

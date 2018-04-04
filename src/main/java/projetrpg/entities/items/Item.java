@@ -28,7 +28,7 @@ public class Item implements Describable {
     /**
      * Where the items originates from.
      */
-    private Region defaultLocation;
+    private Region Location;
 
     public Item(String name, int damage, ItemType type) {
         this.name = name;
@@ -49,6 +49,14 @@ public class Item implements Describable {
      */
     public int getDamage() {
         return damage;
+    }
+
+    public Region getLocation() {
+        return Location;
+    }
+
+    public void setLocation(Region defaultLocation) {
+        this.Location = defaultLocation;
     }
 
     /**

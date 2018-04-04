@@ -116,11 +116,24 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     public void pickUp(Item i) {
         this.inventory.add(i);
+        this.location.getInventory().remove(i);
+    }
+
+    public void ditch(Item i) {
+        this.location.getInventory().add(i);
+        this.inventory.remove(i);
+        if (this.itemInHand == i) this.itemInHand = null;
     }
 
     public void equip(Item i) {
         if (this.inventory.getAll().contains(i)) {
             this.itemInHand = i;
+        }
+    }
+
+    public void unequip(Item i) {
+        if (this.itemInHand == i) {
+            this.itemInHand = null;
         }
     }
 
