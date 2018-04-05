@@ -41,13 +41,10 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
             directions.put(region.getAsJsonObject().get("id").getAsInt(), regionDirections);
         }
 
-
-
-        //Not associating regions to regions using map directions
-        //Associate spawnpoint
+        //TODO: Associate regions to regions using map directions
+        //TODO: Associate parent regions to childregions
+        //TODO: Find spawnpoint
         throw new NotImplementedException();
-
-        //return map;
     }
 
 }

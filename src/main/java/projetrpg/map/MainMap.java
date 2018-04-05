@@ -2,7 +2,7 @@ package projetrpg.map;
 
 import com.google.gson.annotations.JsonAdapter;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Represents the whole map used in the game.
@@ -24,20 +24,22 @@ public class MainMap {
      * All the regions at the top of the tree.
      * In our case, solar systems.
      */
-    private ArrayList<Region> regions;
+    private Collection<Region> regions;
 
     /**
      * The amount of humans left on this map.
      */
     private int humanCount;
 
-
-
     public MainMap(String name) {
         this.name = name;
-        spawnPoint = null;
-        regions = new ArrayList<>();
-        humanCount = 0;
+    }
+
+    public MainMap(String name, Region spawnPoint, Collection<Region> regions, int humanCount) {
+        this.name = name;
+        this.spawnPoint = spawnPoint;
+        this.regions = regions;
+        this.humanCount = humanCount;
     }
 
     public String getName() {
@@ -48,7 +50,7 @@ public class MainMap {
         return spawnPoint;
     }
 
-    public ArrayList<Region> getRegions() {
+    public Collection<Region> getRegions() {
         return regions;
     }
 

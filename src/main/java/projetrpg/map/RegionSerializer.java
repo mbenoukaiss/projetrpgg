@@ -2,6 +2,7 @@ package projetrpg.map;
 
 import com.google.gson.*;
 import projetrpg.entities.Entity;
+import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 
 import java.lang.reflect.Type;
@@ -16,7 +17,12 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         JsonObject reg = new JsonObject();
         reg.addProperty("id", region.getId());
         reg.addProperty("name", region.getName());
-        reg.addProperty("parent", region.getParent().getId());
+
+        if(region.getParent() != null) {
+            reg.addProperty("parent", region.getParent().getId());
+        } else {
+            reg.addProperty("parent", -1);
+        }
 
         JsonObject directions = new JsonObject();
         for(Map.Entry<Direction, Region> directionRegionEntry : region.getRegionOnDirection().entrySet()) {
@@ -24,7 +30,11 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         }
         reg.add("directions", directions);
 
-        JsonArray childregions = jsonSerializationContext.serialize(region.getContainedRegions()).getAsJsonArray();
+        List<Integer> childregionsId = new ArrayList<>();
+        for(Region r : region.getContainedRegions()) {
+            childregionsId.add(r.getId());
+        }
+        JsonArray childregions = jsonSerializationContext.serialize(childregionsId).getAsJsonArray();
         reg.add("childregions", childregions);
 
         JsonArray entities = jsonSerializationContext.serialize(region.getEntities()).getAsJsonArray();
@@ -32,6 +42,9 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
 
         JsonArray teleporters = jsonSerializationContext.serialize(region.getTeleporters()).getAsJsonArray();
         reg.add("teleporters", teleporters);
+
+        JsonElement inventory = jsonSerializationContext.serialize(region.getInventory());
+        reg.add("inventory", inventory);
 
         return reg;
     }
@@ -41,7 +54,7 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         int regionId = jsonElement.getAsJsonObject().get("id").getAsInt();
         String regionName = jsonElement.getAsJsonObject().get("name").getAsString();
 
-        List<Entity> entities = new ArrayList<>();
+        List<NPC> entities = new ArrayList<>();
         for(JsonElement element : jsonElement.getAsJsonObject().get("entities").getAsJsonArray()) {
             entities.add(deserializationContext.deserialize(element, Entity.class));
         }

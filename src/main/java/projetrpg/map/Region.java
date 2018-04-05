@@ -2,7 +2,7 @@ package projetrpg.map;
 
 import com.google.gson.annotations.JsonAdapter;
 import projetrpg.*;
-import projetrpg.entities.Entity;
+import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 
@@ -45,7 +45,7 @@ public class Region implements Describable {
     /**
      * All the entities DIRECTLY contained in this region.
      */
-    private List<Entity> entities;
+    private List<NPC> entities;
 
     /**
      * All the teleporters DIRECTLY contained in this region.
@@ -69,7 +69,7 @@ public class Region implements Describable {
     }
 
     public Region(int id, String name, Region parent,
-                  Set<Region> containedRegions, List<Entity> entities,
+                  Set<Region> containedRegions, List<NPC> entities,
                   List<Teleporter> teleporters, Inventory inventory) {
         this.id = id;
         this.name = name;
@@ -115,7 +115,7 @@ public class Region implements Describable {
         this.parent = parent;
     }
 
-    public List<Entity> getEntities() {
+    public List<NPC> getEntities() {
         return entities;
     }
 
@@ -151,7 +151,7 @@ public class Region implements Describable {
         }
     }
 
-    public void addEntity(Entity e) {
+    public void addEntity(NPC e) {
         if (!this.entities.contains(e)) {
             this.entities.add(e);
         }
@@ -164,7 +164,6 @@ public class Region implements Describable {
 
     public void addItemToInventory(Item item) {
         this.inventory.add(item);
-        item.setLocation(this);
     }
 
     public void linkToDirection(Region r, Direction direction) {
