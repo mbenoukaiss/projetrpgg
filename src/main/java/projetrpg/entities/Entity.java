@@ -1,5 +1,6 @@
 package projetrpg.entities;
 
+import com.google.gson.annotations.Expose;
 import projetrpg.map.Region;
 
 /**
@@ -8,10 +9,15 @@ import projetrpg.map.Region;
 public abstract class Entity {
 
     protected final String name;
+
     protected Region location;
+
     protected EntityType type;
+
     protected int hps;
+    
     private int baseHps;
+
     protected boolean isHostile;
 
     public Entity(String name, Region location, EntityType type, Boolean isHostile, int hps) {
@@ -42,6 +48,10 @@ public abstract class Entity {
         return location;
     }
 
+    public EntityType getType() {
+        return type;
+    }
+
     public void move(Region r) {
         this.location = r;
     }
@@ -49,4 +59,5 @@ public abstract class Entity {
     public boolean isInTheSameRegion(Entity other) {
         return (other.location.equals(this.location));
     }
+
 }

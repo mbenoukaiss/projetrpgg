@@ -1,27 +1,24 @@
 package projetrpg;
 
+import com.google.gson.GsonBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import projetrpg.entities.EntityType;
-import projetrpg.entities.NPC;
-import projetrpg.entities.items.Inventory;
+import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
-import projetrpg.entities.player.Ability;
-import projetrpg.entities.player.AttackType;
 import projetrpg.entities.player.Player;
-import projetrpg.map.Direction;
-import projetrpg.map.MainMap;
-import projetrpg.map.Region;
-import projetrpg.map.Teleporter;
+import projetrpg.map.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import com.google.gson.Gson;
+import projetrpg.map.MapSerializer;
+import projetrpg.map.RegionSerializer;
 
 /**
  * Created on 30/03/18.
@@ -38,15 +35,15 @@ public class Main extends Application {
         Item apple = new Item("Apple", 0, ItemType.UTILS);
 
         ArrayList<Region> regions = new ArrayList<>();
-        Region centerRegion = new Region(null, "Center", 50);
+        Region centerRegion = new Region(0, "Center", null);
         regions.add(centerRegion);
-        Region northRegion = new Region(null, "North", 50);
+        Region northRegion = new Region(1, "North", null);
         regions.add(northRegion);
-        Region southRegion = new Region(null, "South", 50);
+        Region southRegion = new Region(2, "South", null);
         regions.add(southRegion);
-        Region estRegion = new Region(null, "Est", 50);
+        Region estRegion = new Region(3, "Est", null);
         regions.add(estRegion);
-        Region westRegion = new Region(null, "West", 50);
+        Region westRegion = new Region(4, "West", null);
         regions.add(westRegion);
 
         centerRegion.linkToDirection(northRegion, Direction.NORTH);
@@ -60,13 +57,13 @@ public class Main extends Application {
 
         NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 100, 20,
                 true, "Im gonna kill you !");
-
-        NPC jean = new NPC("Jean", southRegion, EntityType.VILLAGER, false, 100, 0, true, "Hey, wassup boi !");
+        NPC jean = new NPC("Jean", southRegion, EntityType.VILLAGER, false, 100, 0,
+                true, "Hey, wassup boi !");
 
         Player player = new Player("Hervé", 0, centerRegion, null, 100,  10,
                 EntityType.PLAYER, false, 50);
 
-        MainMap mainMap = new MainMap("FacticeMap",centerRegion, regions, 100);
+        MainMap mainMap = new MainMap("FacticeMap", centerRegion, regions, 100);
 
         Partie partie = new Partie(mainMap, player);
 
@@ -83,5 +80,16 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void testSerialization(MainMap map) {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(NPC.class, new EntitySerializer())
+                .registerTypeAdapter(Region.class, new RegionSerializer())
+                .registerTypeAdapter(MainMap.class, new MapSerializer())
+                .create();
+
+        System.out.println(gson.toJson(map));
     }
 }
