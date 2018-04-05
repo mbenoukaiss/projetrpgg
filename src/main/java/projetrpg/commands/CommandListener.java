@@ -48,9 +48,10 @@ public class CommandListener {
 
     @Listener({"fleefrom"})
     public void fleeFrom(NPC e) {
-        if (e != null) {
+        if (e != null && e.isInFight()) {
             e.setHps(e.getBaseHps());
             System.out.println("You fled");
+            e.setInFight(false);
         } else {
             System.out.println("NULL");
         }

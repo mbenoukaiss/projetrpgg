@@ -10,7 +10,8 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
     private Inventory inventory;
     private int baseDamage;
     private boolean isKillable;
-    protected String dialogue;
+    private String dialogue;
+    private boolean inFight;
 
     public NPC(String name, Region location, EntityType type, Boolean isHostile, int hps,
                int baseDamage, boolean isKillable, String dialogue) {
@@ -53,10 +54,19 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
     public boolean damage(int value) {
         if (this.isKillable) {
             this.hps -= value;
+            this.inFight = true;
             return (this.hps <= 0);
         } else {
             return false;
         }
+    }
+
+    public boolean isInFight() {
+        return inFight;
+    }
+
+    public void setInFight(boolean inFight) {
+        this.inFight = inFight;
     }
 
     @Override
