@@ -11,6 +11,7 @@ public abstract class Entity {
     protected Region location;
     protected EntityType type;
     protected int hps;
+    private int baseHps;
     protected boolean isHostile;
 
     public Entity(String name, Region location, EntityType type, Boolean isHostile, int hps) {
@@ -19,9 +20,19 @@ public abstract class Entity {
         this.type = type;
         this.isHostile = isHostile;
         this.hps = hps;
+        this.baseHps = hps;
         location.addEntity(this);
     }
 
+    public void setHps(int hps) {
+        this.hps = hps;
+    }
+
+    public int getBaseHps() {
+        return baseHps;
+    }
+
+    public EntityType getType() { return type; };
 
     public String getName() {
         return name;

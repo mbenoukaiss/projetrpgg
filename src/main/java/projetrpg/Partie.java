@@ -34,6 +34,24 @@ public class Partie {
             return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
         });
 
+        parser.registerCommand("talk", Entity.class, (player, arg)-> {
+            for (Entity e : player.getLocation().getEntities()) {
+                if (e.getName().toLowerCase().equals(arg.toLowerCase())) {
+                    return e;
+                }
+            }
+            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+        });
+
+        parser.registerCommand("fleefrom", Entity.class, (player, arg)-> {
+            for (Entity e : player.getLocation().getEntities()) {
+                if (e.getName().toLowerCase().equals(arg.toLowerCase())) {
+                    return e;
+                }
+            }
+            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+        });
+
         parser.registerCommand("move", Region.class, (player, arg)-> {
             for (Region r : player.getLocation().getRegionOnDirection().values()) {
                 if (r.getName().toLowerCase().equals(arg.toLowerCase())) {

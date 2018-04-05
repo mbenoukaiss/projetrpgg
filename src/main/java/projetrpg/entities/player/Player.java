@@ -55,9 +55,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         return this.experience;
     }
 
-    public int getLevel() {
-        return (int) ((this.experience*this.experience)*0.04);
-    }
+    public int getLevel() { return (int) ((this.experience*this.experience)*0.03); }
 
     public Inventory getInventory() {
         return inventory;
@@ -65,6 +63,12 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     public Item getItemInHand() {
         return this.itemInHand;
+    }
+
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 
     @Override
@@ -106,12 +110,11 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     @Override
     public boolean attack(Damageable target) {
-        return target.damage(this.baseDamage + ((itemInHand == null)? 0 : itemInHand.getDamage()));
-    }
-
-    private void levelUp() {
-        this.hps+=50;
-        this.baseDamage++;
+        if (target.damage(this.baseDamage + ((itemInHand == null)? 0 : itemInHand.getDamage()))) {
+                this.experience+=((Entity) target).getType().getExperienceRewarded();
+                return true;
+        }
+        return false;
     }
 
     public void pickUp(Item i) {

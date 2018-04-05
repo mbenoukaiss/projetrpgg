@@ -10,14 +10,20 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
     private Inventory inventory;
     private int baseDamage;
     private boolean isKillable;
+    protected String dialogue;
 
     public NPC(String name, Region location, EntityType type, Boolean isHostile, int hps,
-               int baseDamage, boolean isKillable) {
+               int baseDamage, boolean isKillable, String dialogue) {
         super(name, location, type, isHostile, hps);
         this.baseDamage = baseDamage;
         this.isKillable = isKillable;
         location.addEntity(this);
+        this.dialogue = dialogue;
     }
+
+    public String getDialogue() { return this.dialogue; }
+
+
 
     @Override
     public int getHp() {
@@ -48,7 +54,9 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
         if (this.isKillable) {
             this.hps -= value;
             return (this.hps <= 0);
-        } return false;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -57,7 +65,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
     }
 
     public void talk() {
-        System.out.println("parler aaaaaaaa");
+        System.out.println(this.dialogue);
     }
 
 }

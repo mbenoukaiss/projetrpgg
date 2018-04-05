@@ -64,8 +64,12 @@ public class Region implements Describable {
         for(Item i: this.inventory.getAll()) {
             d+=i.getName() +", ";
         }
-
-        return d.substring(0, d.length()-2);
+        d = d.substring(0, d.length()-2);
+        d+=". And those entities :";
+        for(Entity e: this.entities) {
+            d+=e.getName() +", ";
+        }
+        return d.substring(0, d.length()-2) + ".";
     }
 
     public Region getRegionTowards(Direction d) {
