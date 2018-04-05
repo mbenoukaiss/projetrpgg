@@ -1,10 +1,13 @@
 package projetrpg.map;
 
+import com.google.gson.annotations.JsonAdapter;
+
 import java.util.ArrayList;
 
 /**
  * Represents the whole map used in the game.
  */
+@JsonAdapter(MapSerializer.class)
 public class MainMap {
 
     /**
@@ -21,7 +24,7 @@ public class MainMap {
      * All the regions at the top of the tree.
      * In our case, solar systems.
      */
-    private ArrayList<Region> regions = new ArrayList<>();
+    private ArrayList<Region> regions;
 
     /**
      * The amount of humans left on this map.

@@ -1,5 +1,6 @@
 package projetrpg.map;
 
+import com.google.gson.annotations.JsonAdapter;
 import projetrpg.*;
 import projetrpg.entities.Entity;
 import projetrpg.entities.items.Inventory;
@@ -11,6 +12,7 @@ import java.util.*;
  * Represents any kind of location, a solar system,
  * a planet, an area on a planet, a spaceship...
  */
+@JsonAdapter(RegionSerializer.class)
 public class Region implements Describable {
 
     private static final int DEFAULT_ROOM_ITEM_CAPACITY = 10;
