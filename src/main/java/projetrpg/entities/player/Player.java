@@ -7,6 +7,7 @@ import projetrpg.entities.Entity;
 import projetrpg.entities.EntityType;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
+import projetrpg.entities.items.ItemType;
 import projetrpg.map.Region;
 
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
      * The damage it deals without any weapon.
      */
     private int baseDamage;
+
+    private boolean isInFight;
 
     public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage, EntityType type, boolean isHostile, int maxCapacity) {
         super(name, location, type, isHostile, hp);
@@ -100,8 +103,17 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     @Override
     public boolean damage(int value) {
+        this.isInFight = true;
         this.hps-=value;
         return (this.hps <= 0);
+    }
+
+    public boolean isInFight() {
+        return isInFight;
+    }
+
+    public void setInFight(boolean inFight) {
+        isInFight = inFight;
     }
 
     public HashSet<Ability> getAbilities() {
@@ -110,8 +122,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
 
     @Override
     public boolean attack(Damageable target) {
+        this.isInFight = true;
         if (target.damage(this.baseDamage + ((itemInHand == null)? 0 : itemInHand.getDamage()))) {
                 this.experience+=((Entity) target).getType().getExperienceRewarded();
+                this.isInFight = false;
                 return true;
         }
         return false;
@@ -126,6 +140,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         this.location.getInventory().add(i);
         this.inventory.remove(i);
         if (this.itemInHand == i) this.itemInHand = null;
+    }
+
+    public void consume(Item i) {
+        if (i.getType() == ItemType.FOOD) this.inventory.remove(i);
     }
 
     public void equip(Item i) {

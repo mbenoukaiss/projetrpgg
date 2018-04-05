@@ -2,9 +2,9 @@ package projetrpg.entities;
 
 public enum EntityType {
     PLAYER(0, true),
-    VILLAGER(10, true),
-    BIOBOT(50, true),
-    VAMPIRE(45, true);
+    VILLAGER(1, true),
+    BIOBOT(10, true),
+    VAMPIRE(5, true);
 
     private final int experienceRewarded;
     private final boolean isKillable;

@@ -7,6 +7,8 @@ import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
+
+import java.lang.reflect.Field;
 import java.util.*;
 
 import java.util.Scanner;
@@ -32,7 +34,7 @@ public class Partie {
                     return e;
                 }
             }
-            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+            return null;
         });
 
         parser.registerCommand("talk", Entity.class, (player, arg)-> {
@@ -41,7 +43,7 @@ public class Partie {
                     return e;
                 }
             }
-            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+            return null;
         });
 
         parser.registerCommand("fleefrom", Entity.class, (player, arg)-> {
@@ -50,7 +52,7 @@ public class Partie {
                     return e;
                 }
             }
-            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+            return null;
         });
 
         parser.registerCommand("move", Region.class, (player, arg)-> {
@@ -59,7 +61,7 @@ public class Partie {
                     return r;
                 }
             }
-            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+            return null;
         });
 
         parser.registerCommand("pickup", Item.class, (player, arg)-> {
@@ -68,7 +70,7 @@ public class Partie {
                     return i;
                 }
             }
-            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+            return null;
         });
 
         parser.registerCommand("equip", Item.class, (player, arg)-> {
@@ -77,7 +79,7 @@ public class Partie {
                     return i;
                 }
             }
-            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+            return null;
         });
 
         parser.registerCommand("ditch", Item.class, (player, arg)-> {
@@ -86,23 +88,72 @@ public class Partie {
                     return i;
                 }
             }
-            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+            return null;
         });
 
         parser.registerCommand("unequip", Item.class, (player, arg)-> {
             if (player.getItemInHand() != null && player.getItemInHand().getName().equalsIgnoreCase(arg)) {
                 return player.getItemInHand();
             }
-            return null; //TODO: NE PAS RETOURNER NULL C'EST PAS COOL MEC
+            return null;
+        });
+
+        parser.registerCommand("use", Item.class, (player, arg)-> {
+            for (Item i : player.getInventory().getAll()) {
+                if (i.getName().toLowerCase().equals(arg.toLowerCase())) {
+                    return i;
+                }
+            }
+            return null;
+        });
+
+
+        parser.registerCommand("see", String.class, (player, arg)-> {
+            for (Field i : ((Entity)player).getClass().getDeclaredFields()) {
+                String name = i.getName();
+                if (name.equalsIgnoreCase(arg)) {
+                    return i.getName();
+                }
+            }
+            return null;
+        });
+
+        parser.registerCommand("see", String.class, (player, arg)-> {
+            for (Field field : player.getClass().getDeclaredFields()) {
+                String name = field.getName();
+                if (name.equalsIgnoreCase(arg)) {
+                    return name;
+                }
+            }
+            for (Field f : player.getClass().getSuperclass().getDeclaredFields()) {
+                String name = f.getName();
+                if (name.equalsIgnoreCase(arg)) {
+                    return name;
+                }
+            }
+            return null;
         });
 
         try {
-            parser.registerListener(new CommandListener(mainCharacter), CommandListener.class);
+            parser.registerListener(new CommandListener(mainCharacter, mainMap), CommandListener.class);
         } catch (InvalidAnnotationException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Vous vous appelez hervé, vous êtes au centre. Vous pouvez aller au nord, sud, est ouest.");
+        String manuel = "User guide : \n";
+        manuel += "-attack : on an entity \n" +
+                "-talk : on an non hostile entity \n" +
+                "-fleefrom : on an entity you are fighting with \n" +
+                "-move : on a region thats connected to the one you're in \n" +
+                "-pickup : on an item present int the map you're in \n" +
+                "-equip : on an item present in your inventory \n" +
+                "-ditch : on an item thats present in your inventory \n" +
+                "-unequip : on an item you have in head \n" +
+                "-use : on an item you have in your inventory \n" +
+                "-see : on an attribute you wish to see the status";
+        System.out.println(manuel);
+        System.out.println("Your name is hervé, you are in " + this.mainCharacter.getLocation().getName() +
+                ". You can go to : " + (this.mainCharacter.getLocation().getRegionNamesOnDirection()));
         while(sc.hasNextLine()) {
             String cmd = sc.nextLine();
 

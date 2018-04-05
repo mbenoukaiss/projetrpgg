@@ -55,7 +55,10 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
         if (this.type.isKillable()) {
             this.hps -= value;
             this.inFight = true;
-            return (this.hps <= 0);
+            if (this.hps <= 0) {
+                this.location.deleteEntity(this);
+                return true;
+            } return false;
         } else {
             return false;
         }

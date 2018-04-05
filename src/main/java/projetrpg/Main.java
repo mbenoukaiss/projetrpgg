@@ -32,7 +32,7 @@ public class Main extends Application {
 
         Item hatchet = new Item("Hatchet", 40, ItemType.DMG);
         Item light = new Item("Light", 20, ItemType.UTILS);
-        Item apple = new Item("Apple", 0, ItemType.UTILS);
+        Item apple = new Item("Apple", 0, ItemType.FOOD);
 
         ArrayList<Region> regions = new ArrayList<>();
         Region centerRegion = new Region(0, "Center", null);

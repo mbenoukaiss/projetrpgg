@@ -99,6 +99,15 @@ public class Region implements Describable {
         return regionOnDirection.get(d);
     }
 
+    public String getRegionNamesOnDirection() {
+        String r ="";
+        for(Region i : this.regionOnDirection.values()) {
+            r += i.name + ",";
+        }
+        r = r.substring(0, r.length() -1);
+        return r;
+    }
+
     public Map<Direction, Region> getRegionOnDirection() {
         return regionOnDirection;
     }
@@ -155,7 +164,12 @@ public class Region implements Describable {
         if (!this.entities.contains(e)) {
             this.entities.add(e);
         }
+    }
 
+    public void deleteEntity(NPC e) {
+        if (this.entities.contains(e)) {
+            this.entities.remove(e);
+        }
     }
 
     public boolean estAdjacente(Region re) {

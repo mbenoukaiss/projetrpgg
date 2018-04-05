@@ -54,4 +54,7 @@ public class Item implements Describable {
         return this.name;
     }
 
+    public ItemType getType() {
+        return type;
+    }
 }

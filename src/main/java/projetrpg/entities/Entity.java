@@ -29,6 +29,10 @@ public abstract class Entity {
         this.baseHps = hps;
     }
 
+    public void setLocation(Region location) {
+        this.location = location;
+    }
+
     public void setHps(int hps) {
         this.hps = hps;
     }
