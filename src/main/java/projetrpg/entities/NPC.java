@@ -6,20 +6,20 @@ import projetrpg.map.Region;
 
 public class NPC extends Entity implements Describable, Damageable, Attacker {
 
-    private int experienceRewarded;
     private Inventory inventory;
+
     private int baseDamage;
-    private boolean isKillable;
-    private String dialogue;
+    
+    private String dialog;
+    
     private boolean inFight;
 
-    public NPC(String name, Region location, EntityType type, Boolean isHostile, int hps,
-               int baseDamage, boolean isKillable, String dialogue) {
+    public NPC(String name, Region location, EntityType type, boolean isHostile, 
+               int hps, int baseDamage, String dialog) {
         super(name, location, type, isHostile, hps);
         this.baseDamage = baseDamage;
-        this.isKillable = isKillable;
-        location.addEntity(this);
         this.dialogue = dialogue;
+        location.addEntity(this);
     }
 
     public String getDialogue() { return this.dialogue; }
@@ -41,7 +41,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
         String d = this.name + " : possède ces items : ";
         d+=inventory.describe();
         d+=", se trouve dans la région de : " + this.location.getName();
-        d+=". Si vous le tuer, vous obtiendrez " + this.experienceRewarded + " exp";
+        d+=". Si vous le tuer, vous obtiendrez " + this.type.getExperienceRewarded() + " exp";
         return d;
     }
 
@@ -52,7 +52,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
 
     @Override
     public boolean damage(int value) {
-        if (this.isKillable) {
+        if (this.type.isKillable()) {
             this.hps -= value;
             this.inFight = true;
             return (this.hps <= 0);
