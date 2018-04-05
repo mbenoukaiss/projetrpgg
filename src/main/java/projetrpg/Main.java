@@ -55,13 +55,13 @@ public class Main extends Application {
         southRegion.addItemToInventory(apple);
         estRegion.addItemToInventory(light);
 
-        NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 100, 20,
-                true, "Im gonna kill you !");
-        NPC jean = new NPC("Jean", southRegion, EntityType.VILLAGER, false, 100, 0,
-                true, "Hey, wassup boi !");
+        NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 100,
+                20, "Im gonna kill you !");
+        NPC jean = new NPC("Jean", southRegion, EntityType.VILLAGER, false, 100,
+                0, "Hey, wassup boi !");
 
-        Player player = new Player("Hervé", 0, centerRegion, null, 100,  10,
-                EntityType.PLAYER, false, 50);
+        Player player = new Player("Hervé", 0, centerRegion, null, 100,
+                10, EntityType.PLAYER, false, 50);
 
         MainMap mainMap = new MainMap("FacticeMap", centerRegion, regions, 100);
 

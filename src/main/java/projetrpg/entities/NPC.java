@@ -10,12 +10,12 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
 
     private int baseDamage;
     
-    private String dialog;
+    private String dialogue;
     
     private boolean inFight;
 
     public NPC(String name, Region location, EntityType type, boolean isHostile, 
-               int hps, int baseDamage, String dialog) {
+               int hps, int baseDamage, String dialogue) {
         super(name, location, type, isHostile, hps);
         this.baseDamage = baseDamage;
         this.dialogue = dialogue;

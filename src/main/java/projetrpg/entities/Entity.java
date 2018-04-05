@@ -27,7 +27,6 @@ public abstract class Entity {
         this.isHostile = isHostile;
         this.hps = hps;
         this.baseHps = hps;
-        location.addEntity(this);
     }
 
     public void setHps(int hps) {
@@ -37,8 +36,6 @@ public abstract class Entity {
     public int getBaseHps() {
         return baseHps;
     }
-
-    public EntityType getType() { return type; };
 
     public String getName() {
         return name;

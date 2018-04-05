@@ -1,7 +1,7 @@
 package projetrpg.map;
 
 import com.google.gson.annotations.JsonAdapter;
-import projetrpg.*;
+import projetrpg.Describable;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
@@ -89,7 +89,7 @@ public class Region implements Describable {
         }
         d = d.substring(0, d.length()-2);
         d+=". And those entities :";
-        for(Entity e: this.entities) {
+        for(NPC e: this.entities) {
             d+=e.getName() +", ";
         }
         return d.substring(0, d.length()-2) + ".";

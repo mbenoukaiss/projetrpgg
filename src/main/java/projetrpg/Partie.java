@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.Scanner;
 
 public class Partie {
+    
     private Player mainCharacter;
     private MainMap mainMap;
 
@@ -101,15 +102,16 @@ public class Partie {
             e.printStackTrace();
         }
 
-        try {
-            System.out.println("Vous vous appelez hervé, vous êtes au centre. Vous pouvez aller au nord, sud, est ouest.");
-            while(sc.hasNext()) {
-                String cmd = sc.nextLine();
-                parser.parse(this.mainCharacter, cmd).send();
-            }
+        System.out.println("Vous vous appelez hervé, vous êtes au centre. Vous pouvez aller au nord, sud, est ouest.");
+        while(sc.hasNextLine()) {
+            String cmd = sc.nextLine();
 
-        } catch (InvalidCommandException e) {
-            System.out.println(e.getMessage());
+            try {
+                parser.parse(this.mainCharacter, cmd).send();
+            } catch (InvalidCommandException e) {
+                System.err.println(e.getMessage());
+            }
         }
     }
+
 }
