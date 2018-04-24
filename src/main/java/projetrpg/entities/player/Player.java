@@ -10,7 +10,6 @@ import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
 import projetrpg.map.Region;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -43,6 +42,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
      */
     private int baseDamage;
 
+    /**
+     * Whether or not this Player is fighting.
+     */
+    @SerializationIgnore
     private boolean isInFight;
 
     public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage, EntityType type, boolean isHostile, int maxCapacity) {

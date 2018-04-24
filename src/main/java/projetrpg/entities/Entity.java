@@ -1,4 +1,5 @@
 package projetrpg.entities;
+import projetrpg.SerializationIgnore;
 import projetrpg.map.Region;
 
 /**
@@ -14,6 +15,7 @@ public abstract class Entity {
     /**
      * The location of the entity.
      */
+    @SerializationIgnore
     protected Region location;
 
     /**
@@ -32,7 +34,7 @@ public abstract class Entity {
     protected int baseHps;
 
     /**
-     * The status on weither this entity is hostile or not.
+     * Whether or not this entity is hostile.
      */
     protected boolean isHostile;
 

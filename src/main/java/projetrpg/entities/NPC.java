@@ -1,23 +1,28 @@
 package projetrpg.entities;
 
 import projetrpg.Describable;
+import projetrpg.SerializationIgnore;
 import projetrpg.map.Region;
 
 /**
  * Created by mhevin + mbnoukaiss
  */
 public class NPC extends Entity implements Describable, Damageable, Attacker {
+
     /**
      * The damage.
      */
     private int baseDamage;
+
     /**
      * The dialogue.
      */
     private String dialogue;
+
     /**
-     * the status on weither this NPC is fighting.
+     * Whether or not this NPC is fighting.
      */
+    @SerializationIgnore
     private boolean inFight;
 
     public NPC(String name, Region location, EntityType type, boolean isHostile,

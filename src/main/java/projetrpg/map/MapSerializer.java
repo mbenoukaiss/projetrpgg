@@ -18,6 +18,9 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         map.addProperty("spawnpoint", mainMap.getSpawnPoint().getId());
         map.addProperty("humancount", mainMap.getHumanCount());
 
+        JsonElement mainCharacter = jsonSerializationContext.serialize(mainMap.getMainCharacter());
+        map.add("maincharacter", mainCharacter);
+
         JsonArray regions = jsonSerializationContext.serialize(mainMap.getRegions()).getAsJsonArray();
         map.add("regions", regions);
 
