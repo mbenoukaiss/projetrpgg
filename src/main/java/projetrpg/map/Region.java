@@ -81,6 +81,28 @@ public class Region implements Describable {
         this.inventory = inventory;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public Set<Region> getContainedRegions() {
+        return containedRegions;
+    }
+
+    public Region getParent() {
+        return parent;
+    }
+
+    public void setParent(Region parent) {
+        this.parent = parent;
+    }
+
+    public List<Teleporter> getTeleporters() {
+        List<Teleporter> nt = new ArrayList<>();
+        Collections.copy(nt, teleporters);
+        return nt;
+    }
+
     /**
      * Ask this object to describe itself.
      * @return the description as a string.
@@ -143,6 +165,16 @@ public class Region implements Describable {
      */
     public String getName() {
         return name;
+    }
+
+    public void addContainedRegion(Region r) {
+        if(r == this) throw new IllegalArgumentException("A region can't contain itself");
+        r.parent = this;
+        containedRegions.add(r);
+    }
+
+    public void addRegionTowards(Direction d, Region r) {
+        regionOnDirection.put(d, r);
     }
 
     /**
