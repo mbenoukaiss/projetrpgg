@@ -2,6 +2,7 @@ package projetrpg;
 
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,7 +30,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-//Items initialization.
+        //Items initialization.
         Item hatchet = new Item("Hatchet", 40, ItemType.DMG);
         Item light = new Item("Light", 20, ItemType.UTILS);
         Item apple = new Item("Apple", 0, ItemType.FOOD);
@@ -74,20 +75,16 @@ public class Main extends Application {
                 10, EntityType.PLAYER, false, 50);
 
         //MainMap initialization.
-        MainMap mainMap = new MainMap("FacticeMap", centerRegion, regions);
+        MainMap mainMap = new MainMap("FacticeMap", centerRegion, regions, 100);
 
         //Party initialization.
         Partie partie = new Partie(mainMap, player);
 
         // Launch the game.
-        partie.lauchGame();
+        //partie.lauchGame();
 
-        ResourceBundle resources = ResourceBundle.getBundle("bundles/game", Locale.ENGLISH);
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("ui.fxml"), resources);
-
-        Scene scene = new Scene(root, 900, 600);
-
-        primaryStage.setScene(scene);
+        VuePartie vue = new VuePartie(partie, this);
+        primaryStage.setScene(vue.getScene());
         primaryStage.show();
     }
 
@@ -104,5 +101,9 @@ public class Main extends Application {
                 .create();
 
         System.out.println(gson.toJson(map));
+    }
+
+    public void quit() {
+        Platform.exit();
     }
 }
