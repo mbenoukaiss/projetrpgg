@@ -5,6 +5,8 @@ import projetrpg.Describable;
 import java.util.ArrayList;
 
 /**
+ * Created by mhevin + mbnoukaiss
+ *
  * Contains the items of an entity, a region
  * or anything else.
  */
@@ -25,6 +27,10 @@ public class Inventory implements Describable {
         this.items = new ArrayList<>();
     }
 
+    /**
+     * Ask this object to describe itself.
+     * @return the description as a string.
+     */
     @Override
     public String describe() {
         StringBuilder d = new StringBuilder();

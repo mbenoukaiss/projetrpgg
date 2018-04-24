@@ -53,4 +53,5 @@ public class CommandFragment<T> {
     public Class<T> getArgumentType() {
         return argumentType;
     }
+
 }

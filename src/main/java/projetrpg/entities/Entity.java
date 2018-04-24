@@ -1,23 +1,39 @@
 package projetrpg.entities;
-
-import com.google.gson.annotations.Expose;
 import projetrpg.map.Region;
 
 /**
- * Created by mhevin on 28/03/18.
+ * Created by mhevin + mbnoukaiss
  */
 public abstract class Entity {
 
+    /**
+     * The name of the entity.
+     */
     protected final String name;
 
+    /**
+     * The location of the entity.
+     */
     protected Region location;
 
+    /**
+     * The type of the entity.
+     */
     protected EntityType type;
 
+    /**
+     * The hps of the entity.
+     */
     protected int hps;
-    
-    private int baseHps;
 
+    /**
+     * The baseHps of the entity.
+     */
+    protected int baseHps;
+
+    /**
+     * The status on weither this entity is hostile or not.
+     */
     protected boolean isHostile;
 
     public Entity(String name, Region location, EntityType type, Boolean isHostile, int hps) {
@@ -29,36 +45,63 @@ public abstract class Entity {
         this.baseHps = hps;
     }
 
+    /**
+     *
+     * @param location
+     */
     public void setLocation(Region location) {
         this.location = location;
     }
 
+    /**
+     * Setter for the hps of an entity.
+     * @param hps the entity hps.
+     */
     public void setHps(int hps) {
         this.hps = hps;
     }
 
+    /**
+     * Accessor for the base hp of an entity.
+     * @return the base hps.
+     */
     public int getBaseHps() {
         return baseHps;
     }
 
+    /**
+     * Accessor for the name of the Entity.
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Accessor for the location of the Entity.
+     * @return  the location.
+     */
     public Region getLocation() {
         return location;
     }
 
+    /**
+     * Accessor for the type of the Entity.
+     * @return the type.
+     */
     public EntityType getType() {
         return type;
     }
 
+    /**
+     * The player moves to another region.
+     * @param r the targeted region.
+     */
     public void move(Region r) {
         this.location = r;
     }
 
-    public boolean isInTheSameRegion(Entity other) {
-        return (other.location.equals(this.location));
+    public boolean isHostile() {
+        return isHostile;
     }
-
 }

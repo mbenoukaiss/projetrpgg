@@ -81,9 +81,13 @@ public class Region implements Describable {
         this.inventory = inventory;
     }
 
+    /**
+     * Ask this object to describe itself.
+     * @return the description as a string.
+     */
     @Override
     public String describe() {
-        String d = "Region : " + this.name + ", contains those items :";
+        String d = "region : " + this.name + ", contains those items : ";
         for(Item i: this.inventory.getAll()) {
             d+=i.getName() +", ";
         }
@@ -92,13 +96,14 @@ public class Region implements Describable {
         for(NPC e: this.entities) {
             d+=e.getName() +", ";
         }
-        return d.substring(0, d.length()-2) + ".";
+        d = d.substring(0, d.length()-2) + ". From there you can go to : " + (this.getRegionNamesOnDirection()) + ".";
+        return d;
     }
 
-    public Region getRegionTowards(Direction d) {
-        return regionOnDirection.get(d);
-    }
-
+    /**
+     * Accessor for the names of the linked regions as a String.
+     * @return the names.
+     */
     public String getRegionNamesOnDirection() {
         String r ="";
         for(Region i : this.regionOnDirection.values()) {
@@ -108,78 +113,80 @@ public class Region implements Describable {
         return r;
     }
 
+    /**
+     * Accessor for the regions contained.
+     * @return the regions.
+     */
     public Map<Direction, Region> getRegionOnDirection() {
         return regionOnDirection;
     }
 
-    public Set<Region> getContainedRegions() {
-        return containedRegions;
-    }
-
-    public Region getParent() {
-        return parent;
-    }
-
-    public void setParent(Region parent) {
-        this.parent = parent;
-    }
-
+    /**
+     * Accessor for the entities contained.
+     * @return the entities.
+     */
     public List<NPC> getEntities() {
         return entities;
     }
 
-    public List<Teleporter> getTeleporters() {
-        return teleporters;
-    }
-
+    /**
+     * Accessor for the inventory.
+     * @return the inventory.
+     */
     public Inventory getInventory() {
         return inventory;
     }
 
-    public int getId() {
-        return id;
-    }
-
+    /**
+     * Accessor for the name.
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
-    public void addContainedRegion(Region r) {
-        if(r == this) throw new IllegalArgumentException("A region can't contain itself");
-        r.parent = this;
-        containedRegions.add(r);
-    }
-
-    public void addRegionTowards(Direction d, Region r) {
-        regionOnDirection.put(d, r);
-    }
-
-    public void addTeleporter(Teleporter t) {
-        if (!this.teleporters.contains(t)) {
-            this.teleporters.add(t);
-        }
-    }
-
+    /**
+     * Add an entity to this region.
+     * @param e the entity.
+     */
     public void addEntity(NPC e) {
         if (!this.entities.contains(e)) {
             this.entities.add(e);
         }
     }
 
+    /**
+     * Deletes an entity to this region.
+     * @param e the entity.
+     */
     public void deleteEntity(NPC e) {
         if (this.entities.contains(e)) {
             this.entities.remove(e);
         }
     }
 
-    public boolean estAdjacente(Region re) {
-        return this.regionOnDirection.containsValue(re);
+    /**
+     * Add a teleporter to the region.
+     */
+    public void addTeleporter(Teleporter t) {
+        if (!this.teleporters.contains(t)) {
+            this.teleporters.add(t);
+        }
     }
 
+    /**
+     * Add an item to this region.
+     * @param item the item.
+     */
     public void addItemToInventory(Item item) {
         this.inventory.add(item);
     }
 
+    /**
+     * Link regions to another region.
+     * @param r the region that you wish to associate.
+     * @param direction the direction where the @param r is.
+     */
     public void linkToDirection(Region r, Direction direction) {
         switch (direction) {
             case EST:

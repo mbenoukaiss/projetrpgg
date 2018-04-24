@@ -5,6 +5,8 @@ import projetrpg.entities.Entity;
 import projetrpg.map.Region;
 
 /**
+ * Created by mhevin + mbnoukaiss
+ *
  * An item.
  */
 public class Item implements Describable {
@@ -31,6 +33,10 @@ public class Item implements Describable {
         this.type = type;
     }
 
+    /**
+     * Ask this object to describe itself.
+     * @return the description as a string.
+     */
     @Override
     public String describe() {
         return this.name + ", damages : " + this.damage + ", type : " + this.type;
@@ -54,6 +60,10 @@ public class Item implements Describable {
         return this.name;
     }
 
+    /**
+     * Accessor for the type of the item.
+     * @return the type.
+     */
     public ItemType getType() {
         return type;
     }

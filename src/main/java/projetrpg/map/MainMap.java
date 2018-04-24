@@ -26,47 +26,17 @@ public class MainMap {
      */
     private Collection<Region> regions;
 
-    /**
-     * The amount of humans left on this map.
-     */
-    private int humanCount;
-
-    public MainMap(String name) {
-        this.name = name;
-    }
-
-    public MainMap(String name, Region spawnPoint, Collection<Region> regions, int humanCount) {
+    public MainMap(String name, Region spawnPoint, Collection<Region> regions) {
         this.name = name;
         this.spawnPoint = spawnPoint;
         this.regions = regions;
-        this.humanCount = humanCount;
     }
 
-    public String getName() {
-        return name;
-    }
-
+    /**
+     * Accessor for the spawn point of this map.
+     * @return the spawn point.
+     */
     public Region getSpawnPoint() {
         return spawnPoint;
-    }
-
-    public Collection<Region> getRegions() {
-        return regions;
-    }
-
-    public int getHumanCount() {
-        return humanCount;
-    }
-
-    public void addRegion(Region r) {
-        regions.add(r);
-    }
-
-    public void setSpawnPoint(Region spawnPoint) {
-        this.spawnPoint = spawnPoint;
-    }
-
-    public void setHumanCount(int humanCount) {
-        this.humanCount = humanCount;
     }
 }
