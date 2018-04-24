@@ -81,22 +81,42 @@ public class Region implements Describable {
         this.inventory = inventory;
     }
 
+    /**
+     * Accessor for the id of the region.
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Accessor for the contained regions.
+     * @return the regions
+     */
     public Set<Region> getContainedRegions() {
         return containedRegions;
     }
 
+    /**
+     * Accessor for the parent
+     * @return the parent
+     */
     public Region getParent() {
         return parent;
     }
 
+    /**
+     * Setter for the parent
+     * @param parent the parent
+     */
     public void setParent(Region parent) {
         this.parent = parent;
     }
 
+    /**
+     * Accessor for the contained teleporters.
+     * @return the teleporters
+     */
     public List<Teleporter> getTeleporters() {
         List<Teleporter> nt = new ArrayList<>();
         Collections.copy(nt, teleporters);
@@ -167,12 +187,20 @@ public class Region implements Describable {
         return name;
     }
 
+    /**
+     * Used to add a region into the contained ones.
+     * @param r the region
+     */
     public void addContainedRegion(Region r) {
         if(r == this) throw new IllegalArgumentException("A region can't contain itself");
         r.parent = this;
         containedRegions.add(r);
     }
 
+    /**
+     * Used to add a region with a direction
+     * @param r the region
+     */
     public void addRegionTowards(Direction d, Region r) {
         regionOnDirection.put(d, r);
     }

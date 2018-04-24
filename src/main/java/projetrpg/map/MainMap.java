@@ -44,18 +44,34 @@ public class MainMap {
         this.humanCount = humanCount;
     }
 
+    /**
+     * Accessor for the name of the main map
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Accessor for the regions of this main map.
+     * @return the regions
+     */
     public Collection<Region> getRegions() {
         return regions;
     }
 
+    /**
+     * Accessor for the human count
+     * @return the count
+     */
     public int getHumanCount() {
         return humanCount;
     }
 
+    /**
+     * Used whenever we want to add a region
+     * @return the region
+     */
     public void addRegion(Region r) {
         regions.add(r);
     }
@@ -68,10 +84,18 @@ public class MainMap {
         return spawnPoint;
     }
 
+    /**
+     * Setter for the spawn point of this map.
+     * @return the spawn point.
+     */
     public void setSpawnPoint(Region spawnPoint) {
         this.spawnPoint = spawnPoint;
     }
 
+    /**
+     * Setter for the human count of this map.
+     * @return the human count.
+     */
     public void setHumanCount(int humanCount) {
         this.humanCount = humanCount;
     }
