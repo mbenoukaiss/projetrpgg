@@ -1,6 +1,7 @@
 package projetrpg.map;
 
 import com.google.gson.annotations.JsonAdapter;
+import projetrpg.entities.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +16,11 @@ public class MainMap {
      * The name of the map.
      */
     private String name;
+
+    /**
+     * The player.
+     */
+    private Player mainCharacter;
 
     /**
      * The region where the player spawns in.
@@ -66,6 +72,22 @@ public class MainMap {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Accessor for the main character
+     * @return the name
+     */
+    public Player getMainCharacter() {
+        return mainCharacter;
+    }
+
+    /**
+     * Setter for the main character
+     * @param mainCharacter the main character
+     */
+    public void setMainCharacter(Player mainCharacter) {
+        this.mainCharacter = mainCharacter;
     }
 
     /**

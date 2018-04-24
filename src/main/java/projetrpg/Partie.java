@@ -15,10 +15,7 @@ import java.util.*;
 import java.util.Scanner;
 
 public class Partie {
-    /**
-     * The player.
-     */
-    private Player mainCharacter;
+
     /**
      * The map.
      */
@@ -26,9 +23,8 @@ public class Partie {
 
     private String manuel;
 
-    public Partie(MainMap m, Player p) {
+    public Partie(MainMap m) {
         this.mainMap = m;
-        this.mainCharacter = p;
         manuel = "User guide : \n" +
                 "-attack : on an entity \n" +
                 "-talk : on an non hostile entity \n" +
@@ -175,18 +171,18 @@ public class Partie {
         });
 
         try {
-            parser.registerListener(new CommandListener(mainCharacter, mainMap, this), CommandListener.class);
+            parser.registerListener(new CommandListener(mainMap.getMainCharacter(), mainMap, this), CommandListener.class);
         } catch (InvalidAnnotationException e) {
             e.printStackTrace();
         }
 
         System.out.println(this.manuel);
-        System.out.println("Your name is Hervé, you are in " + this.mainCharacter.getLocation().getName() +
-                ". You can go to : " + (this.mainCharacter.getLocation().getRegionNamesOnDirection()));
+        System.out.println("Your name is Hervé, you are in " + this.mainMap.getMainCharacter().getLocation().getName() +
+                ". You can go to : " + (this.mainMap.getMainCharacter().getLocation().getRegionNamesOnDirection()));
         while(sc.hasNextLine()) {
             String cmd = sc.nextLine().toLowerCase();
             try {
-                parser.parse(this.mainCharacter, cmd).send();
+                parser.parse(this.mainMap.getMainCharacter(), cmd).send();
             } catch (InvalidCommandException e) {
                 System.err.println(e.getMessage());
                 System.out.println("  ");

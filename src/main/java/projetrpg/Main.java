@@ -3,9 +3,6 @@ package projetrpg;
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
@@ -14,8 +11,6 @@ import projetrpg.entities.player.Player;
 import projetrpg.map.*;
 
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import com.google.gson.Gson;
 import projetrpg.map.MapSerializer;
@@ -41,6 +36,10 @@ public class Main extends Application {
         // WEST -- CENTER -- EST
         //            |
         //          SOUTH
+        // WEST contains a region FOREST
+        // FOREST contains a region CAVE
+        // SOUTH contains a region FLOWERPLAINS
+        // EST contains a region VOLCANO
         ArrayList<Region> regions = new ArrayList<>();
         Region centerRegion = new Region(1, "Center", null);
         regions.add(centerRegion);
@@ -52,6 +51,11 @@ public class Main extends Application {
         regions.add(estRegion);
         Region westRegion = new Region(5, "West", null);
         regions.add(westRegion);
+
+        Region forest = new Region(6, "Forest", westRegion);
+        Region cave = new Region(7, "Cave", forest);
+        Region flowerPlains = new Region(8, "Flower Plains", southRegion);
+        Region volcano = new Region(9, "Volcano", estRegion);
 
         // Regions linking.
         centerRegion.linkToDirection(northRegion, Direction.NORTH);
@@ -75,10 +79,16 @@ public class Main extends Application {
                 10, EntityType.PLAYER, false, 50);
 
         //MainMap initialization.
-        MainMap mainMap = new MainMap("FacticeMap", centerRegion, regions, 100);
+        MainMap mainMap = new MainMap("FacticeMap");
+        mainMap.setMainCharacter(player);
+        mainMap.setSpawnPoint(centerRegion);
+        mainMap.setHumanCount(100);
+        regions.forEach(mainMap::addRegion);
+
+        testSerialization(mainMap);
 
         //Party initialization.
-        Partie partie = new Partie(mainMap, player);
+        Partie partie = new Partie(mainMap);
 
         // Launch the game.
         //partie.lauchGame();
@@ -92,15 +102,26 @@ public class Main extends Application {
         launch(args);
     }
 
+    /**
+     * Méthode de test pour la sérialisation/déserialisation
+     * qui sérialise et désérialise à partir de ce qui vient
+     * d'être sérialisé.
+     *
+     * @param map The original map
+     * @return Supposedly the same map
+     */
     public void testSerialization(MainMap map) {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
-                .registerTypeAdapter(NPC.class, new EntitySerializer())
+                .setExclusionStrategies(new AnnotationExclusionStrategy())
                 .registerTypeAdapter(Region.class, new RegionSerializer())
                 .registerTypeAdapter(MainMap.class, new MapSerializer())
                 .create();
 
+        System.out.println("--- MAP SERIALIZEE -------------------------------------------");
         System.out.println(gson.toJson(map));
+        System.out.println("--- MAP SERIALIZEE DESERIALIZEE RESERIALIZEE -----------------");
+        System.out.println(gson.toJson(gson.fromJson(gson.toJson(map), MainMap.class)));
     }
 
     public void quit() {
