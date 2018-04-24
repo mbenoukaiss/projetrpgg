@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
     @Override
     public MainMap deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext deserializationContext) throws JsonParseException {
         MainMap map = new MainMap("Map");
+
         Map<Integer, Map<Direction, Integer>> directions = new HashMap<>();
 
         JsonArray regions = jsonElement.getAsJsonObject().get("regions").getAsJsonArray();
@@ -41,10 +43,37 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
             directions.put(region.getAsJsonObject().get("id").getAsInt(), regionDirections);
         }
 
-        //TODO: Associate regions to regions using map directions
-        //TODO: Associate parent regions to childregions
-        //TODO: Find spawnpoint
-        throw new NotImplementedException();
+        //Each region associated with its id
+        Map<Integer, Region> regionWithId = new HashMap<>();
+        map.getRegions().forEach(r -> associateIDwRegions(regionWithId, r));
+
+        //Associate regions to regions using map directions
+        directions.forEach((id, dirMap) -> {
+            dirMap.forEach((dir, otherId) -> {
+                regionWithId.get(id).addRegionTowards(dir, regionWithId.get(otherId));
+            });
+        });
+
+        //Let children know who is their parent
+        map.getRegions().forEach(r -> findRegionParent(null, r.getContainedRegions()));
+
+        //Find spawnpoint
+        map.setSpawnPoint(regionWithId.get(
+                jsonElement.getAsJsonObject().get("spawnpoint").getAsInt()
+        ));
+
+        return map;
+    }
+
+    private void associateIDwRegions(Map<Integer, Region> regionWithId, Region r) {
+        r.getContainedRegions().forEach(sr -> regionWithId.put(sr.getId(), sr));
+    }
+
+    private void findRegionParent(Region parent, Collection<Region> regions) {
+        for(Region region : regions) {
+            region.setParent(parent);
+            findRegionParent(region, region.getContainedRegions());
+        }
     }
 
 }

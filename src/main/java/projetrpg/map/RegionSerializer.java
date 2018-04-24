@@ -6,9 +6,7 @@ import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RegionSerializer implements JsonSerializer<Region>, JsonDeserializer<Region> {
 
@@ -30,11 +28,7 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         }
         reg.add("directions", directions);
 
-        List<Integer> childregionsId = new ArrayList<>();
-        for(Region r : region.getContainedRegions()) {
-            childregionsId.add(r.getId());
-        }
-        JsonArray childregions = jsonSerializationContext.serialize(childregionsId).getAsJsonArray();
+        JsonArray childregions = jsonSerializationContext.serialize(region.getContainedRegions()).getAsJsonArray();
         reg.add("childregions", childregions);
 
         JsonArray entities = jsonSerializationContext.serialize(region.getEntities()).getAsJsonArray();
@@ -64,9 +58,14 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
             teleporters.add(deserializationContext.deserialize(element, Teleporter.class));
         }
 
+        Set<Region> subregions = new HashSet<>();
+        for(JsonElement element : jsonElement.getAsJsonObject().get("childregions").getAsJsonArray()) {
+            subregions.add(deserializationContext.deserialize(element, Region.class));
+        }
+
         Inventory inv = deserializationContext.deserialize(jsonElement.getAsJsonObject().get("inventory"), Inventory.class);
 
-        return new Region(regionId, regionName, null, null, entities, teleporters, inv);
+        return new Region(regionId, regionName, null, subregions, entities, teleporters, inv);
     }
 
 }

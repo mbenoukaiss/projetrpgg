@@ -2,6 +2,7 @@ package projetrpg.map;
 
 import com.google.gson.annotations.JsonAdapter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -33,6 +34,7 @@ public class MainMap {
 
     public MainMap(String name) {
         this.name = name;
+        this.regions = new ArrayList<>();
     }
 
     public MainMap(String name, Region spawnPoint, Collection<Region> regions, int humanCount) {
