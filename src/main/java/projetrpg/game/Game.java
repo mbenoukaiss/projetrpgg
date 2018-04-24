@@ -1,29 +1,30 @@
-package projetrpg;
+package projetrpg.game;
 
 import projetrpg.commands.*;
 import projetrpg.entities.Entity;
-import projetrpg.entities.NPC;
 import projetrpg.entities.items.Item;
-import projetrpg.entities.player.Player;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 
 import java.util.Scanner;
 
-public class Partie {
+public class Game {
 
     /**
      * The map.
      */
     private MainMap mainMap;
 
+    /**
+     * The list with a description of
+     * each command
+     */
     private String manuel;
 
-    public Partie(MainMap m) {
+    public Game(MainMap m) {
         this.mainMap = m;
         manuel = "User guide : \n" +
                 "-attack : on an entity \n" +
@@ -171,7 +172,7 @@ public class Partie {
         });
 
         try {
-            parser.registerListener(new CommandListener(mainMap.getMainCharacter(), mainMap, this), CommandListener.class);
+            parser.registerListener(new CommandListener(mainMap.getMainCharacter(), this), CommandListener.class);
         } catch (InvalidAnnotationException e) {
             e.printStackTrace();
         }
@@ -189,5 +190,9 @@ public class Partie {
                 System.out.println(this.manuel);
             }
         }
+    }
+
+    public MainMap getMainMap() {
+        return mainMap;
     }
 }

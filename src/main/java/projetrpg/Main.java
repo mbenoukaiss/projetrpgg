@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import projetrpg.map.MapSerializer;
 import projetrpg.map.RegionSerializer;
+import projetrpg.game.Game;
+import projetrpg.game.GameView;
 
 /**
  * Created on 30/03/18.
@@ -88,12 +90,12 @@ public class Main extends Application {
         testSerialization(mainMap);
 
         //Party initialization.
-        Partie partie = new Partie(mainMap);
+        Game game = new Game(mainMap);
 
         // Launch the game.
-        //partie.lauchGame();
+        //game.lauchGame();
 
-        VuePartie vue = new VuePartie(partie, this);
+        GameView vue = new GameView(game, this);
         primaryStage.setScene(vue.getScene());
         primaryStage.show();
     }
@@ -124,7 +126,4 @@ public class Main extends Application {
         System.out.println(gson.toJson(gson.fromJson(gson.toJson(map), MainMap.class)));
     }
 
-    public void quit() {
-        Platform.exit();
-    }
 }

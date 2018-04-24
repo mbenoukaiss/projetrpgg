@@ -1,8 +1,7 @@
 package projetrpg.commands;
 
 import projetrpg.Describable;
-import projetrpg.Partie;
-import projetrpg.entities.Attacker;
+import projetrpg.game.Game;
 import projetrpg.entities.Damageable;
 import projetrpg.entities.Entity;
 import projetrpg.entities.NPC;
@@ -28,16 +27,13 @@ public class CommandListener {
     private Player player;
 
     /**
-     * The map.
+     * The game.
      */
-    private MainMap map;
+    private Game game;
 
-    private Partie partie;
-
-    public CommandListener(Player player, MainMap map, Partie partie) {
+    public CommandListener(Player player, Game game) {
         this.player = player;
-        this.map = map;
-        this.partie = partie;
+        this.game = game;
     }
 
     /**
@@ -46,7 +42,7 @@ public class CommandListener {
     @Listener({"help"})
     public void help(String arg) {
         if (arg != null) { // If the user typed the right argument
-            System.out.println(partie.getManuel());
+            System.out.println(game.getManuel());
         } else { // If the user typed the wrong argument
             System.out.println("Type \"Help me\" to see the user guide.");
         }
@@ -114,9 +110,9 @@ public class CommandListener {
                         ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
             } else if (((NPC) e).attack(this.player)) { // If the target kills the player
                 ((NPC) e).setHps(((NPC) e).getBaseHps());
-                System.out.println("You died, you have been redirected to the spawn point : " + map.getSpawnPoint()
+                System.out.println("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
                         .getName()+ ".");
-                this.player.setLocation(map.getSpawnPoint());
+                this.player.setLocation(game.getMainMap().getSpawnPoint());
                 System.out.println("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                 ((NPC) e).setInFight(false);
                 this.player.setInFight(false);
