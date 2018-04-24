@@ -61,11 +61,15 @@ public class Region implements Describable {
     public Region(int id, String name, Region parent) {
         this.id = id;
         this.name = name;
+        this.parent = parent;
         this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
         this.entities = new ArrayList<>();
         this.teleporters = new ArrayList<>();
         this.inventory = new Inventory(DEFAULT_ROOM_ITEM_CAPACITY);
+
+        if(parent != null)
+            parent.addContainedRegion(this);
     }
 
     public Region(int id, String name, Region parent,

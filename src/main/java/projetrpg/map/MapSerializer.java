@@ -26,15 +26,19 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
     @Override
     public MainMap deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext deserializationContext) throws JsonParseException {
+        JsonObject jsonMap = jsonElement.getAsJsonObject();
         MainMap map = new MainMap("Map");
+
+        map.setName(jsonMap.get("name").getAsString());
+        map.setHumanCount(jsonMap.get("humancount").getAsInt());
 
         Map<Integer, Map<Direction, Integer>> directions = new HashMap<>();
 
-        JsonArray regions = jsonElement.getAsJsonObject().get("regions").getAsJsonArray();
+        JsonArray regions = jsonMap.get("regions").getAsJsonArray();
         for(JsonElement region : regions) {
             map.addRegion(deserializationContext.deserialize(region, Region.class));
 
-            Type directionsMapType = new TypeToken<Map<Direction, String>>(){}.getType();
+            Type directionsMapType = new TypeToken<Map<Direction, Integer>>(){}.getType();
             Map<Direction, Integer> regionDirections = deserializationContext.deserialize(
                     region.getAsJsonObject().get("directions"),
                     directionsMapType
@@ -45,28 +49,34 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
         //Each region associated with its id
         Map<Integer, Region> regionWithId = new HashMap<>();
-        map.getRegions().forEach(r -> associateIDwRegions(regionWithId, r));
+        for(Region region : map.getRegions()) {
+            regionWithId.put(region.getId(), region);
+            associateIDwRegions(regionWithId, region);
+        }
 
         //Associate regions to regions using map directions
-        directions.forEach((id, dirMap) -> {
-            dirMap.forEach((dir, otherId) -> {
-                regionWithId.get(id).addRegionTowards(dir, regionWithId.get(otherId));
-            });
-        });
+         directions.forEach((id, dirMap) -> {
+             dirMap.forEach((dir, otherId) -> {
+                 regionWithId.get(id).addRegionTowards(dir, regionWithId.get(otherId));
+             });
+         });
 
         //Let children know who is their parent
         map.getRegions().forEach(r -> findRegionParent(null, r.getContainedRegions()));
 
         //Find spawnpoint
         map.setSpawnPoint(regionWithId.get(
-                jsonElement.getAsJsonObject().get("spawnpoint").getAsInt()
+                jsonMap.get("spawnpoint").getAsInt()
         ));
 
         return map;
     }
 
-    private void associateIDwRegions(Map<Integer, Region> regionWithId, Region r) {
-        r.getContainedRegions().forEach(sr -> regionWithId.put(sr.getId(), sr));
+    private void associateIDwRegions(Map<Integer, Region> regionWithId, Region region) {
+        for(Region sr : region.getContainedRegions()) {
+            regionWithId.put(sr.getId(), sr);
+            associateIDwRegions(regionWithId, sr);
+        }
     }
 
     private void findRegionParent(Region parent, Collection<Region> regions) {

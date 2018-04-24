@@ -16,12 +16,6 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         reg.addProperty("id", region.getId());
         reg.addProperty("name", region.getName());
 
-        if(region.getParent() != null) {
-            reg.addProperty("parent", region.getParent().getId());
-        } else {
-            reg.addProperty("parent", -1);
-        }
-
         JsonObject directions = new JsonObject();
         for(Map.Entry<Direction, Region> directionRegionEntry : region.getRegionOnDirection().entrySet()) {
             directions.addProperty(directionRegionEntry.getKey().name(), directionRegionEntry.getValue().getId());
@@ -50,7 +44,7 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
 
         List<NPC> entities = new ArrayList<>();
         for(JsonElement element : jsonElement.getAsJsonObject().get("entities").getAsJsonArray()) {
-            entities.add(deserializationContext.deserialize(element, Entity.class));
+            entities.add(deserializationContext.deserialize(element, NPC.class));
         }
 
         List<Teleporter> teleporters = new ArrayList<>();

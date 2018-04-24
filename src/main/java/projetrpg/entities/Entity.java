@@ -9,7 +9,7 @@ public abstract class Entity {
     /**
      * The name of the entity.
      */
-    protected final String name;
+    protected String name;
 
     /**
      * The location of the entity.
