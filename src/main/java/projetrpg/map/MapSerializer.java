@@ -2,6 +2,7 @@ package projetrpg.map;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import projetrpg.entities.player.Player;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Type;
@@ -34,6 +35,10 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
         map.setName(jsonMap.get("name").getAsString());
         map.setHumanCount(jsonMap.get("humancount").getAsInt());
+        map.setMainCharacter(deserializationContext.deserialize(
+                jsonMap.get("maincharacter"),
+                Player.class
+        ));
 
         Map<Integer, Map<Direction, Integer>> directions = new HashMap<>();
 
