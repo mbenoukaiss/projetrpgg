@@ -87,22 +87,22 @@ public class CommandParser {
      *
      * @param command The command to send
      */
-    public void send(Command command) {
+    public String send(Command command) {
         Set<CommandFragment> commands = command.getCommandFragments();
 
         if(methods.keySet().contains(commands)) {
             Set<Method> commandMethods = methods.get(commands);
 
-            if(commandMethods != null) {
-                for(Method listener : commandMethods) {
+            if (commandMethods != null) {
+                for (Method listener : commandMethods) {
                     try {
-                        if(methods.keySet().contains(commands)) {
-                            listener.invoke(
+                        if (methods.keySet().contains(commands)) {
+                            return (String) listener.invoke(
                                     listeners.get(listener.getDeclaringClass()),
                                     command.generateArguments().keySet().toArray()
                             );
                         }
-                    } catch(IllegalArgumentException | IllegalAccessException | InvocationTargetException ignored) {
+                    } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ignored) {
                         /*
                           Exception is ignored as it may be normal to not have the same arguments
                           as a listener may want to select only some type of object (ex: the scanner
@@ -114,6 +114,8 @@ public class CommandParser {
                 }
             }
         }
+
+        return null;
     }
 
     /**

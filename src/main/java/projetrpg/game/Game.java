@@ -24,6 +24,8 @@ public class Game {
      */
     private String manuel;
 
+    private CommandParser parser = new CommandParser();
+
     public Game(MainMap m) {
         this.mainMap = m;
         manuel = "User guide : \n" +
@@ -41,16 +43,16 @@ public class Game {
                 "-describe : on an entity or an item in order to see its infos\n" +
                 "-help me : to see the user guide.\n";
 
+        commandRegisterer();
     }
 
     public String getManuel() {
         return manuel;
     }
 
-    public void lauchGame() {
+    public void commandRegisterer() {
 
         Scanner sc = new Scanner(System.in);
-        CommandParser parser = new CommandParser();
 
         // Registering all the commands used.
         parser.registerCommand("attack", Entity.class, (player, arg)-> {
@@ -176,23 +178,13 @@ public class Game {
         } catch (InvalidAnnotationException e) {
             e.printStackTrace();
         }
-
-        System.out.println(this.manuel);
-        System.out.println("Your name is Hervé, you are in " + this.mainMap.getMainCharacter().getLocation().getName() +
-                ". You can go to : " + (this.mainMap.getMainCharacter().getLocation().getRegionNamesOnDirection()));
-        while(sc.hasNextLine()) {
-            String cmd = sc.nextLine().toLowerCase();
-            try {
-                parser.parse(this.mainMap.getMainCharacter(), cmd).send();
-            } catch (InvalidCommandException e) {
-                System.err.println(e.getMessage());
-                System.out.println("  ");
-                System.out.println(this.manuel);
-            }
-        }
     }
 
     public MainMap getMainMap() {
         return mainMap;
+    }
+
+    public CommandParser getParser() {
+        return parser;
     }
 }

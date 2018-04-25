@@ -34,7 +34,7 @@
                   <MenuItem mnemonicParsing="false" text="Save" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem mnemonicParsing="false" onAction="#buttonQuit" text="Quit" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
@@ -68,10 +68,10 @@
                <children>
                   <Label id="location" text="location" />
                   <TextFlow id="regionDescription" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                  <TextArea id="logs" prefHeight="150.0" prefWidth="200.0" text="logs" />
+                  <TextArea id="logs" fx:id="textLogs" prefHeight="150.0" prefWidth="200.0" />
                </children>
             </VBox>
-            <TextField promptText="%command.field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="commandField" onKeyPressed="#enterCommand" promptText="%command.field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                <children>
                 <Button id="save" mnemonicParsing="false" text="%save" />

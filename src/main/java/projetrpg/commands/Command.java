@@ -58,8 +58,8 @@ public class Command {
     /**
      * Sends the command to listeners.
      */
-    public void send() {
-        parser.send(this);
+    public String send() {
+        return parser.send(this);
     }
 
     /**
