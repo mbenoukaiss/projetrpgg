@@ -3,6 +3,7 @@ package projetrpg;
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
@@ -27,6 +28,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.setTitle("Galaxy Explorer");
+        primaryStage.getIcons().add(new Image("icon.png"));
         //Items initialization.
         Item hatchet = new Item("Hatchet", 40, ItemType.DMG);
         Item light = new Item("Light", 20, ItemType.UTILS);
@@ -92,9 +96,6 @@ public class Main extends Application {
         //Party initialization.
         Game game = new Game(mainMap);
 
-        // Launch the game.
-        //game.lauchGame();
-
         GameView vue = new GameView(game, this);
         primaryStage.setScene(vue.getScene());
         primaryStage.show();
@@ -125,5 +126,4 @@ public class Main extends Application {
         System.out.println("--- MAP SERIALIZEE DESERIALIZEE RESERIALIZEE -----------------");
         System.out.println(gson.toJson(gson.fromJson(gson.toJson(map), MainMap.class)));
     }
-
 }

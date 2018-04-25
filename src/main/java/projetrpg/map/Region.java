@@ -133,7 +133,7 @@ public class Region implements Describable {
      */
     @Override
     public String describe() {
-        String d = "region : " + this.name + ", contains those items : ";
+        String d = "Region : " + this.name + ", contains those items : ";
         for(Item i: this.inventory.getAll()) {
             d+=i.getName() +", ";
         }
