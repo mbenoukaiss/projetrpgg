@@ -1,6 +1,8 @@
 package projetrpg.entities.player;
 
 import projetrpg.*;
+import projetrpg.Quest.Objectiv;
+import projetrpg.Quest.Quest;
 import projetrpg.entities.Attacker;
 import projetrpg.entities.Damageable;
 import projetrpg.entities.Entity;
@@ -10,6 +12,7 @@ import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
 import projetrpg.map.Region;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -42,6 +45,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
      */
     private int baseDamage;
 
+    private ArrayList<Objectiv> currentObjectivs;
+
+    private Quest quest;
+
     /**
      * Whether or not this Player is fighting.
      */
@@ -55,10 +62,15 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         this.baseDamage = baseDamage;
         abilities = new HashSet<>();
         inventory = new Inventory(maxCapacity);
+        currentObjectivs = new ArrayList<>();
     }
 
     public int getExperience() {
         return this.experience;
+    }
+
+    public void earnExperience(int e) {
+        this.experience+=e;
     }
 
     public int getLevel() { return (int) ((this.experience*this.experience)*0.03); }
@@ -71,6 +83,13 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         return this.itemInHand;
     }
 
+    public Quest getQuest() {
+        return quest;
+    }
+
+    public void setQuest(Quest quest) {
+        this.quest = quest;
+    }
 
     @Override
     public String getName() {
@@ -169,4 +188,15 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         this.abilities.add(ability);
     }
 
+    public ArrayList<Objectiv> getCurrentObjectivs() {
+        return currentObjectivs;
+    }
+
+    public void setCurrentObjectivs(ArrayList<Objectiv> currentObjectivs) {
+        this.currentObjectivs = currentObjectivs;
+    }
+
+    public void removeObjectiv(Objectiv o) {
+        this.currentObjectivs.remove(o);
+    }
 }

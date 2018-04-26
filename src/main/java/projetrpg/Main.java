@@ -5,6 +5,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import projetrpg.Quest.Objectiv;
+import projetrpg.Quest.Quest;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
@@ -83,6 +85,13 @@ public class Main extends Application {
         //Player initialization.
         Player player = new Player("Hervé", 0, centerRegion, null, 100,
                 10, EntityType.PLAYER, false, 50);
+
+        Quest firstQuest = new Quest(1, 10, "A fresh Start!", player);
+        Objectiv firstObjectiv = new Objectiv(false, "Talk To Jean", firstQuest);
+        Objectiv secondObjectiv = new Objectiv(false, "Pickup The Apple", firstQuest);
+        jean.linkObjectiv(firstObjectiv);
+        apple.linkObjectiv(secondObjectiv);
+        firstQuest.start();
 
         //MainMap initialization.
         MainMap mainMap = new MainMap("FacticeMap");

@@ -83,12 +83,12 @@
             </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowSpan="3">
                <children>
-                  <Label prefHeight="32.0" prefWidth="41.0" text="Quest : " />
-                  <ListView id="mission" prefHeight="57.0" prefWidth="113.0" />
-                  <Label prefHeight="56.0" prefWidth="113.0" text="Current quest objectiv :" wrapText="true" />
+                  <Label prefHeight="32.0" prefWidth="87.0" text="Current Quest : " />
+                  <TextArea fx:id="questField" prefHeight="50.0" prefWidth="113.0" />
+                  <Label prefHeight="56.0" prefWidth="113.0" text="Current quest objectivs :" wrapText="true" />
                   <TextFlow id="hints" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <ListView id="mission" prefHeight="99.0" prefWidth="112.0" />
+                        <ListView id="mission" fx:id="objectivsDisplay" prefHeight="202.0" prefWidth="112.0" />
                      </children></TextFlow>
                </children>
             </VBox>

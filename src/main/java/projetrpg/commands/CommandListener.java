@@ -107,10 +107,15 @@ public class CommandListener {
             message += (((Entity) e).getName() + " : " + ((NPC) e).getDialogue())
             + ("\nHps of the ennemy before the assault : " + e.getHp())
             + ("\nYour Hps before the attack : " + player.getHp())
-            + ("\n......\nHes attacking you!");
+            + ("\n......\nHes attacking you! ");
             if (this.player.attack(e)) { // If the attack kills the target
                 message +=("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                         ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
+                if (((NPC) e).getLinkedObjectiv() != null) {
+                    if (this.player.getCurrentObjectivs().contains(((NPC) e).getLinkedObjectiv())) {
+                        message += ". " + ((NPC) e).getLinkedObjectiv().finish();
+                    }
+                }
             } else if (((NPC) e).attack(this.player)) { // If the target kills the player
                 ((NPC) e).setHps(((NPC) e).getBaseHps());
                 message += ("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
@@ -138,6 +143,11 @@ public class CommandListener {
     public String talk(NPC e) {
         if (!this.player.isInFight()) { // If the player isnt fighting
             if (e != null) {// If the target can be talked to
+                if (e.getLinkedObjectiv() != null) {
+                    if (this.player.getCurrentObjectivs().contains(((NPC) e).getLinkedObjectiv())) {
+                        return e.getDialogue() + "" + ((NPC) e).getLinkedObjectiv().finish();
+                    }
+                }
                 return(e.getDialogue());
             }
             else { // If the target cannot be talked to
@@ -217,6 +227,11 @@ public class CommandListener {
         if (!this.player.isInFight()) { // If the player is not engaged in a fight
             if (i != null) { // If the item is in the location of the player
                 this.player.pickUp(i);
+                if (i.getLinkedObjectiv() != null) {
+                    if (this.player.getCurrentObjectivs().contains(i.getLinkedObjectiv())) {
+                        return ("You picked up " + i.getName() + ". ") + i.getLinkedObjectiv().finish();
+                    }
+                }
                 return("You picked up " + i.getName() + ".");
             } else { // If the item cannot be picked up
                 return("Error : check if this item is in your location.");
@@ -232,9 +247,11 @@ public class CommandListener {
     @Listener({"equip"})
     public String equip(Item i) {
         if (i != null) { // If the item can be equipped
+            String message = "";
+            message += ("Previously equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
             this.player.equip(i);
-            return("Previously equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()))
-            + ("\nNow equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
+            message += ("\nNow equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
+            return message;
         } else { // If the item can not be equipped
             return("Error : check if you have this item in your inventory.");
         }
