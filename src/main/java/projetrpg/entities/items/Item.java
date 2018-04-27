@@ -1,7 +1,6 @@
 package projetrpg.entities.items;
 
 import projetrpg.Describable;
-import projetrpg.Quest.Objectiv;
 import projetrpg.entities.Entity;
 import projetrpg.map.Region;
 
@@ -22,8 +21,6 @@ public class Item implements Describable {
      * The name of the item.
      */
     private String name;
-
-    private Objectiv linkedObjectiv;
 
     /**
      * The type of the item.
@@ -69,13 +66,5 @@ public class Item implements Describable {
      */
     public ItemType getType() {
         return type;
-    }
-
-    public Objectiv getLinkedObjectiv() {
-        return linkedObjectiv;
-    }
-
-    public void linkObjectiv(Objectiv objectiv) {
-        this.linkedObjectiv = objectiv;
     }
 }

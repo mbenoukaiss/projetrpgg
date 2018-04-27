@@ -1,8 +1,6 @@
 package projetrpg.entities.player;
 
 import projetrpg.*;
-import projetrpg.Quest.Objectiv;
-import projetrpg.Quest.Quest;
 import projetrpg.entities.Attacker;
 import projetrpg.entities.Damageable;
 import projetrpg.entities.Entity;
@@ -11,14 +9,16 @@ import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
 import projetrpg.map.Region;
+import projetrpg.observer.AbstractObservable;
+import projetrpg.observer.IObserver;
+import projetrpg.quest.Quest;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
  * Created by mhevin on 28/03/18.
  */
-public class Player extends Entity implements Describable, Damageable, Attacker {
+public class Player extends Entity implements Describable, Damageable, Attacker, IObserver {
 
     /**
      * The experience of the player.
@@ -45,15 +45,13 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
      */
     private int baseDamage;
 
-    private ArrayList<Objectiv> currentObjectivs;
-
-    private Quest quest;
-
     /**
      * Whether or not this Player is fighting.
      */
     @SerializationIgnore
     private boolean isInFight;
+
+    private Quest currentQuest;
 
     public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage, EntityType type, boolean isHostile, int maxCapacity) {
         super(name, location, type, isHostile, hp);
@@ -62,15 +60,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         this.baseDamage = baseDamage;
         abilities = new HashSet<>();
         inventory = new Inventory(maxCapacity);
-        currentObjectivs = new ArrayList<>();
     }
 
     public int getExperience() {
         return this.experience;
-    }
-
-    public void earnExperience(int e) {
-        this.experience+=e;
     }
 
     public int getLevel() { return (int) ((this.experience*this.experience)*0.03); }
@@ -83,12 +76,12 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         return this.itemInHand;
     }
 
-    public Quest getQuest() {
-        return quest;
+    public Quest getCurrentQuest() {
+        return currentQuest;
     }
 
-    public void setQuest(Quest quest) {
-        this.quest = quest;
+    public void setCurrentQuest(Quest currentQuest) {
+        this.currentQuest = currentQuest;
     }
 
     @Override
@@ -188,15 +181,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker 
         this.abilities.add(ability);
     }
 
-    public ArrayList<Objectiv> getCurrentObjectivs() {
-        return currentObjectivs;
-    }
-
-    public void setCurrentObjectivs(ArrayList<Objectiv> currentObjectivs) {
-        this.currentObjectivs = currentObjectivs;
-    }
-
-    public void removeObjectiv(Objectiv o) {
-        this.currentObjectivs.remove(o);
+    @Override
+    public void update(AbstractObservable a) {
+        this.experience+=((Quest) a).getExpRewarded();
+        ((Quest) a).getRewardedItems().forEach(item -> this.inventory.add(item));
+        this.currentQuest = null;
     }
 }

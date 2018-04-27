@@ -1,7 +1,6 @@
 package projetrpg.entities;
 
 import projetrpg.Describable;
-import projetrpg.Quest.Objectiv;
 import projetrpg.SerializationIgnore;
 import projetrpg.map.Region;
 
@@ -19,8 +18,6 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
      * The dialogue.
      */
     private String dialogue;
-
-    private Objectiv linkedObjectiv;
 
     /**
      * Whether or not this NPC is fighting.
@@ -127,11 +124,4 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
         return target.damage(this.baseDamage);
     }
 
-    public Objectiv getLinkedObjectiv() {
-        return linkedObjectiv;
-    }
-
-    public void linkObjectiv(Objectiv objectiv) {
-        this.linkedObjectiv = objectiv;
-    }
 }

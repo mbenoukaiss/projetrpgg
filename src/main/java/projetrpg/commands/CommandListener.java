@@ -10,6 +10,9 @@ import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
+import projetrpg.quest.Objective;
+import projetrpg.quest.ObjectiveType;
+import projetrpg.quest.Quest;
 
 import java.lang.reflect.Field;
 
@@ -107,15 +110,34 @@ public class CommandListener {
             message += (((Entity) e).getName() + " : " + ((NPC) e).getDialogue())
             + ("\nHps of the ennemy before the assault : " + e.getHp())
             + ("\nYour Hps before the attack : " + player.getHp())
-            + ("\n......\nHes attacking you! ");
+            + ("\n......\nHes attacking you!");
             if (this.player.attack(e)) { // If the attack kills the target
-                message +=("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
-                        ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
-                if (((NPC) e).getLinkedObjectiv() != null) {
-                    if (this.player.getCurrentObjectivs().contains(((NPC) e).getLinkedObjectiv())) {
-                        message += ". " + ((NPC) e).getLinkedObjectiv().finish();
+                Objective objectiveFound = null;
+                boolean isConcerned = false;
+                if (this.player.getCurrentQuest() != null) {
+                    for (Objective o : this.player.getCurrentQuest().getObjectives()) {
+                        if (o.getType() == ObjectiveType.KILL && o.getConcernedNPC() == e) {
+                            objectiveFound = o;
+                            isConcerned = true;
+                        }
                     }
                 }
+                if (isConcerned) {
+                    Quest savedQuest = this.player.getCurrentQuest();
+                    objectiveFound.finish();
+                    if (this.player.getCurrentQuest() == null) {
+                        message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                                ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
+                                + (". You finished this objectiv : " + objectiveFound.getDescription() +
+                                ". You have now finished this quest : " + savedQuest.getDescription() + "!");
+                    } else {
+                        message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                                ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
+                                + (". You finished this objectiv : " + objectiveFound.getDescription() + ".");
+                    }
+                }
+                message +=("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                        ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
             } else if (((NPC) e).attack(this.player)) { // If the target kills the player
                 ((NPC) e).setHps(((NPC) e).getBaseHps());
                 message += ("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
@@ -143,10 +165,24 @@ public class CommandListener {
     public String talk(NPC e) {
         if (!this.player.isInFight()) { // If the player isnt fighting
             if (e != null) {// If the target can be talked to
-                if (e.getLinkedObjectiv() != null) {
-                    if (this.player.getCurrentObjectivs().contains(((NPC) e).getLinkedObjectiv())) {
-                        return e.getDialogue() + "" + ((NPC) e).getLinkedObjectiv().finish();
+                Objective objectiveFound = null;
+                boolean isConcerned = false;
+                if (this.player.getCurrentQuest() != null) {
+                    for (Objective o : this.player.getCurrentQuest().getObjectives()) {
+                        if (o.getType() == ObjectiveType.TALK && o.getConcernedNPC() == e) {
+                            objectiveFound = o;
+                            isConcerned = true;
+                        }
                     }
+                }
+                if (isConcerned) {
+                    Quest savedQuest = this.player.getCurrentQuest();
+                    objectiveFound.finish();
+                    if (this.player.getCurrentQuest() == null) {
+                        return e.getDialogue() + " You finished this objective : " + objectiveFound.getDescription() +
+                                ". You have now finished this quest : " + savedQuest.getDescription() + "!";
+                    }
+                    return e.getDialogue() + " You finished this objective : " + objectiveFound.getDescription() + ".";
                 }
                 return(e.getDialogue());
             }
@@ -180,6 +216,16 @@ public class CommandListener {
     public String use(Item e) {
         if (!this.player.isInFight()) { // If the player is not engaged in a fight
             if (e != null) { // If the item is in the player's inventory
+                Objective objectiveFound = null;
+                boolean isConcerned = false;
+                if (this.player.getCurrentQuest() != null) {
+                    for (Objective o : this.player.getCurrentQuest().getObjectives()) {
+                        if (o.getType() == ObjectiveType.USE && o.getConcernedItem() == e) {
+                            objectiveFound = o;
+                            isConcerned = true;
+                        }
+                    }
+                }
                 switch (e.getType()) { // Different actions concerning the item"s type
                     case DMG:
                         return("You cant use this item without a target, attack something instead ! ");
@@ -187,9 +233,33 @@ public class CommandListener {
                         this.player.setHps((this.player.getHp() + e.getType().getHpGiven() > this.player.getBaseHps()) ? 100 :
                                 this.player.getHp() + e.getType().getHpGiven());
                         this.player.consume(e);
+                        if (isConcerned) {
+                            Quest savedQuest = this.player.getCurrentQuest();
+                            objectiveFound.finish();
+                            if (this.player.getCurrentQuest() == null) {
+                                return("You ate : " + e.getName() + ", + " + e.getType().getHpGiven() + " HPS") +
+                                        ("\nYou now have " + this.player.getHp() + " HPS.") +
+                                        ("You finished this objective : " + objectiveFound.getDescription() +
+                                                ". You have now finished this quest : " + savedQuest.getDescription() + "!");
+                            }
+                            return("You ate : " + e.getName() + ", + " + e.getType().getHpGiven() + " HPS") +
+                                    ("\nYou now have " + this.player.getHp() + " HPS.") +
+                                    ("You finished this objective : " + objectiveFound.getDescription() + ".");
+                        }
                         return("You ate : " + e.getName() + ", + " + e.getType().getHpGiven() + " HPS") +
                         ("\nYou now have " + this.player.getHp() + " HPS.");
                     case UTILS:
+                        if (isConcerned) {
+                            Quest savedQuest = this.player.getCurrentQuest();
+                            objectiveFound.finish();
+                            if (this.player.getCurrentQuest() == null) {
+                                return ("You used : " + e.getName() +
+                                        ("You finished this objective : " + objectiveFound.getDescription() +
+                                                (". You have now finished this quest : " + savedQuest.getDescription() + "!")));
+                            }
+                            return "You used : " + e.getName() + ("You finished this objective : "
+                                    + objectiveFound.getDescription());
+                        }
                         return("You used : " + e.getName());
                     default:
                         return "";
@@ -226,12 +296,29 @@ public class CommandListener {
     public String pick(Item i) {
         if (!this.player.isInFight()) { // If the player is not engaged in a fight
             if (i != null) { // If the item is in the location of the player
-                this.player.pickUp(i);
-                if (i.getLinkedObjectiv() != null) {
-                    if (this.player.getCurrentObjectivs().contains(i.getLinkedObjectiv())) {
-                        return ("You picked up " + i.getName() + ". ") + i.getLinkedObjectiv().finish();
+                Objective objectiveFound = null;
+                boolean isConcerned = false;
+                if (this.player.getCurrentQuest() != null) {
+                    for (Objective o : this.player.getCurrentQuest().getObjectives()) {
+                        if (o.getType() == ObjectiveType.PICKUP && o.getConcernedItem() == i) {
+                            objectiveFound = o;
+                            isConcerned = true;
+                        }
                     }
                 }
+                if (isConcerned) {
+                    Quest savedQuest = this.player.getCurrentQuest();
+                    this.player.pickUp(i);
+                    objectiveFound.finish();
+                    if (this.player.getCurrentQuest() == null) {
+                        return("You picked up " + i.getName() + ".") +
+                                ("You finished this objective : " + objectiveFound.getDescription() +
+                                        ". You have now finished this quest : " + savedQuest.getDescription() + "!");
+                    }
+                    return("You picked up " + i.getName() + ".") +
+                            ("You finished this objective : " + objectiveFound.getDescription() + ".");
+                }
+                this.player.pickUp(i);
                 return("You picked up " + i.getName() + ".");
             } else { // If the item cannot be picked up
                 return("Error : check if this item is in your location.");
@@ -247,11 +334,9 @@ public class CommandListener {
     @Listener({"equip"})
     public String equip(Item i) {
         if (i != null) { // If the item can be equipped
-            String message = "";
-            message += ("Previously equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
             this.player.equip(i);
-            message += ("\nNow equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
-            return message;
+            return("Previously equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()))
+            + ("\nNow equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
         } else { // If the item can not be equipped
             return("Error : check if you have this item in your inventory.");
         }

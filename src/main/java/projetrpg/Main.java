@@ -5,8 +5,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import projetrpg.Quest.Objectiv;
-import projetrpg.Quest.Quest;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
@@ -20,6 +18,9 @@ import projetrpg.map.MapSerializer;
 import projetrpg.map.RegionSerializer;
 import projetrpg.game.Game;
 import projetrpg.game.GameView;
+import projetrpg.quest.Objective;
+import projetrpg.quest.ObjectiveType;
+import projetrpg.quest.Quest;
 
 /**
  * Created on 30/03/18.
@@ -81,17 +82,24 @@ public class Main extends Application {
                 20, "Im gonna kill you !");
         NPC jean = new NPC("Jean", southRegion, EntityType.VILLAGER, false, 100,
                 0, "Hey, wassup boi !");
-
         //Player initialization.
-        Player player = new Player("Hervé", 0, centerRegion, null, 100,
+        Player player = new Player("Hervé", 0, southRegion, null, 100,
                 10, EntityType.PLAYER, false, 50);
 
-        Quest firstQuest = new Quest(1, 10, "A fresh Start!", player);
-        Objectiv firstObjectiv = new Objectiv(false, "Talk To Jean", firstQuest);
-        Objectiv secondObjectiv = new Objectiv(false, "Pickup The Apple", firstQuest);
-        jean.linkObjectiv(firstObjectiv);
-        apple.linkObjectiv(secondObjectiv);
-        firstQuest.start();
+        Objective firstObjective = new Objective("Talk to Jean", ObjectiveType.TALK);
+        Objective secondObjective = new Objective("Pickup the Apple", ObjectiveType.PICKUP);
+        Quest firstQuest = new Quest(1, 10, "A fresh Start");
+
+        firstQuest.linkObjectiv(firstObjective);
+        firstQuest.linkObjectiv(secondObjective);
+        firstQuest.addObserver(player);
+        firstQuest.linkRewardedItem(apple);
+        firstQuest.linkRewardedItem(light);
+        firstObjective.setConcernedNPC(jean);
+        firstObjective.addObserver(firstQuest);
+        secondObjective.setConcernedItem(apple);
+        secondObjective.addObserver(firstQuest);
+        player.setCurrentQuest(firstQuest);
 
         //MainMap initialization.
         MainMap mainMap = new MainMap("FacticeMap");
@@ -100,7 +108,7 @@ public class Main extends Application {
         mainMap.setHumanCount(100);
         regions.forEach(mainMap::addRegion);
 
-        testSerialization(mainMap);
+        //testSerialization(mainMap);
 
         //Party initialization.
         Game game = new Game(mainMap);

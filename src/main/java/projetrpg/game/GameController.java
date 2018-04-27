@@ -12,10 +12,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
-import projetrpg.Quest.Objectiv;
 import projetrpg.commands.CommandParser;
 import projetrpg.commands.InvalidCommandException;
 import projetrpg.entities.items.Item;
+import projetrpg.quest.Objective;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -35,7 +35,7 @@ public class GameController {
     @FXML
     private TextArea locationField = new TextArea("");
     @FXML
-    private ListView<String> objectivsDisplay = new ListView<>();
+    private ListView<String> objectivesDisplay = new ListView<>();
     @FXML
     private TextArea questField = new TextArea("");
 
@@ -64,7 +64,7 @@ public class GameController {
             inventoryDisplay();
             locationDisplay();
             questDisplay();
-            objectivsDisplay();
+            objectivesDisplay();
         }
     }
 
@@ -76,13 +76,13 @@ public class GameController {
         inventoryDisplay.setItems(items);
     }
 
-    public void  objectivsDisplay() {
-        objectivsDisplay.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+    public void  objectivesDisplay() {
+        objectivesDisplay.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
             @Override
             public ListCell<String> call(ListView<String> param) {
                 return new ListCell<String>() {
                     {
-                        prefWidthProperty().bind(objectivsDisplay.widthProperty().subtract(20)); // 1
+                        prefWidthProperty().bind(objectivesDisplay.widthProperty().subtract(20)); // 1
                         setMaxWidth(Control.USE_PREF_SIZE); //2
                     }
 
@@ -100,13 +100,14 @@ public class GameController {
             }
         });
         ObservableList<String> objectivs =FXCollections.observableArrayList();
-        if (this.game.getMainMap().getMainCharacter().getCurrentObjectivs()!= null &&
-                !this.game.getMainMap().getMainCharacter().getCurrentObjectivs().isEmpty()) {
-            for (Objectiv o : this.game.getMainMap().getMainCharacter().getCurrentObjectivs()) {
-                objectivs.add(o.getDescription());
+        if (game.getMainMap().getMainCharacter().getCurrentQuest() != null) {
+            for (Objective o : this.game.getMainMap().getMainCharacter().getCurrentQuest().getObjectives()) {
+                if (!o.isFinished()) {
+                    objectivs.add(o.getDescription());
+                }
             }
         }
-        objectivsDisplay.setItems(objectivs);
+        objectivesDisplay.setItems(objectivs);
     }
 
     public void locationDisplay() {
@@ -116,18 +117,17 @@ public class GameController {
 
     public void questDisplay() {
         questField.setWrapText(true);
-        if (game.getMainMap().getMainCharacter().getQuest() != null) {
-            questField.setText(game.getMainMap().getMainCharacter().getQuest().getDescription());
+        if (game.getMainMap().getMainCharacter().getCurrentQuest() != null) {
+            questField.setText(game.getMainMap().getMainCharacter().getCurrentQuest().getDescription());
         } else {
             questField.setText("");
         }
     }
 
     public void initialize() {
-        textLogs.appendText(this.game.getManuel() + "\n");
-        objectivsDisplay();
         inventoryDisplay();
         locationDisplay();
+        objectivesDisplay();
         questDisplay();
     }
 }
