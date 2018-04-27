@@ -19,6 +19,7 @@ public class Objective extends AbstractObservable {
 
     public void finish() {
         this.isFinished = true;
+        this.setChanged();
         this.notifyObservers();
     }
 

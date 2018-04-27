@@ -83,7 +83,7 @@ public class Main extends Application {
         NPC jean = new NPC("Jean", southRegion, EntityType.VILLAGER, false, 100,
                 0, "Hey, wassup boi !");
         //Player initialization.
-        Player player = new Player("Hervé", 0, southRegion, null, 100,
+        Player player = new Player("Hervé", 0, centerRegion, null, 100,
                 10, EntityType.PLAYER, false, 50);
 
         Objective firstObjective = new Objective("Talk to Jean", ObjectiveType.TALK);
@@ -108,7 +108,7 @@ public class Main extends Application {
         mainMap.setHumanCount(100);
         regions.forEach(mainMap::addRegion);
 
-        testSerialization(mainMap);
+        //testSerialization(mainMap);
 
         //Party initialization.
         Game game = new Game(mainMap);

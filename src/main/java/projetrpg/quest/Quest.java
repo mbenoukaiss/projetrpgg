@@ -79,6 +79,7 @@ public class Quest extends AbstractObservable implements IObserver {
         }
         if (over) {
             this.finish();
+            this.setChanged();
             notifyObservers();
         } else {
             ((Objective) a).setFinished(true);

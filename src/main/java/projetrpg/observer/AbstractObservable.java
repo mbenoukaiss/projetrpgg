@@ -94,9 +94,9 @@ public abstract class AbstractObservable {
              * 2) a recently unregistered Observer will be
              *   wrongly notified when it doesn't care
              */
-//            if (!changed) {
-//                return;
-//            }
+            if (!changed) {
+                return;
+            }
             arrLocal = obs.toArray();
             clearChanged();
         }
