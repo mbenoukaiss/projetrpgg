@@ -42,6 +42,8 @@ public class Game {
                 "-see : on an attribute you wish to see the status" + "\n" +
                 "-describe location : to see your locations's infos\n" +
                 "-describe : on an entity, an item, or a teleporter in order to see its infos\n" +
+                "-teleport : to a region containing a teleporter you repaired\n" +
+                "-repair : on a teleporter you wish to repair\n" +
                 "-help me : to see the user guide.\n";
 
         commandRegisterer();
