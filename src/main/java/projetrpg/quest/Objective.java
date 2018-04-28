@@ -2,9 +2,9 @@ package projetrpg.quest;
 
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Item;
-import projetrpg.observer.AbstractObservable;
+import projetrpg.observer.Observable;
 
-public class Objective extends AbstractObservable {
+public class Objective extends Observable {
     private boolean isFinished;
     private String description;
     private ObjectiveType type;
@@ -19,7 +19,6 @@ public class Objective extends AbstractObservable {
 
     public void finish() {
         this.isFinished = true;
-        this.setChanged();
         this.notifyObservers();
     }
 

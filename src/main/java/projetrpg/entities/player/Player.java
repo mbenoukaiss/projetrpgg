@@ -9,16 +9,18 @@ import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
 import projetrpg.map.Region;
-import projetrpg.observer.AbstractObservable;
+import projetrpg.observer.IObservable;
+import projetrpg.observer.Observable;
 import projetrpg.observer.IObserver;
 import projetrpg.quest.Quest;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by mhevin on 28/03/18.
  */
-public class Player extends Entity implements Describable, Damageable, Attacker, IObserver {
+public class Player extends Entity implements Describable, Damageable, Attacker, IObserver, IObservable {
 
     /**
      * The experience of the player.
@@ -52,6 +54,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     private boolean isInFight;
 
     private Quest currentQuest;
+    private Set<IObserver> observers;
 
     public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage, EntityType type, boolean isHostile, int maxCapacity) {
         super(name, location, type, isHostile, hp);
@@ -60,6 +63,8 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         this.baseDamage = baseDamage;
         abilities = new HashSet<>();
         inventory = new Inventory(maxCapacity);
+        observers = new HashSet<>();
+
     }
 
     public int getExperience() {
@@ -182,9 +187,37 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     }
 
     @Override
-    public void update(AbstractObservable a) {
+    public void update(IObservable a) {
         this.experience+=((Quest) a).getExpRewarded();
         ((Quest) a).getRewardedItems().forEach(item -> this.inventory.add(item));
         this.currentQuest = null;
     }
+
+    @Override
+    public void addObserver(IObserver o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(IObserver o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        notifyObservers(null);
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        for (IObserver observer : observers) {
+            observer.update(this);
+        }
+    }
+
+    @Override
+    public void clearObservers() {
+        observers.clear();
+    }
+
 }

@@ -3,11 +3,15 @@ package projetrpg.entities;
 import projetrpg.Describable;
 import projetrpg.SerializationIgnore;
 import projetrpg.map.Region;
+import projetrpg.observer.IObservable;
+import projetrpg.observer.IObserver;
+
+import java.util.Set;
 
 /**
  * Created by mhevin + mbnoukaiss
  */
-public class NPC extends Entity implements Describable, Damageable, Attacker {
+public class NPC extends Entity implements Describable, Damageable, Attacker, IObservable {
 
     /**
      * The damage.
@@ -24,6 +28,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
      */
     @SerializationIgnore
     private boolean inFight;
+    private Set<IObserver> observers;
 
     public NPC(String name, Region location, EntityType type, boolean isHostile,
                int hps, int baseDamage, String dialogue) {
@@ -122,6 +127,33 @@ public class NPC extends Entity implements Describable, Damageable, Attacker {
     @Override
     public boolean attack(Damageable target) {
         return target.damage(this.baseDamage);
+    }
+
+    @Override
+    public void addObserver(IObserver o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(IObserver o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        notifyObservers(null);
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        for (IObserver observer : observers) {
+            observer.update(this);
+        }
+    }
+
+    @Override
+    public void clearObservers() {
+        observers.clear();
     }
 
 }

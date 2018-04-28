@@ -1,5 +1,5 @@
 package projetrpg.observer;
 
 public interface IObserver {
-    public void update(AbstractObservable abstractObservable);
+    public void update(IObservable abstractObservable);
 }

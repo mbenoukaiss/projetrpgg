@@ -1,12 +1,13 @@
 package projetrpg.quest;
 
 import projetrpg.entities.items.Item;
-import projetrpg.observer.AbstractObservable;
+import projetrpg.observer.IObservable;
+import projetrpg.observer.Observable;
 import projetrpg.observer.IObserver;
 
 import java.util.ArrayList;
 
-public class Quest extends AbstractObservable implements IObserver {
+public class Quest extends Observable implements IObserver {
     private int id;
     private boolean isCompleted;
     private boolean isStarted;
@@ -70,7 +71,7 @@ public class Quest extends AbstractObservable implements IObserver {
     }
 
     @Override
-    public void update(AbstractObservable a) {
+    public void update(IObservable a) {
         boolean over = true;
         for(Objective o : this.objectives) {
             if (!o.isFinished()) {
@@ -79,7 +80,6 @@ public class Quest extends AbstractObservable implements IObserver {
         }
         if (over) {
             this.finish();
-            this.setChanged();
             notifyObservers();
         } else {
             ((Objective) a).setFinished(true);
