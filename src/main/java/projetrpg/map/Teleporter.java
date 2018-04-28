@@ -37,7 +37,8 @@ public class Teleporter {
 
     /**
      * The constructor for a teleporter.
-     * @param name the name of the teleporter
+     *
+     * @param name   the name of the teleporter
      * @param region the region of the teleporter
      */
     public Teleporter(String name, Region region) {
@@ -47,8 +48,18 @@ public class Teleporter {
         region.addTeleporter(this);
     }
 
+    public String describe() {
+        String items = "";
+        for(Item i : this.itemsNeededToRepair) {
+            items+=i.getName() + ", ";
+        }
+        if (items.length() > 0) items = items.substring(0, items.length()-2);
+        return this.name + ", you'll need those items in order to repair it : " + items + ".";
+    }
+
     /**
      * Accessor for the name of the teleporter.
+     *
      * @return the name
      */
     public String getName() {
@@ -57,6 +68,7 @@ public class Teleporter {
 
     /**
      * Accessor for the region of the teleporter.
+     *
      * @return the region
      */
     public Region getRegion() {
@@ -73,4 +85,21 @@ public class Teleporter {
         other.linkedTeleporter = this;
     }
 
+    public void repair() {
+        this.repaired = true;
+    }
+
+    public boolean isRepaired() {
+        return repaired;
+    }
+
+    public void addItemToRepair(Item item) {
+        if (!this.getItemsNeededToRepair().contains(item)) {
+            this.itemsNeededToRepair.add(item);
+        }
+    }
+
+    public ArrayList<Item> getItemsNeededToRepair() {
+        return itemsNeededToRepair;
+    }
 }

@@ -125,6 +125,7 @@ public class GameController {
     }
 
     public void initialize() {
+        textLogs.appendText(game.getManuel());
         inventoryDisplay();
         locationDisplay();
         objectivesDisplay();

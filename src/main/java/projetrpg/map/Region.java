@@ -58,6 +58,11 @@ public class Region implements Describable {
      */
     private Inventory inventory;
 
+    /**
+     *  The items needed in order to enter this region.
+     */
+    private List<Item> itemsNeeded;
+
     public Region(int id, String name, Region parent) {
         this.id = id;
         this.name = name;
@@ -67,6 +72,7 @@ public class Region implements Describable {
         this.entities = new ArrayList<>();
         this.teleporters = new ArrayList<>();
         this.inventory = new Inventory(DEFAULT_ROOM_ITEM_CAPACITY);
+        this.itemsNeeded = new ArrayList<>();
 
         if(parent != null)
             parent.addContainedRegion(this);
@@ -121,10 +127,9 @@ public class Region implements Describable {
      * Accessor for the contained teleporters.
      * @return the teleporters
      */
-    public List<Teleporter> getTeleporters() {
-        List<Teleporter> nt = new ArrayList<>();
-        Collections.copy(nt, teleporters);
-        return nt;
+    public ArrayList<Teleporter> getTeleporters() {
+        ArrayList<Teleporter> clonedTeleporters = new ArrayList<>(this.teleporters);
+        return clonedTeleporters;
     }
 
     /**
@@ -142,7 +147,15 @@ public class Region implements Describable {
         for(NPC e: this.entities) {
             d+=e.getName() +", ";
         }
-        d = d.substring(0, d.length()-2) + ". From there you can go to : " + (this.getRegionNamesOnDirection()) + ".";
+        d = d.substring(0, d.length()-2) + ". From there you can go to : " + (this.getRegionNamesOnDirection())
+                + ((this.parent == null)? "" : this.getParent().getName())
+                + ((this.getContainedRegions().isEmpty())? "" : "," + this.getContainedRegionsNames())+ ".";
+        String teleporters = "";
+        for(Teleporter t : this.getTeleporters()) {
+            teleporters += t.getName() + ", ";
+        }
+        if (teleporters.length() > 0) teleporters = teleporters.substring(0, teleporters.length() -2) + ".";
+        d+=" And this region contains those teleporters : " + teleporters;
         return d;
     }
 
@@ -155,7 +168,20 @@ public class Region implements Describable {
         for(Region i : this.regionOnDirection.values()) {
             r += i.name + ",";
         }
-        r = r.substring(0, r.length() -1);
+        if (r.length() > 0) r = r.substring(0, r.length() -1);
+        return r;
+    }
+
+    /**
+     * Accessor for the names of the linked regions as a String.
+     * @return the names.
+     */
+    public String getContainedRegionsNames() {
+        String r ="";
+        for(Region i : this.containedRegions) {
+            r += i.name + ",";
+        }
+        if (r.length() > 0) r = r.substring(0, r.length() -1);
         return r;
     }
 
@@ -271,5 +297,12 @@ public class Region implements Describable {
                 break;
         }
     }
-    
+
+    public List<Item> getItemsNeeded() {
+        return itemsNeeded;
+    }
+
+    public void addItemNeeded(Item item) {
+        if (!this.itemsNeeded.contains(item)) this.itemsNeeded.add(item);
+    }
 }

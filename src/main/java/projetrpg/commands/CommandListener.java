@@ -10,6 +10,7 @@ import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
+import projetrpg.map.Teleporter;
 import projetrpg.quest.Objective;
 import projetrpg.quest.ObjectiveType;
 import projetrpg.quest.Quest;
@@ -93,6 +94,8 @@ public class CommandListener {
                 return(((Describable) o).describe());
             } else if (o instanceof Item) {
                 return(((Item) o).describe());
+            } else if (o instanceof Teleporter) {
+                return (((Teleporter) o).describe());
             }
         } else {
             return("Error : Check if this entity is present in your area, by typing 'describe location'.");
@@ -285,6 +288,59 @@ public class CommandListener {
                 return("Error : check if this location is connected to your location.");
             }
         } else { // If the player is engaged in a fight
+            return("Error : You can only fight or flee.");
+        }
+    }
+
+    /**
+     * This method is called whenever the player wants to teleport the another region.
+     */
+    @Listener({"teleport"})
+    public String teleport(Region r) {
+        if (!this.player.isInFight()) { // If the player is not engaged in a fight
+            if (r != null) { // If the region exists and is connected to the player's location
+                boolean canTeleportTo = false;
+                for (Teleporter t : r.getTeleporters()) {
+                    if (t.isRepaired()) {
+                        canTeleportTo = true;
+                    }
+                }
+                if (canTeleportTo) {
+                    this.player.move(r);
+                    return("You teleported to the : " + r.describe());
+                }
+                return("You cant teleport to the " + r.getName() + "." + " Check if you have repaired the linked teleporter");
+            } else { // If the region doesnt exists and/or is not connected to the player's location
+                return("Error : check if you repaired a teleporter in this location.");
+            }
+        } else { // If the player is engaged in a fight
+            return("Error : You can only fight or flee.");
+        }
+    }
+
+    /**
+     * This method is called whenever the player wants to repair a teleporter.
+     */
+    @Listener({"repair"})
+    public String repair(Teleporter t) {
+        if (!this.player.isInFight()) {
+            if (t != null) {
+                boolean canRepair;
+                for (Item i : t.getItemsNeededToRepair()) {
+                    canRepair = false;
+                    for (Item pi : this.player.getInventory().getAll()) {
+                        if (pi.getName().equalsIgnoreCase(i.getName())) {
+                            canRepair = true;
+                        }
+                    }
+                    if (!canRepair) return("You do not have the required items in order to repair this teleporter.");
+                }
+                t.repair();
+                return("You repaired this teleporter : " + t.getName());
+            } else {
+                return("Error : Check if this teleporter is in your region.");
+            }
+        } else {
             return("Error : You can only fight or flee.");
         }
     }

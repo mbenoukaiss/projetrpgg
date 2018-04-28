@@ -62,15 +62,21 @@ public class Main extends Application {
         regions.add(westRegion);
 
         Region forest = new Region(6, "Forest", westRegion);
+        regions.add(forest);
         Region cave = new Region(7, "Cave", forest);
+        regions.add(cave);
         Region flowerPlains = new Region(8, "Flower Plains", southRegion);
+        regions.add(flowerPlains);
         Region volcano = new Region(9, "Volcano", estRegion);
+        regions.add(volcano);
 
         // Regions linking.
         centerRegion.linkToDirection(northRegion, Direction.NORTH);
         centerRegion.linkToDirection(southRegion, Direction.SOUTH);
         centerRegion.linkToDirection(estRegion, Direction.EST);
         centerRegion.linkToDirection(westRegion, Direction.WEST);
+        Teleporter volcanoTeleporter = new Teleporter("volcanoTeleporter", volcano);
+        volcanoTeleporter.addItemToRepair(light);
 
         // Items linking to regions.
         northRegion.addItemToInventory(hatchet);

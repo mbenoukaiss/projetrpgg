@@ -5,6 +5,7 @@ import projetrpg.entities.Entity;
 import projetrpg.entities.items.Item;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
+import projetrpg.map.Teleporter;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -40,7 +41,7 @@ public class Game {
                 "-use : on an item you have in your inventory \n" +
                 "-see : on an attribute you wish to see the status" + "\n" +
                 "-describe location : to see your locations's infos\n" +
-                "-describe : on an entity or an item in order to see its infos\n" +
+                "-describe : on an entity, an item, or a teleporter in order to see its infos\n" +
                 "-help me : to see the user guide.\n";
 
         commandRegisterer();
@@ -86,6 +87,32 @@ public class Game {
             for (Region r : player.getLocation().getRegionOnDirection().values()) {
                 if (r.getName().toLowerCase().equals(arg.toLowerCase())) {
                     return r;
+                }
+            }
+            for (Region r : player.getLocation().getContainedRegions()) {
+                if (r.getName().equalsIgnoreCase(arg)) {
+                    return r;
+                }
+            }
+            if (player.getLocation().getParent() != null &&
+                    player.getLocation().getParent().getName().equalsIgnoreCase(arg))
+                return player.getLocation().getParent();
+            return null;
+        });
+
+        parser.registerCommand("teleport", Region.class, (player, arg) -> {
+            for (Region r : this.mainMap.getRegions()) {
+                if (r.getName().equalsIgnoreCase(arg)) {
+                    return r;
+                }
+            }
+            return null;
+        });
+
+        parser.registerCommand("repair", Teleporter.class, (player, arg) -> {
+            for (Teleporter t : player.getLocation().getTeleporters()) {
+                if (t.getName().equalsIgnoreCase(arg)) {
+                    return t;
                 }
             }
             return null;
@@ -160,6 +187,11 @@ public class Game {
             for (Item i : player.getInventory().getAll()) {
                 if (i.getName().equalsIgnoreCase(arg)) {
                     return i;
+                }
+            }
+            for (Teleporter t : player.getLocation().getTeleporters()) {
+                if (t.getName().equalsIgnoreCase(arg)) {
+                    return t;
                 }
             }
             if (arg.equalsIgnoreCase("location")) {
