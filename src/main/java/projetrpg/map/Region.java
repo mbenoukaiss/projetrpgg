@@ -48,7 +48,7 @@ public class Region implements Describable {
     /**
      * All the entities DIRECTLY contained in this region.
      */
-    private List<NPC> entities;
+    private Set<NPC> entities;
 
     /**
      * All the teleporters DIRECTLY contained in this region.
@@ -72,7 +72,7 @@ public class Region implements Describable {
         this.parent = parent;
         this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
-        this.entities = new ArrayList<>();
+        this.entities = new HashSet<>();
         this.teleporters = new ArrayList<>();
         this.inventory = new Inventory(DEFAULT_ROOM_ITEM_CAPACITY);
         this.itemsNeeded = new ArrayList<>();
@@ -82,7 +82,7 @@ public class Region implements Describable {
     }
 
     public Region(int id, String name, Region parent,
-                  Set<Region> containedRegions, List<NPC> entities,
+                  Set<Region> containedRegions, Set<NPC> entities,
                   List<Teleporter> teleporters, Inventory inventory) {
         this.id = id;
         this.name = name;
@@ -200,7 +200,7 @@ public class Region implements Describable {
      * Accessor for the entities contained.
      * @return the entities.
      */
-    public List<NPC> getEntities() {
+    public Set<NPC> getEntities() {
         return entities;
     }
 
@@ -243,9 +243,8 @@ public class Region implements Describable {
      * @param e the entity.
      */
     public void addEntity(NPC e) {
-        if (!this.entities.contains(e)) {
-            this.entities.add(e);
-        }
+        this.entities.add(e);
+        e.setLocation(this);
     }
 
     /**
@@ -262,9 +261,8 @@ public class Region implements Describable {
      * Add a teleporter to the region.
      */
     public void addTeleporter(Teleporter t) {
-        if (!this.teleporters.contains(t)) {
-            this.teleporters.add(t);
-        }
+        this.teleporters.add(t);
+        t.setRegion(this);
     }
 
     /**
