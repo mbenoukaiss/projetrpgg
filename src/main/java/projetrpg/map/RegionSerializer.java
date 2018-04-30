@@ -59,7 +59,7 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
                 highestId = t.getId()+1;
             }
 
-            MapSerializer.addTeleporter(linkId, t);
+            TeleporterSerializer.addTeleporter(linkId, t);
             region.addTeleporter(t);
         }
 

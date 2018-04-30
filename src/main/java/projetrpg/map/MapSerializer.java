@@ -12,12 +12,6 @@ import java.util.Map;
 
 public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer<MainMap> {
 
-    private static Map<Integer, Teleporter> linkIdTeleporter = new HashMap<>();
-
-    public static void addTeleporter(int linkId, Teleporter t) {
-        linkIdTeleporter.put(linkId, t);
-    }
-
     @Override
     public JsonElement serialize(MainMap mainMap, Type type, JsonSerializationContext jsonSerializationContext) {
         JsonObject map = new JsonObject();
@@ -85,9 +79,7 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         ));
 
         //Link teleporters
-        linkIdTeleporter.forEach((k, v) -> {
-            v.link(linkIdTeleporter.get(v.getId()));
-        });
+        TeleporterSerializer.linkTeleporters();
 
         return map;
     }

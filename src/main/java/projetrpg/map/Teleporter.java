@@ -1,12 +1,14 @@
 package projetrpg.map;
 
 import projetrpg.entities.items.Item;
+import projetrpg.entities.player.Player;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A teleporter which allows a player to move
- * from a region to another even though they're
+ * from a location to another even though they're
  * not next to eachother.
  *
  * @author mhevin
@@ -40,7 +42,7 @@ public class Teleporter {
     /**
      * Region where the teleporter is.
      */
-    private Region region;
+    private Region location;
 
     /**
      * The items required to repair this teleporter.
@@ -51,21 +53,21 @@ public class Teleporter {
      * The constructor for a teleporter.
      *
      * @param name   the name of the teleporter
-     * @param region the region of the teleporter
+     * @param location the location of the teleporter
      */
-    public Teleporter(String name, Region region) {
+    public Teleporter(String name, Region location) {
         this.name = name;
-        this.region = region;
+        this.location = location;
         this.repaired = false;
 
         id = currentId++;
     }
 
-    public Teleporter(int id, String name, Region region, boolean repaired,
+    public Teleporter(int id, String name, Region location, boolean repaired,
                       ArrayList<Item> requiredItems) {
         this.id = id;
         this.name = name;
-        this.region = region;
+        this.location = location;
         this.repaired = repaired;
         this.itemsNeededToRepair = requiredItems;
     }
@@ -107,12 +109,12 @@ public class Teleporter {
     }
 
     /**
-     * Accessor for the region of the teleporter.
+     * Accessor for the location of the teleporter.
      *
-     * @return the region
+     * @return the location
      */
-    public Region getRegion() {
-        return this.region;
+    public Region getLocation() {
+        return this.location;
     }
 
     /**
@@ -121,8 +123,26 @@ public class Teleporter {
      * @param other The other teleporter
      */
     public void link(Teleporter other) {
+        //Undoing possible previous linking
+        if(linkedTeleporter != null)
+            this.linkedTeleporter.linkedTeleporter = null;
+
+        if(other.linkedTeleporter != null)
+            other.linkedTeleporter.linkedTeleporter = null;
+
+        //Doing the actual link
         this.linkedTeleporter = other;
         other.linkedTeleporter = this;
+    }
+
+    /**
+     * Adds an item to the list of required items
+     * to repair this teleporter.
+     *
+     * @param item The item to add.
+     */
+    public void addRequiredItem(Item item) {
+        itemsNeededToRepair.add(item);
     }
 
     public void repair() {
@@ -143,11 +163,27 @@ public class Teleporter {
         return itemsNeededToRepair;
     }
 
-    public void setRegion(Region region) {
-        this.region = region;
+    public void setLocation(Region location) {
+        this.location = location;
     }
 
     public static void setCurrentId(int currentId) {
         Teleporter.currentId = currentId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+
+        Teleporter that = (Teleporter) o;
+        return id == that.id &&
+                repaired == that.repaired &&
+                Objects.equals(name, that.name) &&
+                (linkedTeleporter == null || that.linkedTeleporter == null ||
+                        linkedTeleporter.getId() == that.linkedTeleporter.getId()) &&
+                Objects.equals(location, that.location) &&
+                Objects.equals(itemsNeededToRepair, that.itemsNeededToRepair);
+    }
+
 }

@@ -262,7 +262,7 @@ public class Region implements Describable {
      */
     public void addTeleporter(Teleporter t) {
         this.teleporters.add(t);
-        t.setRegion(this);
+        t.setLocation(this);
     }
 
     /**
