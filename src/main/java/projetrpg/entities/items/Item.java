@@ -13,8 +13,10 @@ import projetrpg.map.Region;
  */
 public enum Item implements Describable {
     APPLE("Apple", 0, ItemType.FOOD),
-    FLASHLIGHT("Flashlight", 1, ItemType.UTILS),
-    TOOLKIT("Toolkit", 1, ItemType.UTILS);
+    FLASHLIGHT("Flashlight", 10, ItemType.UTILS),
+    KNIFE("Knife", 35, ItemType.UTILS),
+    TOOLKIT("Toolkit", 1, ItemType.UTILS),
+    HATCHET("Hatchet", 40, ItemType.DMG);
 
     /**
      * The amount of additional damage this
