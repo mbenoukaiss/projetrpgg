@@ -9,7 +9,10 @@ import projetrpg.map.Region;
  *
  * An item.
  */
-public class Item implements Describable {
+public enum Item implements Describable {
+    APPLE("Apple", 0, ItemType.FOOD),
+    FLASHLIGHT("Flashlight", 1, ItemType.UTILS),
+    TOOLKIT("Toolkit", 1, ItemType.UTILS);
 
     /**
      * The amount of additional damage this
@@ -27,7 +30,7 @@ public class Item implements Describable {
      */
     private ItemType type;
 
-    public Item(String name, int damage, ItemType type) {
+    Item(String name, int damage, ItemType type) {
         this.name = name;
         this.damage = damage;
         this.type = type;
