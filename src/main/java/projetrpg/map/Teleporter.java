@@ -14,6 +14,13 @@ import java.util.ArrayList;
  */
 public class Teleporter {
 
+    private static int currentId = 0;
+
+    /**
+     * Id of the teleporter.
+     */
+    private int id;
+
     /**
      * Name of the teleporter if the player decides
      * to rename it, else, null.
@@ -50,7 +57,17 @@ public class Teleporter {
         this.name = name;
         this.region = region;
         this.repaired = false;
-        region.addTeleporter(this);
+
+        id = currentId++;
+    }
+
+    public Teleporter(int id, String name, Region region, boolean repaired,
+                      ArrayList<Item> requiredItems) {
+        this.id = id;
+        this.name = name;
+        this.region = region;
+        this.repaired = repaired;
+        this.itemsNeededToRepair = requiredItems;
     }
 
     public String describe() {
@@ -63,12 +80,30 @@ public class Teleporter {
     }
 
     /**
+     * Accessor for the id of the teleporter.
+     *
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
      * Accessor for the name of the teleporter.
      *
      * @return the name
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Accessor for the linked teleporter.
+     *
+     * @return the linked teleporter
+     */
+    public Teleporter getLinkedTeleporter() {
+        return linkedTeleporter;
     }
 
     /**
@@ -85,7 +120,7 @@ public class Teleporter {
      *
      * @param other The other teleporter
      */
-    void link(Teleporter other) {
+    public void link(Teleporter other) {
         this.linkedTeleporter = other;
         other.linkedTeleporter = this;
     }
@@ -106,5 +141,13 @@ public class Teleporter {
 
     public ArrayList<Item> getItemsNeededToRepair() {
         return itemsNeededToRepair;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public static void setCurrentId(int currentId) {
+        Teleporter.currentId = currentId;
     }
 }

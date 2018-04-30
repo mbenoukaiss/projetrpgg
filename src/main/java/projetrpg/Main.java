@@ -21,6 +21,7 @@ import projetrpg.game.GameView;
 import projetrpg.quest.Objective;
 import projetrpg.quest.ObjectiveType;
 import projetrpg.quest.Quest;
+import projetrpg.quest.QuestSerializer;
 
 /**
  * Created on 30/03/18.
@@ -34,10 +35,6 @@ public class Main extends Application {
 
         primaryStage.setTitle("Galaxy Explorer");
         primaryStage.getIcons().add(new Image("icon.png"));
-        //Items initialization.
-        Item hatchet = new Item("Hatchet", 40, ItemType.DMG);
-        Item light = new Item("Light", 20, ItemType.UTILS);
-        Item apple = new Item("Apple", 0, ItemType.FOOD);
 
         //Regions initialization :
         //          NORTH
@@ -62,26 +59,30 @@ public class Main extends Application {
         regions.add(westRegion);
 
         Region forest = new Region(6, "Forest", westRegion);
-        regions.add(forest);
         Region cave = new Region(7, "Cave", forest);
-        regions.add(cave);
         Region flowerPlains = new Region(8, "Flower Plains", southRegion);
-        regions.add(flowerPlains);
         Region volcano = new Region(9, "Volcano", estRegion);
-        regions.add(volcano);
 
         // Regions linking.
         centerRegion.linkToDirection(northRegion, Direction.NORTH);
         centerRegion.linkToDirection(southRegion, Direction.SOUTH);
         centerRegion.linkToDirection(estRegion, Direction.EST);
         centerRegion.linkToDirection(westRegion, Direction.WEST);
+
+        Teleporter caveTeleporter = new Teleporter("caveTeleporter", cave);
+        caveTeleporter.addItemToRepair(Item.TOOLKIT);
+        cave.addTeleporter(caveTeleporter);
+
         Teleporter volcanoTeleporter = new Teleporter("volcanoTeleporter", volcano);
-        volcanoTeleporter.addItemToRepair(light);
+        volcanoTeleporter.addItemToRepair(Item.FLASHLIGHT);
+        volcano.addTeleporter(volcanoTeleporter);
+
+        caveTeleporter.link(volcanoTeleporter);
 
         // Items linking to regions.
-        northRegion.addItemToInventory(hatchet);
-        southRegion.addItemToInventory(apple);
-        estRegion.addItemToInventory(light);
+        northRegion.addItemToInventory(Item.HATCHET);
+        southRegion.addItemToInventory(Item.APPLE);
+        estRegion.addItemToInventory(Item.FLASHLIGHT);
 
         //NPC's initialization.
         NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 100,
@@ -99,11 +100,11 @@ public class Main extends Application {
         firstQuest.linkObjectiv(firstObjective);
         firstQuest.linkObjectiv(secondObjective);
         firstQuest.addObserver(player);
-        firstQuest.linkRewardedItem(apple);
-        firstQuest.linkRewardedItem(light);
+        firstQuest.linkRewardedItem(Item.APPLE);
+        firstQuest.linkRewardedItem(Item.FLASHLIGHT);
         firstObjective.setConcernedNPC(jean);
         firstObjective.addObserver(firstQuest);
-        secondObjective.setConcernedItem(apple);
+        secondObjective.setConcernedItem(Item.APPLE);
         secondObjective.addObserver(firstQuest);
         player.setCurrentQuest(firstQuest);
 
@@ -140,6 +141,8 @@ public class Main extends Application {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .setExclusionStrategies(new AnnotationExclusionStrategy())
+                .registerTypeAdapter(Quest.class, new QuestSerializer())
+                .registerTypeAdapter(Teleporter.class, new TeleporterSerializer())
                 .registerTypeAdapter(Region.class, new RegionSerializer())
                 .registerTypeAdapter(MainMap.class, new MapSerializer())
                 .create();
