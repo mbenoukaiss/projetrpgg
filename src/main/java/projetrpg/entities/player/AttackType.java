@@ -1,10 +1,13 @@
 package projetrpg.entities.player;
 
 /**
- * Created by mhevin on 29/03/18.
+ * Types of attack
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public enum AttackType {
-    CAC,
+    HTH,
     AOE,
     LINE;
 }

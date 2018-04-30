@@ -1,9 +1,10 @@
 package projetrpg.entities.items;
 
 /**
- * Created by mhevin on 29/03/18.
- *
  * Represents the different types of an item.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public enum ItemType {
     DMG(0),

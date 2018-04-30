@@ -18,7 +18,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by mhevin on 28/03/18.
+ * The main character.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public class Player extends Entity implements Describable, Damageable, Attacker, IObserver, IObservable {
 

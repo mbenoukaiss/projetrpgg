@@ -5,9 +5,11 @@ import projetrpg.entities.Entity;
 import projetrpg.map.Region;
 
 /**
- * Created by mhevin + mbnoukaiss
+ * Enumeration of all the items available in
+ * the game.
  *
- * An item.
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public enum Item implements Describable {
     APPLE("Apple", 0, ItemType.FOOD),

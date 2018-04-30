@@ -9,6 +9,9 @@ import java.util.function.Function;
  * Represents a command that can be a part (or
  * the entirety) of a command send by a user.
  * @param <T> Type of the argument of this command
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public class CommandFragment<T> {
 

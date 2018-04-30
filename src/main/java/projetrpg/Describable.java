@@ -2,6 +2,9 @@ package projetrpg;
 
 /**
  * Can describe itself.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public interface Describable {
 

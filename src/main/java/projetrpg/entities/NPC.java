@@ -9,7 +9,10 @@ import projetrpg.observer.IObserver;
 import java.util.Set;
 
 /**
- * Created by mhevin + mbnoukaiss
+ * An entity which can interact with the player.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public class NPC extends Entity implements Describable, Damageable, Attacker, IObservable {
 

@@ -4,6 +4,9 @@ import projetrpg.Describable;
 
 /**
  * Represents a special ability of a player.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public class Ability implements Describable {
 

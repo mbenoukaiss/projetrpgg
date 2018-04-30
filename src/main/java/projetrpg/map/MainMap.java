@@ -8,6 +8,9 @@ import java.util.Collection;
 
 /**
  * Represents the whole map used in the game.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 @JsonAdapter(MapSerializer.class)
 public class MainMap {

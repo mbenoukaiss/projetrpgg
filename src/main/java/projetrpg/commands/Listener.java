@@ -8,6 +8,9 @@ import java.lang.annotation.Target;
 /**
  * Annotation telling if a class is listening to
  * commands sent by the user.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

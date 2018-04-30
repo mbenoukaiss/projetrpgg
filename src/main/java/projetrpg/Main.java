@@ -114,7 +114,7 @@ public class Main extends Application {
         mainMap.setHumanCount(100);
         regions.forEach(mainMap::addRegion);
 
-        //testSerialization(mainMap);
+        testSerialization(mainMap);
 
         //Party initialization.
         Game game = new Game(mainMap);

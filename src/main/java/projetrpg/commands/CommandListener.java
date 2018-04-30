@@ -19,9 +19,10 @@ import java.lang.reflect.Field;
 
 
 /**
- * Created by mhevin + mbnoukaiss
- *
  * Represents the listener of the different methods.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public class CommandListener {
 

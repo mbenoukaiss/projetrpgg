@@ -5,7 +5,12 @@ import projetrpg.entities.items.Item;
 import java.util.ArrayList;
 
 /**
- * Created by mhevin on 29/03/18.
+ * A teleporter which allows a player to move
+ * from a region to another even though they're
+ * not next to eachother.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public class Teleporter {
 

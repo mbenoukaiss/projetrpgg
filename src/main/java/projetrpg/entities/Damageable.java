@@ -1,7 +1,10 @@
 package projetrpg.entities;
 
 /**
- * Created by mhevin on 29/03/18.
+ * Anything that can tae damage.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public interface Damageable {
     public boolean damage(int value);

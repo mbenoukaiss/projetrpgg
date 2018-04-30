@@ -6,6 +6,9 @@ import java.util.*;
 
 /**
  * Represents a command typed by a user.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public class Command {
 

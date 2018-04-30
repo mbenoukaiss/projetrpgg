@@ -3,7 +3,10 @@ import projetrpg.SerializationIgnore;
 import projetrpg.map.Region;
 
 /**
- * Created by mhevin + mbnoukaiss
+ * An entity.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public abstract class Entity {
 

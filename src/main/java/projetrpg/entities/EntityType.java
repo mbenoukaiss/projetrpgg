@@ -1,9 +1,10 @@
 package projetrpg.entities;
 
 /**
- * Created by mhevin on 29/03/18.
- *
  * Represents the different types of an entity.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public enum EntityType {
     PLAYER(0, true),

@@ -5,10 +5,11 @@ import projetrpg.Describable;
 import java.util.ArrayList;
 
 /**
- * Created by mhevin + mbnoukaiss
- *
  * Contains the items of an entity, a region
  * or anything else.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public class Inventory implements Describable {
 

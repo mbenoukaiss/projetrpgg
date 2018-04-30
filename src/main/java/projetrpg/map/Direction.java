@@ -1,7 +1,11 @@
 package projetrpg.map;
 
 /**
- * Created by mhevin on 28/03/18.
+ * The four directions the player
+ * can move in.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public enum Direction {
     SOUTH,

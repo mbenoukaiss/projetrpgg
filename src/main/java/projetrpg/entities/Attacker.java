@@ -1,7 +1,10 @@
 package projetrpg.entities;
 
 /**
- * Created by mhevin on 29/03/18.
+ * Anything that can deal damage.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public interface Attacker {
     public boolean attack(Damageable target);

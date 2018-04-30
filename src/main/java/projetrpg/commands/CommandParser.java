@@ -10,6 +10,9 @@ import java.util.function.Function;
 
 /**
  * Class used to parse a command.
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 public class CommandParser {
 

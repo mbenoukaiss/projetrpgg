@@ -11,6 +11,9 @@ import java.util.*;
 /**
  * Represents any kind of location, a solar system,
  * a planet, an area on a planet, a spaceship...
+ *
+ * @author mhevin
+ * @author mbenoukaiss
  */
 @JsonAdapter(RegionSerializer.class)
 public class Region implements Describable {
