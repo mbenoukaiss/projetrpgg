@@ -103,9 +103,9 @@ public class Game {
         });
 
         parser.registerCommand("teleport", Region.class, (player, arg) -> {
-            for (Region r : this.mainMap.getRegions()) {
-                if (r.getName().equalsIgnoreCase(arg)) {
-                    return r;
+            for (Region region : this.mainMap.getRegions()) {
+                if (findRegion(region, arg) != null) {
+                    return findRegion(region, arg);
                 }
             }
             return null;
@@ -220,5 +220,13 @@ public class Game {
 
     public CommandParser getParser() {
         return parser;
+    }
+
+    public Region findRegion(Region region, String regionName) {
+        if (region.getName().equalsIgnoreCase(regionName)) return region;
+        for (Region region1 : region.getContainedRegions()) {
+            return findRegion(region1, regionName);
+        }
+        return null;
     }
 }

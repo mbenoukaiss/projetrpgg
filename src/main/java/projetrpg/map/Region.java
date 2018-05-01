@@ -151,7 +151,7 @@ public class Region implements Describable {
             d+=e.getName() +", ";
         }
         d = d.substring(0, d.length()-2) + ". From there you can go to : " + (this.getRegionNamesOnDirection())
-                + ((this.parent == null)? "" : this.getParent().getName())
+                + ((this.parent == null)? "" : "," + this.getParent().getName())
                 + ((this.getContainedRegions().isEmpty())? "" : "," + this.getContainedRegionsNames())+ ".";
         String teleporters = "";
         for(Teleporter t : this.getTeleporters()) {

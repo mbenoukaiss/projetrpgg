@@ -21,7 +21,6 @@ import projetrpg.game.GameView;
 import projetrpg.quest.Objective;
 import projetrpg.quest.ObjectiveType;
 import projetrpg.quest.Quest;
-import projetrpg.quest.QuestSerializer;
 
 /**
  * Created on 30/03/18.
@@ -61,7 +60,9 @@ public class Main extends Application {
         Region forest = new Region(6, "Forest", westRegion);
         Region cave = new Region(7, "Cave", forest);
         Region flowerPlains = new Region(8, "Flower Plains", southRegion);
-        Region volcano = new Region(9, "Volcano", estRegion);
+        Region flowerMountains = new Region(9, "Flower Mountains", southRegion);
+        flowerMountains.linkToDirection(flowerPlains, Direction.NORTH);
+        Region volcano = new Region(10, "Volcano", estRegion);
 
         // Regions linking.
         centerRegion.linkToDirection(northRegion, Direction.NORTH);
@@ -83,6 +84,7 @@ public class Main extends Application {
         northRegion.addItemToInventory(Item.HATCHET);
         southRegion.addItemToInventory(Item.APPLE);
         estRegion.addItemToInventory(Item.FLASHLIGHT);
+        forest.addItemToInventory(Item.TOOLKIT);
 
         //NPC's initialization.
         NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 100,

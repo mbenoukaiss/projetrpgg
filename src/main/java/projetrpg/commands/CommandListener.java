@@ -294,7 +294,7 @@ public class CommandListener {
     }
 
     /**
-     * This method is called whenever the player wants to teleport the another region.
+     * This method is called whenever the player wants to teleport to another region.
      */
     @Listener({"teleport"})
     public String teleport(Region r) {
@@ -312,7 +312,7 @@ public class CommandListener {
                 }
                 return("You cant teleport to the " + r.getName() + "." + " Check if you have repaired the linked teleporter");
             } else { // If the region doesnt exists and/or is not connected to the player's location
-                return("Error : check if you repaired a teleporter in this location.");
+                return("Error : check if this location exists.");
             }
         } else { // If the player is engaged in a fight
             return("Error : You can only fight or flee.");

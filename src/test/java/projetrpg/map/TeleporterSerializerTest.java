@@ -7,7 +7,6 @@ import projetrpg.AnnotationExclusionStrategy;
 import projetrpg.entities.EntityType;
 import projetrpg.entities.player.Player;
 import projetrpg.quest.Quest;
-import projetrpg.quest.QuestSerializer;
 
 import static org.junit.Assert.*;
 
