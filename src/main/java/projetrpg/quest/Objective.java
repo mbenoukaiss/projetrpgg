@@ -5,25 +5,30 @@ import projetrpg.entities.items.Item;
 import projetrpg.observer.Observable;
 
 public class Objective extends Observable {
-    private boolean isFinished;
-    private String description;
-    private ObjectiveType type;
-    private NPC concernedNPC;
-    private Item concernedItem;
+
+    protected boolean finished;
+    protected String description;
+    protected ObjectiveType type;
+    protected NPC concernedNPC;
+    protected Item concernedItem;
+
+    Objective() {
+
+    }
 
     public Objective(String description, ObjectiveType type) {
         this.description = description;
-        this.isFinished = false;
+        this.finished = false;
         this.type = type;
     }
 
     public void finish() {
-        this.isFinished = true;
+        this.finished = true;
         this.notifyObservers();
     }
 
     public void setFinished(boolean finished) {
-        isFinished = finished;
+        this.finished = finished;
     }
 
     public void setConcernedNPC(NPC concernedNPC) {
@@ -35,7 +40,7 @@ public class Objective extends Observable {
     }
 
     public boolean isFinished() {
-        return isFinished;
+        return finished;
     }
 
     public String getDescription() {

@@ -21,6 +21,9 @@ public class TeleporterSerializer implements JsonSerializer<Teleporter>, JsonDes
         linkIdTeleporter.forEach((k, v) -> {
             v.link(linkIdTeleporter.get(v.getId()));
         });
+
+        //Avoid memory leaks
+        linkIdTeleporter = null;
     }
 
     @Override

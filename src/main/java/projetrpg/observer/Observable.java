@@ -1,5 +1,7 @@
 package projetrpg.observer;
 
+import projetrpg.SerializationIgnore;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,6 +9,7 @@ public abstract class Observable implements IObservable{
     /**
      * The set of observers.
      */
+    @SerializationIgnore
     private Set<IObserver> observers;
 
     public Observable() {

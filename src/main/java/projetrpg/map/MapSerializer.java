@@ -2,15 +2,24 @@ package projetrpg.map;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import projetrpg.entities.NPC;
 import projetrpg.entities.player.Player;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer<MainMap> {
+
+    private static HashMap<Integer, NPC> idNPCMap = new HashMap<>();
+
+    public static void addNPC(NPC npc) {
+        idNPCMap.put(npc.getId(), npc);
+    }
+
+    public static NPC getNPC(int id) {
+        return idNPCMap.get(id);
+    }
 
     @Override
     public JsonElement serialize(MainMap mainMap, Type type, JsonSerializationContext jsonSerializationContext) {
@@ -36,13 +45,10 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
         map.setName(jsonMap.get("name").getAsString());
         map.setHumanCount(jsonMap.get("humancount").getAsInt());
-        map.setMainCharacter(deserializationContext.deserialize(
-                jsonMap.get("maincharacter"),
-                Player.class
-        ));
 
         Map<Integer, Map<Direction, Integer>> directions = new HashMap<>();
 
+        //Deserialize the regions
         JsonArray regions = jsonMap.get("regions").getAsJsonArray();
         for(JsonElement region : regions) {
             map.addRegion(deserializationContext.deserialize(region, Region.class));
@@ -55,6 +61,11 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
             directions.put(region.getAsJsonObject().get("id").getAsInt(), regionDirections);
         }
+
+        map.setMainCharacter(deserializationContext.deserialize(
+                jsonMap.get("maincharacter"),
+                Player.class
+        ));
 
         //Each region associated with its id
         Map<Integer, Region> regionWithId = new HashMap<>();
@@ -80,6 +91,9 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
         //Link teleporters
         TeleporterSerializer.linkTeleporters();
+
+        //Avoid memory leaks
+        idNPCMap = null;
 
         return map;
     }

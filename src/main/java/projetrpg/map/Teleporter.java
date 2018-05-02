@@ -70,6 +70,8 @@ public class Teleporter {
         this.location = location;
         this.repaired = repaired;
         this.itemsNeededToRepair = requiredItems;
+
+        if(id >= currentId) currentId = id+1;
     }
 
     public String describe() {

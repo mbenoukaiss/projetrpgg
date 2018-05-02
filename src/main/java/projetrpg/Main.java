@@ -2,12 +2,10 @@ package projetrpg;
 
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
-import projetrpg.entities.items.ItemType;
 import projetrpg.entities.player.Player;
 import projetrpg.map.*;
 
@@ -18,9 +16,7 @@ import projetrpg.map.MapSerializer;
 import projetrpg.map.RegionSerializer;
 import projetrpg.game.Game;
 import projetrpg.game.GameView;
-import projetrpg.quest.Objective;
-import projetrpg.quest.ObjectiveType;
-import projetrpg.quest.Quest;
+import projetrpg.quest.*;
 
 /**
  * Created on 30/03/18.
@@ -97,10 +93,10 @@ public class Main extends Application {
 
         Objective firstObjective = new Objective("Talk to Jean", ObjectiveType.TALK);
         Objective secondObjective = new Objective("Pickup the Apple", ObjectiveType.PICKUP);
-        Quest firstQuest = new Quest(1, 10, "A fresh Start");
+        Quest firstQuest = new Quest(10, "A fresh Start");
 
-        firstQuest.linkObjectiv(firstObjective);
-        firstQuest.linkObjectiv(secondObjective);
+        firstQuest.linkObjective(firstObjective);
+        firstQuest.linkObjective(secondObjective);
         firstQuest.addObserver(player);
         firstQuest.linkRewardedItem(Item.APPLE);
         firstQuest.linkRewardedItem(Item.FLASHLIGHT);
@@ -143,6 +139,7 @@ public class Main extends Application {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .setExclusionStrategies(new AnnotationExclusionStrategy())
+                .registerTypeAdapter(Objective.class, new ObjectiveSerializer())
                 .registerTypeAdapter(Quest.class, new QuestSerializer())
                 .registerTypeAdapter(Teleporter.class, new TeleporterSerializer())
                 .registerTypeAdapter(Region.class, new RegionSerializer())

@@ -10,7 +10,6 @@ import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
 import projetrpg.map.Region;
 import projetrpg.observer.IObservable;
-import projetrpg.observer.Observable;
 import projetrpg.observer.IObserver;
 import projetrpg.quest.Quest;
 
@@ -57,6 +56,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     private boolean isInFight;
 
     private Quest currentQuest;
+
     private Set<IObserver> observers;
 
     public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage, EntityType type, boolean isHostile, int maxCapacity) {
@@ -192,7 +192,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     @Override
     public void update(IObservable a) {
         this.experience+=((Quest) a).getExpRewarded();
-        ((Quest) a).getRewardedItems().forEach(item -> this.inventory.add(item));
+        ((Quest) a).getReward().forEach(item -> this.inventory.add(item));
         this.currentQuest = null;
     }
 

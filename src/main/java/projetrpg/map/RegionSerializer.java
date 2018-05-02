@@ -44,26 +44,24 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
 
         Region region = new Region(id, name, null);
 
+        int highestId = 0;
+
         for(JsonElement element : jsonElement.getAsJsonObject().get("entities").getAsJsonArray()) {
             NPC npc = deserializationContext.deserialize(element, NPC.class);
             region.addEntity(npc);
+
+            MapSerializer.addNPC(npc);
+            if(npc.getId() >= highestId) highestId = npc.getId()+1;
         }
 
-        int highestId = 0;
+        NPC.setCurrentId(highestId);
 
         for(JsonElement element : jsonElement.getAsJsonObject().get("teleporters").getAsJsonArray()) {
             Teleporter t = deserializationContext.deserialize(element, Teleporter.class);
             int linkId = element.getAsJsonObject().get("link").getAsInt();
-
-            if(t.getId() >= highestId) {
-                highestId = t.getId()+1;
-            }
-
             TeleporterSerializer.addTeleporter(linkId, t);
             region.addTeleporter(t);
         }
-
-        Teleporter.setCurrentId(highestId);
 
         for(JsonElement element : jsonElement.getAsJsonObject().get("childregions").getAsJsonArray()) {
             Region r = deserializationContext.deserialize(element, Region.class);

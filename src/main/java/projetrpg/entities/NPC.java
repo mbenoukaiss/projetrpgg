@@ -16,6 +16,13 @@ import java.util.Set;
  */
 public class NPC extends Entity implements Describable, Damageable, Attacker, IObservable {
 
+    private static int currentId = 0;
+
+    /**
+     * The id of this NPC.
+     */
+    private int id;
+
     /**
      * The damage.
      */
@@ -31,6 +38,8 @@ public class NPC extends Entity implements Describable, Damageable, Attacker, IO
      */
     @SerializationIgnore
     private boolean inFight;
+
+    @SerializationIgnore
     private Set<IObserver> observers;
 
     public NPC(String name, Region location, EntityType type, boolean isHostile,
@@ -39,6 +48,24 @@ public class NPC extends Entity implements Describable, Damageable, Attacker, IO
         this.baseDamage = baseDamage;
         this.dialogue = dialogue;
         location.addEntity(this);
+
+        id = currentId++;
+    }
+
+    /**
+     * Accessor for the id of the NPC.
+     * @return the id.
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Setter for the id of the npc.
+     * @param id the id.
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -108,7 +135,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker, IO
     }
 
     /**
-     * Accessor for the status on weither the NPC is fighting.
+     * Accessor for the status on whether or not the NPC is fighting.
      * @return the status.
      */
     public boolean isInFight() {
@@ -116,7 +143,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker, IO
     }
 
     /**
-     * Setter for the status on weither the NPC is fighting.
+     * Setter for the status on whether or not the NPC is fighting.
      * @param inFight the status.
      */
     public void setInFight(boolean inFight) {
@@ -159,4 +186,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker, IO
         observers.clear();
     }
 
+    public static void setCurrentId(int currentId) {
+        NPC.currentId = currentId;
+    }
 }
