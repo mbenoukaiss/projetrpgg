@@ -80,7 +80,8 @@ public class Teleporter {
             items+=i.getName() + ", ";
         }
         if (items.length() > 0) items = items.substring(0, items.length()-2);
-        return this.name + ", you'll need those items in order to repair it : " + items + ".";
+        return this.name + ", you'll need those items in order to repair it : " + items + "." +
+                " This teleporter will take you to the region : " + this.getLinkedTeleporter().getLocation().getName() + ".";
     }
 
     /**

@@ -296,21 +296,19 @@ public class CommandListener {
     /**
      * This method is called whenever the player wants to teleport to another region.
      */
-    @Listener({"teleport"})
-    public String teleport(Region r) {
+    @Listener({"take"})
+    public String teleport(Teleporter teleporter) {
         if (!this.player.isInFight()) { // If the player is not engaged in a fight
-            if (r != null) { // If the region exists and is connected to the player's location
+            if (teleporter != null) { // If the region exists and is connected to the player's location
                 boolean canTeleportTo = false;
-                for (Teleporter t : r.getTeleporters()) {
-                    if (t.isRepaired()) {
-                        canTeleportTo = true;
-                    }
+                if (teleporter.isRepaired() && teleporter.getLinkedTeleporter().isRepaired()) {
+                    canTeleportTo = true;
                 }
                 if (canTeleportTo) {
-                    this.player.move(r);
-                    return("You teleported to the : " + r.describe());
+                    this.player.move(teleporter.getLinkedTeleporter().getLocation());
+                    return("You teleported to the : " + teleporter.getLinkedTeleporter().getLocation().describe());
                 }
-                return("You cant teleport to the " + r.getName() + "." + " Check if you have repaired the linked teleporter");
+                return("You cant take to this teleporter" + "." + " Check if you have repaired it AND the linked teleporter");
             } else { // If the region doesnt exists and/or is not connected to the player's location
                 return("Error : check if this location exists.");
             }

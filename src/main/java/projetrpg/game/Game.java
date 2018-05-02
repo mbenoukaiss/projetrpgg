@@ -42,7 +42,7 @@ public class Game {
                 "-see : on an attribute you wish to see the status" + "\n" +
                 "-describe location : to see your locations's infos\n" +
                 "-describe : on an entity, an item, or a teleporter in order to see its infos\n" +
-                "-teleport : to a region containing a teleporter you repaired\n" +
+                "-take : on a teleporter you repaired\n" +
                 "-repair : on a teleporter you wish to repair\n" +
                 "-help me : to see the user guide.\n";
 
@@ -102,10 +102,10 @@ public class Game {
             return null;
         });
 
-        parser.registerCommand("teleport", Region.class, (player, arg) -> {
-            for (Region region : this.mainMap.getRegions()) {
-                if (findRegion(region, arg) != null) {
-                    return findRegion(region, arg);
+        parser.registerCommand("take", Teleporter.class, (player, arg) -> {
+            for (Teleporter teleporter : this.mainMap.getMainCharacter().getLocation().getTeleporters()) {
+                if (teleporter.getName().equalsIgnoreCase(arg)) {
+                    return teleporter;
                 }
             }
             return null;
