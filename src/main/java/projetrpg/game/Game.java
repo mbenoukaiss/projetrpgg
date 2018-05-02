@@ -6,6 +6,7 @@ import projetrpg.entities.items.Item;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
 import projetrpg.map.Teleporter;
+import projetrpg.quest.Quest;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -198,6 +199,18 @@ public class Game {
             }
             if (arg.equalsIgnoreCase("location")) {
                 return player.getLocation();
+            }
+            return null;
+        });
+
+        parser.registerCommand("start", Quest.class, (player, arg) -> {
+            for (Quest quest : this.mainMap.getQuests()) {
+                System.out.println(arg);
+                System.out.println(quest.getName().toLowerCase());
+                if (quest.getName().equalsIgnoreCase(arg)) {
+                    System.out.println("aaa");
+                    return quest;
+                }
             }
             return null;
         });

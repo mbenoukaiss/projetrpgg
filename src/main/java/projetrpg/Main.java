@@ -10,7 +10,7 @@ import projetrpg.entities.player.Player;
 import projetrpg.utils.Pair;
 import projetrpg.map.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import com.google.gson.Gson;
 import projetrpg.map.MapSerializer;
@@ -84,31 +84,35 @@ public class Main extends Application {
         NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 100,
                 20, "Im gonna kill you !");
         NPC jean = new NPC("Jean", southRegion, EntityType.VILLAGER, false, 100,
-                0, "Hey, wassup boi !");
+                0, "Hey, you are our hero...blablabla....very important... save the universe ... " +
+                "blablabla... You may now start your first Quest : A new Dawn!");
         //Player initialization.
         Player player = new Player("Hervé", 0, centerRegion, null, 100,
                 10, EntityType.PLAYER, false, 50);
 
-        Objective firstObjective = new Objective("Talk to Jean", ObjectiveType.TALK);
+        Collection<Quest> quests = new HashSet<>();
+        Objective firstObjective = new Objective("Kill Zorg", ObjectiveType.KILL);
         Objective secondObjective = new Objective("Pickup the Apple", ObjectiveType.PICKUP);
-        Quest firstQuest = new Quest(10, "A fresh Start");
+        Quest firstQuest = new Quest(10, "A new Dawn", "Start your beautiful journey " +
+                "towards saving the universe", 0);
+        quests.add(firstQuest);
 
         firstQuest.linkObjective(firstObjective);
         firstQuest.linkObjective(secondObjective);
         firstQuest.addObserver(player);
         firstQuest.linkRewardedItem(Item.APPLE);
         firstQuest.linkRewardedItem(Item.FLASHLIGHT);
-        firstObjective.setConcernedNPC(jean);
+        firstObjective.setConcernedNPC(zorg);
         firstObjective.addObserver(firstQuest);
         secondObjective.setConcernedItem(Item.APPLE);
         secondObjective.addObserver(firstQuest);
-        player.setCurrentQuest(firstQuest);
 
         //MainMap initialization.
         mainMap.setMainCharacter(player);
         mainMap.setSpawnPoint(centerRegion);
         mainMap.setHumanCount(100);
         regions.forEach(mainMap::addRegion);
+        quests.forEach(mainMap::addQuest);
 
         testSerialization(mainMap);
 

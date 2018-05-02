@@ -139,9 +139,10 @@ public class CommandListener {
                                 ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
                                 + (". You finished this objectiv : " + objectiveFound.getDescription() + ".");
                     }
+                } else {
+                    message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                            ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
                 }
-                message +=("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
-                        ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
             } else if (((NPC) e).attack(this.player)) { // If the target kills the player
                 ((NPC) e).setHps(((NPC) e).getBaseHps());
                 message += ("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
@@ -160,6 +161,28 @@ public class CommandListener {
             return("Error : check if this entity is in your location.");
         }
         return message;
+    }
+
+    @Listener({"start"})
+    public String start(Quest q) {
+        if (!this.player.isInFight()) {
+            if (q != null) {
+                if (this.player.getCurrentQuest() == null) {
+                    if (this.player.getLevel() >= q.getLevelRequired()) {
+                        this.player.setCurrentQuest(q);
+                        return "You started this quest :" + q.getName() + "!";
+                    } else {
+                        return "You dont meet the required level in order to start this quest.";
+                    }
+                } else {
+                    return "You may only start one quest at a time, finish the one you started.";
+                }
+            } else {
+                return "Check if you may start this quest or if it even exists.";
+            }
+        } else {
+            return("Error : You can only fight or flee.");
+        }
     }
 
     /**

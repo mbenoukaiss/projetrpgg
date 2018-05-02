@@ -75,7 +75,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         return this.experience;
     }
 
-    public int getLevel() { return (int) ((this.experience*this.experience)*0.03); }
+    public int getLevel() { return (int) (0.5 * Math.sqrt((double) experience)); }
 
     public Inventory getInventory() {
         return inventory;

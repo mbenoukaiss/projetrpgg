@@ -14,6 +14,8 @@ public class Quest extends Observable implements IObserver {
     protected boolean started;
     protected boolean completed;
     protected int expRewarded;
+    protected int levelRequired;
+    protected String name;
     protected String description;
     protected Set<Objective> objectives;
     protected ArrayList<Item> reward;
@@ -22,9 +24,11 @@ public class Quest extends Observable implements IObserver {
 
     }
 
-    public Quest(int expRewarded, String description) {
+    public Quest(int expRewarded, String name, String description, int levelRequired) {
         this.expRewarded = expRewarded;
         this.description = description;
+        this.name = name;
+        this.levelRequired = levelRequired;
         this.completed = false;
         this.started = false;
         this.objectives = new HashSet<>();
@@ -44,6 +48,10 @@ public class Quest extends Observable implements IObserver {
     public void linkObjective(Objective o) {
         this.objectives.add(o);
         o.addObserver(this);
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void linkRewardedItem(Item i) { this.reward.add(i); }
@@ -70,6 +78,10 @@ public class Quest extends Observable implements IObserver {
 
     public ArrayList<Item> getReward() {
         return (ArrayList<Item>) reward.clone();
+    }
+
+    public int getLevelRequired() {
+        return levelRequired;
     }
 
     @Override

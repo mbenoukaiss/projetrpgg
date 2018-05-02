@@ -6,6 +6,10 @@ import projetrpg.quest.Quest;
 import projetrpg.utils.Pair;
 
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * Represents the whole map used in the game.
@@ -50,7 +54,7 @@ public class MainMap {
     public MainMap(String name) {
         this.name = name;
         this.regions = new HashSet<>();
-        this.quests = new TreeSet<>();
+        this.quests = new HashSet<>();
     }
 
     public MainMap(String name, Region spawnPoint, Set<Region> regions, int humanCount) {
@@ -76,6 +80,10 @@ public class MainMap {
      */
     public void addQuest(Quest q) {
         quests.add(q);
+    }
+
+    public Collection<Quest> getQuests() {
+        return quests;
     }
 
     /**

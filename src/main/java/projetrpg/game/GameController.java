@@ -118,7 +118,7 @@ public class GameController {
     public void questDisplay() {
         questField.setWrapText(true);
         if (game.getMainMap().getMainCharacter().getCurrentQuest() != null) {
-            questField.setText(game.getMainMap().getMainCharacter().getCurrentQuest().getDescription());
+            questField.setText(game.getMainMap().getMainCharacter().getCurrentQuest().getName());
         } else {
             questField.setText("");
         }
