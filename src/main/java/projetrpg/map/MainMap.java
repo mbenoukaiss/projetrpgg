@@ -5,9 +5,7 @@ import projetrpg.entities.player.Player;
 import projetrpg.quest.Quest;
 import projetrpg.utils.Pair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Represents the whole map used in the game.
@@ -37,7 +35,7 @@ public class MainMap {
      * All the regions at the top of the tree.
      * In our case, solar systems.
      */
-    private Collection<Region> regions;
+    private Set<Region> regions;
 
     /**
      * All the quests available on this map.
@@ -51,11 +49,11 @@ public class MainMap {
 
     public MainMap(String name) {
         this.name = name;
-        this.regions = new ArrayList<>();
+        this.regions = new HashSet<>();
         this.quests = new TreeSet<>();
     }
 
-    public MainMap(String name, Region spawnPoint, Collection<Region> regions, int humanCount) {
+    public MainMap(String name, Region spawnPoint, Set<Region> regions, int humanCount) {
         this.name = name;
         this.spawnPoint = spawnPoint;
         this.regions = regions;
@@ -138,7 +136,7 @@ public class MainMap {
      * @return the regions
      */
     public Collection<Region> getRegions() {
-        return regions;
+        return new HashSet<>(regions);
     }
 
     /**

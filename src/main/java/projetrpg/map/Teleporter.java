@@ -157,21 +157,15 @@ public class Teleporter {
     }
 
     public void addItemToRepair(Item item) {
-        if (!this.getItemsNeededToRepair().contains(item)) {
-            this.itemsNeededToRepair.add(item);
-        }
+        this.itemsNeededToRepair.add(item);
     }
 
     public ArrayList<Item> getItemsNeededToRepair() {
-        return itemsNeededToRepair;
+        return (ArrayList<Item>) itemsNeededToRepair.clone();
     }
 
     public void setLocation(Region location) {
         this.location = location;
-    }
-
-    public static void setCurrentId(int currentId) {
-        Teleporter.currentId = currentId;
     }
 
     @Override

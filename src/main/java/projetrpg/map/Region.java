@@ -53,7 +53,7 @@ public class Region implements Describable {
     /**
      * All the teleporters DIRECTLY contained in this region.
      */
-    private List<Teleporter> teleporters;
+    private Set<Teleporter> teleporters;
 
     /**
      * The inventory of this region : all the items DIRECTLY
@@ -73,7 +73,7 @@ public class Region implements Describable {
         this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
         this.entities = new HashSet<>();
-        this.teleporters = new ArrayList<>();
+        this.teleporters = new HashSet<>();
         this.inventory = new Inventory(DEFAULT_ROOM_ITEM_CAPACITY);
         this.itemsNeeded = new ArrayList<>();
 
@@ -83,7 +83,7 @@ public class Region implements Describable {
 
     public Region(int id, String name, Region parent,
                   Set<Region> containedRegions, Set<NPC> entities,
-                  List<Teleporter> teleporters, Inventory inventory) {
+                  Set<Teleporter> teleporters, Inventory inventory) {
         this.id = id;
         this.name = name;
         this.parent = parent;
@@ -107,7 +107,7 @@ public class Region implements Describable {
      * @return the regions
      */
     public Set<Region> getContainedRegions() {
-        return containedRegions;
+        return new HashSet<>(containedRegions);
     }
 
     /**
@@ -130,9 +130,8 @@ public class Region implements Describable {
      * Accessor for the contained teleporters.
      * @return the teleporters
      */
-    public ArrayList<Teleporter> getTeleporters() {
-        ArrayList<Teleporter> clonedTeleporters = new ArrayList<>(this.teleporters);
-        return clonedTeleporters;
+    public Set<Teleporter> getTeleporters() {
+        return new HashSet<>(teleporters);
     }
 
     /**
@@ -201,7 +200,7 @@ public class Region implements Describable {
      * @return the entities.
      */
     public Set<NPC> getEntities() {
-        return entities;
+        return new HashSet<>(entities);
     }
 
     /**

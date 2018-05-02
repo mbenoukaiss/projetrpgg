@@ -70,7 +70,7 @@ public class Inventory implements Describable {
      * @return All the items.
      */
     public ArrayList<Item> getAll() {
-        return this.items; //Return a copy ?
+        return (ArrayList<Item>) this.items.clone();
     }
 
     /**
@@ -79,7 +79,9 @@ public class Inventory implements Describable {
      * @param i The item
      */
     public void add(Item i) {
-        items.add(i);
+        if(items.size() < maxCapacity) {
+            items.add(i);
+        }
     }
 
 

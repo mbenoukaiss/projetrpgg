@@ -65,11 +65,11 @@ public class Quest extends Observable implements IObserver {
     }
 
     public Set<Objective> getObjectives() {
-        return objectives;
+        return new HashSet<>(objectives);
     }
 
     public ArrayList<Item> getReward() {
-        return reward;
+        return (ArrayList<Item>) reward.clone();
     }
 
     @Override

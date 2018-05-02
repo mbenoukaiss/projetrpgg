@@ -142,7 +142,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     }
 
     public HashSet<Ability> getAbilities() {
-        return abilities;
+        return (HashSet<Ability>) abilities.clone();
     }
 
     @Override
