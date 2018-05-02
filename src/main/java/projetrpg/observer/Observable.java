@@ -1,6 +1,6 @@
 package projetrpg.observer;
 
-import projetrpg.SerializationIgnore;
+import projetrpg.utils.SerializationIgnore;
 
 import java.util.HashSet;
 import java.util.Set;

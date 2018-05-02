@@ -2,9 +2,12 @@ package projetrpg.map;
 
 import com.google.gson.annotations.JsonAdapter;
 import projetrpg.entities.player.Player;
+import projetrpg.quest.Quest;
+import projetrpg.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 
 /**
  * Represents the whole map used in the game.
@@ -37,6 +40,11 @@ public class MainMap {
     private Collection<Region> regions;
 
     /**
+     * All the quests available on this map.
+     */
+    private Collection<Quest> quests;
+
+    /**
      * The amount of humans left on this map.
      */
     private int humanCount;
@@ -44,6 +52,7 @@ public class MainMap {
     public MainMap(String name) {
         this.name = name;
         this.regions = new ArrayList<>();
+        this.quests = new TreeSet<>();
     }
 
     public MainMap(String name, Region spawnPoint, Collection<Region> regions, int humanCount) {
@@ -54,11 +63,42 @@ public class MainMap {
     }
 
     /**
-     * Used whenever we want to add a region
-     * @return the region
+     * Add a root region.
+     *
+     * @return The region
      */
     public void addRegion(Region r) {
         regions.add(r);
+    }
+
+    /**
+     * Add a quest.
+     *
+     * @param q The quest
+     */
+    public void addQuest(Quest q) {
+        quests.add(q);
+    }
+
+    /**
+     * Creates a pair of linked teleporters.
+     *
+     * @param name The name of the teleporters
+     * @param region1 Region of the first teleporter
+     * @param region2 Region of the second teleporter
+     * @return The teleporters in a pair.
+     */
+    public Pair<Teleporter, Teleporter> createTeleporters(
+                                String name, Region region1, Region region2) {
+
+        Teleporter t1 = new Teleporter(name, region1);
+        Teleporter t2 = new Teleporter(name, region2);
+        t1.link(t2);
+
+        region1.addTeleporter(t1);
+        region2.addTeleporter(t2);
+
+        return Pair.of(t1, t2);
     }
 
     /**

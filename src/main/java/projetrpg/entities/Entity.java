@@ -1,5 +1,5 @@
 package projetrpg.entities;
-import projetrpg.SerializationIgnore;
+import projetrpg.utils.SerializationIgnore;
 import projetrpg.map.Region;
 
 /**

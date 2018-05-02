@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
+import projetrpg.utils.Pair;
 import projetrpg.map.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import projetrpg.map.RegionSerializer;
 import projetrpg.game.Game;
 import projetrpg.game.GameView;
 import projetrpg.quest.*;
+import projetrpg.utils.AnnotationExclusionStrategy;
 
 /**
  * Created on 30/03/18.
@@ -30,6 +32,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Galaxy Explorer");
         primaryStage.getIcons().add(new Image("icon.png"));
+
+        MainMap mainMap = new MainMap("FacticeMap");
 
         //Regions initialization :
         //          NORTH
@@ -66,15 +70,9 @@ public class Main extends Application {
         centerRegion.linkToDirection(estRegion, Direction.EST);
         centerRegion.linkToDirection(westRegion, Direction.WEST);
 
-        Teleporter caveTeleporter = new Teleporter("caveTeleporter", cave);
-        caveTeleporter.addItemToRepair(Item.TOOLKIT);
-        cave.addTeleporter(caveTeleporter);
-
-        Teleporter volcanoTeleporter = new Teleporter("volcanoTeleporter", volcano);
-        volcanoTeleporter.addItemToRepair(Item.FLASHLIGHT);
-        volcano.addTeleporter(volcanoTeleporter);
-
-        caveTeleporter.link(volcanoTeleporter);
+        Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
+        ctovtp.first.addItemToRepair(Item.TOOLKIT);
+        ctovtp.second.addItemToRepair(Item.FLASHLIGHT);
 
         // Items linking to regions.
         northRegion.addItemToInventory(Item.HATCHET);
@@ -107,7 +105,6 @@ public class Main extends Application {
         player.setCurrentQuest(firstQuest);
 
         //MainMap initialization.
-        MainMap mainMap = new MainMap("FacticeMap");
         mainMap.setMainCharacter(player);
         mainMap.setSpawnPoint(centerRegion);
         mainMap.setHumanCount(100);

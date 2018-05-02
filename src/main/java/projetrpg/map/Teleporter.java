@@ -55,7 +55,7 @@ public class Teleporter {
      * @param name   the name of the teleporter
      * @param location the location of the teleporter
      */
-    public Teleporter(String name, Region location) {
+    Teleporter(String name, Region location) {
         this.name = name;
         this.location = location;
         this.repaired = false;
@@ -63,7 +63,7 @@ public class Teleporter {
         id = currentId++;
     }
 
-    public Teleporter(int id, String name, Region location, boolean repaired,
+    Teleporter(int id, String name, Region location, boolean repaired,
                       ArrayList<Item> requiredItems) {
         this.id = id;
         this.name = name;

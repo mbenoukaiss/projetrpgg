@@ -12,6 +12,7 @@ import projetrpg.map.Region;
 import projetrpg.observer.IObservable;
 import projetrpg.observer.IObserver;
 import projetrpg.quest.Quest;
+import projetrpg.utils.SerializationIgnore;
 
 import java.util.HashSet;
 import java.util.Set;

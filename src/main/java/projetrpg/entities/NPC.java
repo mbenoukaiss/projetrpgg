@@ -1,7 +1,7 @@
 package projetrpg.entities;
 
 import projetrpg.Describable;
-import projetrpg.SerializationIgnore;
+import projetrpg.utils.SerializationIgnore;
 import projetrpg.map.Region;
 import projetrpg.observer.IObservable;
 import projetrpg.observer.IObserver;

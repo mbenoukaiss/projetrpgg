@@ -3,10 +3,7 @@ package projetrpg.map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.Test;
-import projetrpg.AnnotationExclusionStrategy;
-import projetrpg.entities.EntityType;
-import projetrpg.entities.player.Player;
-import projetrpg.quest.Quest;
+import projetrpg.utils.AnnotationExclusionStrategy;
 
 import static org.junit.Assert.*;
 
