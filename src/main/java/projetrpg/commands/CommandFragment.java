@@ -2,8 +2,8 @@ package projetrpg.commands;
 
 import projetrpg.entities.player.Player;
 
+import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Represents a command that can be a part (or

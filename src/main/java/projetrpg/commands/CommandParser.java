@@ -61,6 +61,8 @@ public class CommandParser {
         StringBuilder nextArgument = null;
 
         for(String s : carray) {
+            s = s.toLowerCase();
+            
             if(commands.containsKey(s)) {
                 if(currentFragment != null) { //Not the first command
                     c.insertFragment(currentFragment, nextArgument.toString());
@@ -96,24 +98,16 @@ public class CommandParser {
         if(methods.keySet().contains(commands)) {
             Set<Method> commandMethods = methods.get(commands);
 
-            if (commandMethods != null) {
+            if(commandMethods != null) {
                 for (Method listener : commandMethods) {
                     try {
-                        if (methods.keySet().contains(commands)) {
+                        if(methods.keySet().contains(commands)) {
                             return (String) listener.invoke(
                                     listeners.get(listener.getDeclaringClass()),
                                     command.generateArguments().keySet().toArray()
                             );
                         }
-                    } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ignored) {
-                        /*
-                          Exception is ignored as it may be normal to not have the same arguments
-                          as a listener may want to select only some type of object (ex: the scanner
-                          provides an entity but the listener only wants Guards
-                          Though there may be better way to do it, checking is probably slower than
-                          letting invoke throw an exception
-                         */
-                    }
+                    } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ignored) { }
                 }
             }
         }
@@ -182,6 +176,17 @@ public class CommandParser {
      */
     public <T> void registerCommand(String command, Class<T> argType, BiFunction<Player, String, T> scanner) {
         commands.put(command, new CommandFragment<>(command, argType, scanner));
+    }
+
+    /**
+     * Registers a command fragment that does not take
+     * any argument.
+     *
+     * @param command The command as a string
+     * @param argType The type of the argument of the command
+     */
+    public <T> void registerCommand(String command, Class<T> argType) {
+        commands.put(command, new CommandFragment<>(command, argType, (player, arg) -> null));
     }
 
     /**

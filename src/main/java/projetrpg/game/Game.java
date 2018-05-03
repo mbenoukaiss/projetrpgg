@@ -47,7 +47,7 @@ public class Game {
                 "-repair : on a teleporter you wish to repair\n" +
                 "-start : on a quest in order to start it\n" +
                 "-giveup : in order to abandon your current quest\n" +
-                "-help me : to see the user guide.\n\n" +
+                "-help : to see the user guide.\n\n" +
                 "Your name is Hervé ! Talk to jean located in south in order to start your journey towards " +
                 "saving the universe!\n\n";
 
@@ -216,9 +216,9 @@ public class Game {
             return null;
         });
 
-        parser.registerCommand("giveup", String.class, (player, arg) -> null);
+        parser.registerCommand("giveup", String.class);
 
-        parser.registerCommand("help", String.class, (player, arg) -> null);
+        parser.registerCommand("help", String.class);
 
         try {
             parser.registerListener(new CommandListener(mainMap.getMainCharacter(), this), CommandListener.class);
