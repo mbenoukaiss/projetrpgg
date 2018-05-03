@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Quest extends Observable implements IObserver {
+public class Quest extends Observable implements IObserver, Comparable<Quest> {
 
     protected boolean started;
     protected boolean completed;
@@ -100,5 +100,10 @@ public class Quest extends Observable implements IObserver {
         } else {
             ((Objective) a).setFinished(true);
         }
+    }
+
+    @Override
+    public int compareTo(Quest quest) {
+        return Integer.compare(levelRequired, quest.levelRequired);
     }
 }

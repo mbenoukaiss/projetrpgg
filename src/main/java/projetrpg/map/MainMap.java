@@ -54,7 +54,7 @@ public class MainMap {
     public MainMap(String name) {
         this.name = name;
         this.regions = new HashSet<>();
-        this.quests = new HashSet<>();
+        this.quests = new TreeSet<>();
     }
 
     public MainMap(String name, Region spawnPoint, Set<Region> regions, int humanCount) {
