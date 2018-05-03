@@ -52,10 +52,10 @@ public class GameController {
         Calendar cal = Calendar.getInstance();
         if (KeyCode.ENTER == e.getCode()) {
             try {
-                logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ">" +
+                logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
                         parser.parse(game.getMainMap().getMainCharacter(), commandField.getText()).send() + "\n\n";
             } catch (InvalidCommandException e1) {
-                logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ">" +
+                logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
                         e1.getMessage() + "\n\n";
             }
             textLogs.setWrapText(true);
@@ -125,6 +125,7 @@ public class GameController {
     }
 
     public void initialize() {
+        textLogs.setWrapText(true);
         textLogs.appendText(game.getManuel());
         inventoryDisplay();
         locationDisplay();

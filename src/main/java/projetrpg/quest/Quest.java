@@ -102,6 +102,14 @@ public class Quest extends Observable implements IObserver, Comparable<Quest> {
         }
     }
 
+    public void abandon() {
+        this.started = false;
+        this.completed = false;
+        for (Objective o : this.getObjectives()) {
+            o.finished = false;
+        }
+    }
+
     @Override
     public int compareTo(Quest quest) {
         return Integer.compare(levelRequired, quest.levelRequired);

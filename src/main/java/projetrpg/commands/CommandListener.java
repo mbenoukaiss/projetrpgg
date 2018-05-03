@@ -46,11 +46,7 @@ public class CommandListener {
      */
     @Listener({"help"})
     public String help(String arg) {
-        if (arg != null) { // If the user typed the right argument
-            return game.getManuel();
-        } else { // If the user typed the wrong argument
-            return "Type \"Help me\" to see the user guide.";
-        }
+        return game.getManuel();
     }
 
 
@@ -449,6 +445,19 @@ public class CommandListener {
             } else { // If the item can not be unequipped
                 return("Error : check if you have the correct item equipped.");
             }
+        } else { // If the player is in a fight
+            return("Error : You can only fight or flee.");
+        }
+    }
+
+    @Listener({"giveup"})
+    public String abandon(String s) {
+        if (!this.player.isInFight()) {
+            Quest sq = this.player.getCurrentQuest();
+            if (sq != null) this.player.getCurrentQuest().abandon();
+            this.player.setCurrentQuest(null);
+            if (sq != null) return "You gave up on this quest : " + sq.getName() + ".";
+            return "No quest to give up";
         } else { // If the player is in a fight
             return("Error : You can only fight or flee.");
         }

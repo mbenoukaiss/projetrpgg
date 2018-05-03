@@ -45,7 +45,11 @@ public class Game {
                 "-describe : on an entity, an item, or a teleporter in order to see its infos\n" +
                 "-take : on a teleporter you repaired\n" +
                 "-repair : on a teleporter you wish to repair\n" +
-                "-help me : to see the user guide.\n";
+                "-start : on a quest in order to start it\n" +
+                "-giveup : in order to abandon your current quest\n" +
+                "-help me : to see the user guide.\n\n" +
+                "Your name is Hervé ! Talk to jean located in south in order to start your journey towards " +
+                "saving the universe!\n\n";
 
         commandRegisterer();
     }
@@ -205,20 +209,16 @@ public class Game {
 
         parser.registerCommand("start", Quest.class, (player, arg) -> {
             for (Quest quest : this.mainMap.getQuests()) {
-                System.out.println(arg);
-                System.out.println(quest.getName().toLowerCase());
                 if (quest.getName().equalsIgnoreCase(arg)) {
-                    System.out.println("aaa");
                     return quest;
                 }
             }
             return null;
         });
 
-        parser.registerCommand("help", String.class, (player, arg)-> {
-            if (arg.equalsIgnoreCase("me")) return arg;
-            return null;
-        });
+        parser.registerCommand("giveup", String.class, (player, arg) -> null);
+
+        parser.registerCommand("help", String.class, (player, arg) -> null);
 
         try {
             parser.registerListener(new CommandListener(mainMap.getMainCharacter(), this), CommandListener.class);
