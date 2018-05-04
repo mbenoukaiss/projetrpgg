@@ -1,6 +1,7 @@
-package projetrpg.commands;
+package projetrpg.game;
 
 import projetrpg.Describable;
+import projetrpg.commands.Listener;
 import projetrpg.game.Game;
 import projetrpg.entities.Damageable;
 import projetrpg.entities.Entity;

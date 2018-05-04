@@ -1,4 +1,5 @@
 package projetrpg.entities;
+import projetrpg.game.Expose;
 import projetrpg.utils.SerializationIgnore;
 import projetrpg.map.Region;
 
@@ -19,6 +20,7 @@ public abstract class Entity {
      * The location of the entity.
      */
     @SerializationIgnore
+    @Expose("location")
     protected Region location;
 
     /**
@@ -29,6 +31,7 @@ public abstract class Entity {
     /**
      * The hps of the entity.
      */
+    @Expose("health")
     protected int hps;
 
     /**

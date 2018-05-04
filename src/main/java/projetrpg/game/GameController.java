@@ -126,7 +126,9 @@ public class GameController {
 
     public void initialize() {
         textLogs.setWrapText(true);
-        textLogs.appendText(game.getManuel());
+        textLogs.appendText(game.getManuel() +
+                "\n\nYour name is Hervé ! Talk to jean located in south in order to start your journey towards " +
+                "saving the universe!\n\n");
         inventoryDisplay();
         locationDisplay();
         objectivesDisplay();

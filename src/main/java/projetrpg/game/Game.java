@@ -47,9 +47,7 @@ public class Game {
                 "-repair : on a teleporter you wish to repair\n" +
                 "-start : on a quest in order to start it\n" +
                 "-giveup : in order to abandon your current quest\n" +
-                "-help : to see the user guide.\n\n" +
-                "Your name is Hervé ! Talk to jean located in south in order to start your journey towards " +
-                "saving the universe!\n\n";
+                "-help : to see the user guide.\n\n";
 
         commandRegisterer();
     }
@@ -173,8 +171,8 @@ public class Game {
             fields.addAll(Arrays.asList(player.getClass().getDeclaredFields()));
             fields.addAll(Arrays.asList(player.getClass().getSuperclass().getDeclaredFields()));
             for (Field field : fields) {
-                if (field.getName().equalsIgnoreCase(arg)) {
-                    return field;
+                if (field.isAnnotationPresent(Expose.class)) {
+                    if (field.getAnnotation(Expose.class).value().equalsIgnoreCase(arg)) return field;
                 }
             }
             return null;

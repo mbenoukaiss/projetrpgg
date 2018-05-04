@@ -8,6 +8,7 @@ import projetrpg.entities.EntityType;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
+import projetrpg.game.Expose;
 import projetrpg.map.Region;
 import projetrpg.observer.IObservable;
 import projetrpg.observer.IObserver;
@@ -28,6 +29,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     /**
      * The experience of the player.
      */
+    @Expose("xp")
     private int experience;
 
     /**
@@ -38,6 +40,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     /**
      * The item in their main hand.
      */
+    @Expose("item")
     private Item itemInHand;
 
     /**
