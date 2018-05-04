@@ -1,6 +1,7 @@
 package projetrpg.map;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import projetrpg.entities.Entity;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
@@ -39,14 +40,22 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
 
     @Override
     public Region deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext deserializationContext) throws JsonParseException {
-        int id = jsonElement.getAsJsonObject().get("id").getAsInt();
-        String name = jsonElement.getAsJsonObject().get("name").getAsString();
+        JsonObject jsonRegion = jsonElement.getAsJsonObject();
+        Region region = new Region();
 
-        Region region = new Region(id, name, null);
+        region.id = jsonRegion.get("id").getAsInt();
+        region.name = jsonRegion.get("name").getAsString();
+
+        Type directionsMapType = new TypeToken<Map<Direction, Integer>>(){}.getType();
+        MapSerializer.addRegion(jsonRegion.get("id").getAsInt(),
+                deserializationContext.deserialize(
+                        jsonRegion.get("directions"),
+                        directionsMapType)
+        );
 
         int highestId = 0;
 
-        for(JsonElement element : jsonElement.getAsJsonObject().get("entities").getAsJsonArray()) {
+        for(JsonElement element : jsonRegion.get("entities").getAsJsonArray()) {
             NPC npc = deserializationContext.deserialize(element, NPC.class);
             region.addEntity(npc);
 
@@ -56,19 +65,19 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
 
         NPC.setCurrentId(highestId);
 
-        for(JsonElement element : jsonElement.getAsJsonObject().get("teleporters").getAsJsonArray()) {
+        for(JsonElement element : jsonRegion.get("teleporters").getAsJsonArray()) {
             Teleporter t = deserializationContext.deserialize(element, Teleporter.class);
             int linkId = element.getAsJsonObject().get("link").getAsInt();
             TeleporterSerializer.addTeleporter(linkId, t);
             region.addTeleporter(t);
         }
 
-        for(JsonElement element : jsonElement.getAsJsonObject().get("childregions").getAsJsonArray()) {
+        for(JsonElement element : jsonRegion.get("childregions").getAsJsonArray()) {
             Region r = deserializationContext.deserialize(element, Region.class);
             region.addContainedRegion(r);
         }
 
-        Inventory inv = deserializationContext.deserialize(jsonElement.getAsJsonObject().get("inventory"), Inventory.class);
+        Inventory inv = deserializationContext.deserialize(jsonRegion.get("inventory"), Inventory.class);
         inv.transferContent(region.getInventory());
 
         return region;

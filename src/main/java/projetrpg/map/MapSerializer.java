@@ -13,12 +13,26 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
     private static HashMap<Integer, NPC> idNPCMap = new HashMap<>();
 
+    private static Map<Integer, Map<Direction, Integer>> directions = new HashMap<>();
+
     public static void addNPC(NPC npc) {
         idNPCMap.put(npc.getId(), npc);
     }
 
     public static NPC getNPC(int id) {
         return idNPCMap.get(id);
+    }
+
+    public static void addRegion(int source, Direction direction, int destination) {
+        if(!directions.containsKey(source)) {
+            directions.put(source, new HashMap<>());
+        }
+
+        directions.get(source).put(direction, destination);
+    }
+
+    public static void addRegion(int source, Map<Direction, Integer> direction) {
+        directions.put(source, direction);
     }
 
     @Override
@@ -46,20 +60,17 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         map.setName(jsonMap.get("name").getAsString());
         map.setHumanCount(jsonMap.get("humancount").getAsInt());
 
-        Map<Integer, Map<Direction, Integer>> directions = new HashMap<>();
-
         //Deserialize the regions
         JsonArray regions = jsonMap.get("regions").getAsJsonArray();
         for(JsonElement region : regions) {
             map.addRegion(deserializationContext.deserialize(region, Region.class));
 
             Type directionsMapType = new TypeToken<Map<Direction, Integer>>(){}.getType();
-            Map<Direction, Integer> regionDirections = deserializationContext.deserialize(
-                    region.getAsJsonObject().get("directions"),
-                    directionsMapType
+            addRegion(region.getAsJsonObject().get("id").getAsInt(),
+                    deserializationContext.deserialize(
+                            region.getAsJsonObject().get("directions"),
+                            directionsMapType)
             );
-
-            directions.put(region.getAsJsonObject().get("id").getAsInt(), regionDirections);
         }
 
         map.setMainCharacter(deserializationContext.deserialize(

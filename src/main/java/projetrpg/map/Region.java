@@ -23,48 +23,57 @@ public class Region implements Describable {
     /**
      * Id of the region
      */
-    private int id;
+    protected int id;
 
     /**
      * Name of the region
      */
-    private String name;
+    protected String name;
     
     /**
      * The parent region, containing this region.
      */
-    private Region parent;
+    protected Region parent;
 
     /**
      * The adjacent regions.
      */
-    private Map<Direction, Region> regionOnDirection;
+    protected Map<Direction, Region> regionOnDirection;
 
     /**
      * The regions DIRECTLY contained in this region.
      */
-    private Set<Region> containedRegions;
+    protected Set<Region> containedRegions;
 
     /**
      * All the entities DIRECTLY contained in this region.
      */
-    private Set<NPC> entities;
+    protected Set<NPC> entities;
 
     /**
      * All the teleporters DIRECTLY contained in this region.
      */
-    private Set<Teleporter> teleporters;
+    protected Set<Teleporter> teleporters;
 
     /**
      * The inventory of this region : all the items DIRECTLY
      * containe in this region..
      */
-    private Inventory inventory;
+    protected Inventory inventory;
 
     /**
      *  The items needed in order to enter this region.
      */
-    private List<Item> itemsNeeded;
+    protected List<Item> itemsNeeded;
+
+    Region() {
+        this.regionOnDirection = new HashMap<>();
+        this.containedRegions = new HashSet<>();
+        this.entities = new HashSet<>();
+        this.teleporters = new HashSet<>();
+        this.inventory = new Inventory(DEFAULT_ROOM_ITEM_CAPACITY);
+        this.itemsNeeded = new ArrayList<>();
+    }
 
     public Region(int id, String name, Region parent) {
         this.id = id;
@@ -79,19 +88,6 @@ public class Region implements Describable {
 
         if(parent != null)
             parent.addContainedRegion(this);
-    }
-
-    public Region(int id, String name, Region parent,
-                  Set<Region> containedRegions, Set<NPC> entities,
-                  Set<Teleporter> teleporters, Inventory inventory) {
-        this.id = id;
-        this.name = name;
-        this.parent = parent;
-        this.regionOnDirection = new HashMap<>();
-        this.containedRegions = containedRegions;
-        this.entities = entities;
-        this.teleporters = teleporters;
-        this.inventory = inventory;
     }
 
     /**
