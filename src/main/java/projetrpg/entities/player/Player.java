@@ -1,10 +1,7 @@
 package projetrpg.entities.player;
 
 import projetrpg.*;
-import projetrpg.entities.Attacker;
-import projetrpg.entities.Damageable;
-import projetrpg.entities.Entity;
-import projetrpg.entities.EntityType;
+import projetrpg.entities.*;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.items.ItemType;
@@ -80,6 +77,8 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
 
     public int getLevel() { return (int) (0.5 * Math.sqrt((double) experience)); }
 
+    private int getLevel(int exp) { return (int) (0.5 * Math.sqrt((double) exp)); }
+
     public Inventory getInventory() {
         return inventory;
     }
@@ -152,7 +151,6 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     public boolean attack(Damageable target) {
         this.isInFight = true;
         if (target.damage(this.baseDamage + ((itemInHand == null)? 0 : itemInHand.getDamage()))) {
-                this.experience+=((Entity) target).getType().getExperienceRewarded();
                 this.isInFight = false;
                 return true;
         }
@@ -228,4 +226,12 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         observers.clear();
     }
 
+    public Boolean canLevelUp(int otherXP) {
+        if (this.getLevel(this.experience+otherXP) > this.getLevel()) {
+            this.experience+=otherXP;
+            return true;
+        }
+        this.experience+=otherXP;
+        return false;
+    }
 }

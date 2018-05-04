@@ -127,16 +127,26 @@ public class CommandListener {
                     Quest savedQuest = this.player.getCurrentQuest();
                     objectiveFound.finish();
                     if (this.player.getCurrentQuest() == null) {
+                        if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded() + savedQuest.getExpRewarded())) {
+                            message += " Congrats, you leveled up ! ";
+                        }
                         message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                 ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
                                 + (". You finished this objectiv : " + objectiveFound.getDescription() +
-                                ". You have now finished this quest : " + savedQuest.getDescription() + "!");
+                                ". You have now finished this quest : " + savedQuest.getDescription() + "!" +
+                                " And gained " + savedQuest.getExpRewarded() + " exp!");
                     } else {
+                        if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
+                            message += " Congrats, you leveled up ! ";
+                        }
                         message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                 ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
                                 + (". You finished this objectiv : " + objectiveFound.getDescription() + ".");
                     }
                 } else {
+                    if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
+                        message += " Congrats, you leveled up ! ";
+                    }
                     message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                             ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
                 }
@@ -409,9 +419,10 @@ public class CommandListener {
     @Listener({"equip"})
     public String equip(Item i) {
         if (i != null) { // If the item can be equipped
+            String message = ("Previously equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
             this.player.equip(i);
-            return("Previously equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()))
-            + ("\nNow equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
+            message+= ("\nNow equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
+            return message;
         } else { // If the item can not be equipped
             return("Error : check if you have this item in your inventory.");
         }
