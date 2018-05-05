@@ -59,16 +59,18 @@
             <VBox prefHeight="515.0" prefWidth="110.0" GridPane.rowSpan="3">
                <children>
                   <Label id="playerName" fx:id="playerName" />
-                  <Label prefHeight="32.0" prefWidth="60.0" text="Inventory : " />
-                  <ListView id="inventory" fx:id="inventoryDisplay" prefHeight="454.0" prefWidth="40.0" VBox.vgrow="ALWAYS" />
+                  <Label prefHeight="32.0" prefWidth="90.0" text="Inventory : " wrapText="true" />
+                  <ListView id="inventory" fx:id="inventoryDisplay" prefHeight="98.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
+                   <Label prefHeight="37.0" prefWidth="126.0" text="Spells : " wrapText="true" />
+                   <ListView fx:id="spellsDisplay" prefHeight="179.0" prefWidth="113.0" />
                </children>
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.vgrow="ALWAYS">
                <children>
-                  <Label id="location" prefHeight="29.0" prefWidth="83.0" text="Location : " />
-                  <TextArea id="logs" fx:id="locationField" editable="false" prefHeight="56.0" prefWidth="547.0" />
-                  <TextFlow id="regionDescription" prefHeight="58.0" prefWidth="560.0" VBox.vgrow="ALWAYS" />
-                  <Label prefHeight="17.0" prefWidth="73.0" text="Story line" />
+                  <Label id="location" prefHeight="41.0" prefWidth="83.0" text="Location : " />
+                  <TextArea id="logs" fx:id="locationField" editable="false" prefHeight="72.0" prefWidth="547.0" />
+                  <TextFlow id="regionDescription" prefHeight="50.0" prefWidth="547.0" VBox.vgrow="ALWAYS" />
+                  <Label prefHeight="50.0" prefWidth="90.0" text="Story line : " wrapText="true" />
                   <TextArea id="logs" fx:id="textLogs" editable="false" prefHeight="271.0" prefWidth="547.0" />
                </children>
             </VBox>
@@ -83,12 +85,12 @@
             </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowSpan="3">
                <children>
-                  <Label prefHeight="32.0" prefWidth="87.0" text="Current Quest : " />
+                  <Label prefHeight="51.0" prefWidth="87.0" text="Current Quest : " wrapText="true" />
                   <TextArea fx:id="questField" editable="false" prefHeight="50.0" prefWidth="113.0" />
-                  <Label prefHeight="56.0" prefWidth="113.0" text="Current quest objectives :" wrapText="true" />
+                  <Label prefHeight="34.0" prefWidth="113.0" text="Objectives :" wrapText="true" />
                   <TextFlow id="hints" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <ListView id="mission" fx:id="objectivesDisplay" prefHeight="202.0" prefWidth="112.0" />
+                        <ListView id="mission" fx:id="objectivesDisplay" prefHeight="209.0" prefWidth="112.0" />
                      </children></TextFlow>
                </children>
             </VBox>

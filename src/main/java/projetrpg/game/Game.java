@@ -2,7 +2,9 @@ package projetrpg.game;
 
 import projetrpg.commands.*;
 import projetrpg.entities.Entity;
+import projetrpg.entities.NPC;
 import projetrpg.entities.items.Item;
+import projetrpg.entities.player.Ability;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
 import projetrpg.map.Teleporter;
@@ -28,6 +30,7 @@ public class Game {
 
     private CommandParser parser = new CommandParser();
 
+
     public Game(MainMap m) {
         this.mainMap = m;
         manuel = "User guide : \n" +
@@ -39,7 +42,7 @@ public class Game {
                 "-equip : on an item present in your inventory \n" +
                 "-ditch : on an item thats present in your inventory \n" +
                 "-unequip : on an item you have in head \n" +
-                "-use : on an item you have in your inventory \n" +
+                "-use : on an item you have in your inventory or an ability you learned\n" +
                 "-see : on an attribute you wish to see the status" + "\n" +
                 "-describe location : to see your locations's infos\n" +
                 "-describe : on an entity, an item, or a teleporter in order to see its infos\n" +
@@ -47,14 +50,15 @@ public class Game {
                 "-repair : on a teleporter you wish to repair\n" +
                 "-start : on a quest in order to start it\n" +
                 "-giveup : in order to abandon your current quest\n" +
+                "-learn : on an ability\n" +
                 "-help : to see the user guide.\n\n";
-
         commandRegisterer();
     }
 
     public String getManuel() {
         return manuel;
     }
+
 
     public void commandRegisterer() {
 
@@ -157,10 +161,24 @@ public class Game {
             return null;
         });
 
-        parser.registerCommand("use", Item.class, (player, arg)-> {
+        parser.registerCommand("use", Object.class, (player, arg)-> {
             for (Item i : player.getInventory().getAll()) {
                 if (i.getName().toLowerCase().equals(arg.toLowerCase())) {
                     return i;
+                }
+            }
+            for (Ability a : player.getAbilities()) {
+                if (a.getName().equalsIgnoreCase(arg)) {
+                    return a;
+                }
+            }
+            return null;
+        });
+
+        parser.registerCommand("on", NPC.class, (player, arg) -> {
+            for (NPC e : player.getLocation().getEntities()) {
+                if (e.getName().equalsIgnoreCase(arg)) {
+                    return e;
                 }
             }
             return null;
@@ -173,6 +191,15 @@ public class Game {
             for (Field field : fields) {
                 if (field.isAnnotationPresent(Expose.class)) {
                     if (field.getAnnotation(Expose.class).value().equalsIgnoreCase(arg)) return field;
+                }
+            }
+            return null;
+        });
+
+        parser.registerCommand("learn", Ability.class, (player, arg) -> {
+            for (Ability a : player.abilitiesAbleToLearn()) {
+                if (a.getName().equalsIgnoreCase(arg)) {
+                    return a;
                 }
             }
             return null;

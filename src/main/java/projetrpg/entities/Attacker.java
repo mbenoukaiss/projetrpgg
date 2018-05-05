@@ -7,6 +7,6 @@ package projetrpg.entities;
  * @author mbenoukaiss
  */
 public interface Attacker {
-    public boolean attack(Damageable target);
+    public boolean attack(Damageable target, int damages);
     public int baseDamage();
 }

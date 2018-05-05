@@ -15,6 +15,7 @@ import javafx.util.Callback;
 import projetrpg.commands.CommandParser;
 import projetrpg.commands.InvalidCommandException;
 import projetrpg.entities.items.Item;
+import projetrpg.entities.player.Ability;
 import projetrpg.quest.Objective;
 
 import java.net.URL;
@@ -38,6 +39,9 @@ public class GameController {
     private ListView<String> objectivesDisplay = new ListView<>();
     @FXML
     private TextArea questField = new TextArea("");
+    @FXML
+    private ListView<String> spellsDisplay = new ListView<>();
+
 
     GameController(Game game) {
         this.game = game;
@@ -62,9 +66,11 @@ public class GameController {
             textLogs.appendText(logs);
             commandField.clear();
             inventoryDisplay();
+            inventoryDisplay();
             locationDisplay();
             questDisplay();
             objectivesDisplay();
+            spellsDisplay();
         }
     }
 
@@ -74,6 +80,12 @@ public class GameController {
             items.add(i.getName());
         }
         inventoryDisplay.setItems(items);
+        if (this.game.getMainMap().getMainCharacter().getItemInHand() != null) {
+            inventoryDisplay.getSelectionModel().select(this.game.getMainMap().getMainCharacter().getItemInHand().getName());
+        } else {
+            inventoryDisplay.getSelectionModel().select("");
+        }
+
     }
 
     public void  objectivesDisplay() {
@@ -124,6 +136,16 @@ public class GameController {
         }
     }
 
+    public void spellsDisplay() {
+        ObservableList<String> spells = FXCollections.observableArrayList();
+        if (game.getMainMap().getMainCharacter().getAbilities() != null) {
+            for (Ability a : this.game.getMainMap().getMainCharacter().getAbilities()) {
+                spells.add(a.getName());
+            }
+        }
+        spellsDisplay.setItems(spells);
+    }
+
     public void initialize() {
         textLogs.setWrapText(true);
         textLogs.appendText(game.getManuel() +
@@ -132,6 +154,7 @@ public class GameController {
         inventoryDisplay();
         locationDisplay();
         objectivesDisplay();
+        spellsDisplay();
         questDisplay();
     }
 }

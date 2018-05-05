@@ -2,6 +2,7 @@ package projetrpg.game;
 
 import projetrpg.Describable;
 import projetrpg.commands.Listener;
+import projetrpg.entities.player.Ability;
 import projetrpg.game.Game;
 import projetrpg.entities.Damageable;
 import projetrpg.entities.Entity;
@@ -112,7 +113,7 @@ public class CommandListener {
             + ("\nHps of the ennemy before the assault : " + e.getHp())
             + ("\nYour Hps before the attack : " + player.getHp())
             + ("\n......\nHes attacking you!");
-            if (this.player.attack(e)) { // If the attack kills the target
+            if (this.player.attack(e, (this.player.getItemInHand() == null )? this.player.baseDamage() : this.player.gettrueDamage())) { // If the attack kills the target
                 Objective objectiveFound = null;
                 boolean isConcerned = false;
                 if (this.player.getCurrentQuest() != null) {
@@ -128,29 +129,44 @@ public class CommandListener {
                     objectiveFound.finish();
                     if (this.player.getCurrentQuest() == null) {
                         if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded() + savedQuest.getExpRewarded())) {
-                            message += " Congrats, you leveled up ! ";
+                            message += " Congrats, you leveled up ! You can now learn :";
+                            for (Ability a : this.player.abilitiesAbleToLearn()) {
+                                message += a.getName() + ", ";
+                            }
+                            message = message.substring(0, message.length()-2) + ". ";
                         }
                         message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                 ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
                                 + (". You finished this objectiv : " + objectiveFound.getDescription() +
                                 ". You have now finished this quest : " + savedQuest.getDescription() + "!" +
                                 " And gained " + savedQuest.getExpRewarded() + " exp!");
+                        return message;
                     } else {
                         if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
-                            message += " Congrats, you leveled up ! ";
+                            message += " Congrats, you leveled up ! You can now learn :";
+                            for (Ability a : this.player.abilitiesAbleToLearn()) {
+                                message += a.getName() + ", ";
+                            }
+                            message = message.substring(0, message.length()-2) + ". ";
                         }
                         message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                 ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
                                 + (". You finished this objectiv : " + objectiveFound.getDescription() + ".");
+                        return message;
                     }
                 } else {
                     if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
-                        message += " Congrats, you leveled up ! ";
+                        message += " Congrats, you leveled up ! You can now learn :";
+                        for (Ability a : this.player.abilitiesAbleToLearn()) {
+                            message += a.getName() + ", ";
+                        }
+                        message = message.substring(0, message.length()-2) + ". ";
                     }
                     message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                             ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
+                    return message;
                 }
-            } else if (((NPC) e).attack(this.player)) { // If the target kills the player
+            } else if (((NPC) e).attack(this.player, 0)) { // If the target kills the player
                 ((NPC) e).setHps(((NPC) e).getBaseHps());
                 message += ("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
                         .getName()+ ".");
@@ -159,15 +175,16 @@ public class CommandListener {
                 ((NPC) e).setInFight(false);
                 this.player.setInFight(false);
                 this.player.setHps(this.player.getBaseHps());
+                return message;
             } else { // The fight is still going on
                 message += ("Hps of the ennemy after the assault : " + e.getHp())
                  + ("\nYour Hps after the attack : " + player.getHp())
                  + ("\nYou may now flee,keep on fighting or equip an item.");
+                return message;
             }
         } else { // If the damageable targeted cannot be attacked
             return("Error : check if this entity is in your location.");
         }
-        return message;
     }
 
     @Listener({"start"})
@@ -213,8 +230,17 @@ public class CommandListener {
                     Quest savedQuest = this.player.getCurrentQuest();
                     objectiveFound.finish();
                     if (this.player.getCurrentQuest() == null) {
-                        return e.getDialogue() + " You finished this objective : " + objectiveFound.getDescription() +
+                        String message = "";
+                        if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
+                            message += " Congrats, you leveled up ! You can now learn :";
+                            for (Ability a : this.player.abilitiesAbleToLearn()) {
+                                message += a.getName() + ", ";
+                            }
+                            message = message.substring(0, message.length()-2) + ". ";
+                        }
+                        message += e.getDialogue() + " You finished this objective : " + objectiveFound.getDescription() +
                                 ". You have now finished this quest : " + savedQuest.getDescription() + "!";
+                        return message;
                     }
                     return e.getDialogue() + " You finished this objective : " + objectiveFound.getDescription() + ".";
                 }
@@ -247,15 +273,16 @@ public class CommandListener {
      * This method is called whenever the user wishes to use an item.
      */
     @Listener({"use"})
-    public String use(Item e) {
-        if (!this.player.isInFight()) { // If the player is not engaged in a fight
-            if (e != null) { // If the item is in the player's inventory
+    public String use(Object o) {
+        if (o != null){ // If the player is not engaged in a fight
+            if (!this.player.isInFight() && o instanceof Item) { // If the item is in the player's inventory
+                Item e = (Item) o;
                 Objective objectiveFound = null;
                 boolean isConcerned = false;
                 if (this.player.getCurrentQuest() != null) {
-                    for (Objective o : this.player.getCurrentQuest().getObjectives()) {
-                        if (o.getType() == ObjectiveType.USE && o.getConcernedItem() == e) {
-                            objectiveFound = o;
+                    for (Objective obj : this.player.getCurrentQuest().getObjectives()) {
+                        if (obj.getType() == ObjectiveType.USE && obj.getConcernedItem() == e) {
+                            objectiveFound = obj;
                             isConcerned = true;
                         }
                     }
@@ -268,13 +295,22 @@ public class CommandListener {
                                 this.player.getHp() + e.getType().getHpGiven());
                         this.player.consume(e);
                         if (isConcerned) {
+                            String message= "";
                             Quest savedQuest = this.player.getCurrentQuest();
                             objectiveFound.finish();
                             if (this.player.getCurrentQuest() == null) {
-                                return("You ate : " + e.getName() + ", + " + e.getType().getHpGiven() + " HPS") +
+                                if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
+                                    message += " Congrats, you leveled up ! You can now learn :";
+                                    for (Ability a : this.player.abilitiesAbleToLearn()) {
+                                        message += a.getName() + ", ";
+                                    }
+                                    message = message.substring(0, message.length()-2) + ". ";
+                                }
+                                message += ("You ate : " + e.getName() + ", + " + e.getType().getHpGiven() + " HPS") +
                                         ("\nYou now have " + this.player.getHp() + " HPS.") +
                                         ("You finished this objective : " + objectiveFound.getDescription() +
                                                 ". You have now finished this quest : " + savedQuest.getDescription() + "!");
+                                return message;
                             }
                             return("You ate : " + e.getName() + ", + " + e.getType().getHpGiven() + " HPS") +
                                     ("\nYou now have " + this.player.getHp() + " HPS.") +
@@ -287,9 +323,18 @@ public class CommandListener {
                             Quest savedQuest = this.player.getCurrentQuest();
                             objectiveFound.finish();
                             if (this.player.getCurrentQuest() == null) {
-                                return ("You used : " + e.getName() +
+                                String message = "";
+                                if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
+                                    message += " Congrats, you leveled up ! You can now learn :";
+                                    for (Ability a : this.player.abilitiesAbleToLearn()) {
+                                        message += a.getName() + ", ";
+                                    }
+                                    message = message.substring(0, message.length()-2) + ". ";
+                                }
+                                message += ("You used : " + e.getName() +
                                         ("You finished this objective : " + objectiveFound.getDescription() +
                                                 (". You have now finished this quest : " + savedQuest.getDescription() + "!")));
+                                return message;
                             }
                             return "You used : " + e.getName() + ("You finished this objective : "
                                     + objectiveFound.getDescription());
@@ -298,11 +343,186 @@ public class CommandListener {
                     default:
                         return "";
                 }
-            } else { // If the item is not in the player's inventory
-                return("Error : check if you have this item in your inventory.");
+            } else if (this.player.isInFight() && o instanceof Ability){ // If the item is not in the player's inventory
+                Damageable e = this.player.getEnnemy();
+                Objective objectiveFound = null;
+                Ability a = (Ability) o;
+                String message = "You used " + a.getName() + " on " + this.player.getEnnemy().getName() + "."
+                        + (player.getEnnemy().getName() + " : " + this.player.getEnnemy().getDialogue())
+                        + ("\nHps of the ennemy before the assault : " + player.getEnnemy().getHp()
+                        + ("\nYour Hps before the attack : " + player.getHp())
+                        + ("\n......\nHes attacking you!"));
+                if (this.player.attack(player.getEnnemy(), (int)a.getDamage())) {
+                    boolean isConcerned = false;
+                    if (this.player.getCurrentQuest() != null) {
+                        for (Objective obj : this.player.getCurrentQuest().getObjectives()) {
+                            if (obj.getType() == ObjectiveType.KILL && obj.getConcernedNPC() == e) {
+                                objectiveFound = obj;
+                                isConcerned = true;
+                            }
+                        }
+                    }
+                    if (isConcerned) {
+                        Quest savedQuest = this.player.getCurrentQuest();
+                        objectiveFound.finish();
+                        if (this.player.getCurrentQuest() == null) {
+                            if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded() + savedQuest.getExpRewarded())) {
+                                message += " Congrats, you leveled up ! You can now learn :";
+                                for (Ability ab : this.player.abilitiesAbleToLearn()) {
+                                    message += ab.getName() + ", ";
+                                }
+                                message = message.substring(0, message.length()-2) + ". ";
+                            }
+                            message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                                    ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
+                                    + (". You finished this objectiv : " + objectiveFound.getDescription() +
+                                    ". You have now finished this quest : " + savedQuest.getDescription() + "!" +
+                                    " And gained " + savedQuest.getExpRewarded() + " exp!");
+                        } else {
+                            if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
+                                message += " Congrats, you leveled up ! You can now learn :";
+                                for (Ability ab : this.player.abilitiesAbleToLearn()) {
+                                    message += ab.getName() + ", ";
+                                }
+                                message = message.substring(0, message.length()-2) + ". ";
+                            }
+                            message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                                    ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
+                                    + (". You finished this objectiv : " + objectiveFound.getDescription() + ".");
+                        }
+                    } else {
+                        if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
+                            message += " Congrats, you leveled up ! You can now learn :";
+                            for (Ability ab : this.player.abilitiesAbleToLearn()) {
+                                message += ab.getName() + ", ";
+                            }
+                            message = message.substring(0, message.length()-2) + ". ";
+                        }
+                        message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                                ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
+                    }
+                } else if (((NPC) e).attack(this.player, 0)) { // If the target kills the player
+                    ((NPC) e).setHps(((NPC) e).getBaseHps());
+                    message += ("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
+                            .getName()+ ".");
+                    this.player.setLocation(game.getMainMap().getSpawnPoint());
+                    message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
+                    ((NPC) e).setInFight(false);
+                    this.player.setInFight(false);
+                    this.player.setHps(this.player.getBaseHps());
+                } else { // The fight is still going on
+                    message += ("Hps of the ennemy after the assault : " + e.getHp())
+                            + ("\nYour Hps after the attack : " + player.getHp())
+                            + ("\nYou may now flee,keep on fighting or equip an item.");
+                }
+                return message;
+            } else if (!this.player.isInFight() && o instanceof Ability) {
+                this.player.setMana(this.player.getMana()-((Ability) o).getCost());
+                return "You used " + ((Ability) o).getName() + " on nothing.";
+            } else {
+                return("Error : You can only fight or flee.");
             }
         } else { // If the player is engaged in a fight
-            return("Error : You can only fight or flee.");
+            return("Error : check if you have this item in your inventory or if you learned this ability.");
+        }
+    }
+
+    /**
+     * This method is called whenever the user wishes to use an ability on an entity
+     */
+    @Listener({"use", "on"})
+    public String useOn(Ability a, NPC e) {
+        if (a != null && e != null) {
+            if (this.player.getMana() >= a.getCost()) {
+                this.player.setMana(this.player.getMana()-a.getCost());
+                Objective objectiveFound = null;
+                String message = "You used " + a.getName() + " on " + e.getName() + "."
+                        + (e.getName() + " : " + e.getDialogue())
+                        + ("\nHps of the ennemy before the assault : " + e.getHp()
+                        + ("\nYour Hps before the attack : " + player.getHp())
+                        + ("\n......\nHes attacking you!"));
+                if (this.player.attack(e, (int) a.getDamage())) {
+                    boolean isConcerned = false;
+                    if (this.player.getCurrentQuest() != null) {
+                        for (Objective obj : this.player.getCurrentQuest().getObjectives()) {
+                            if (obj.getType() == ObjectiveType.KILL && obj.getConcernedNPC() == e) {
+                                objectiveFound = obj;
+                                isConcerned = true;
+                            }
+                        }
+                    }
+                    if (isConcerned) {
+                        Quest savedQuest = this.player.getCurrentQuest();
+                        objectiveFound.finish();
+                        if (this.player.getCurrentQuest() == null) {
+                            if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded() + savedQuest.getExpRewarded())) {
+                                message += " Congrats, you leveled up ! You can now learn :";
+                                for (Ability ab : this.player.abilitiesAbleToLearn()) {
+                                    message += ab.getName() + ", ";
+                                }
+                                message = message.substring(0, message.length() - 2) + ". ";
+                            }
+                            message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                                    ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
+                                    + (". You finished this objectiv : " + objectiveFound.getDescription() +
+                                    ". You have now finished this quest : " + savedQuest.getDescription() + "!" +
+                                    " And gained " + savedQuest.getExpRewarded() + " exp!");
+                        } else {
+                            if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
+                                message += " Congrats, you leveled up ! You can now learn :";
+                                for (Ability ab : this.player.abilitiesAbleToLearn()) {
+                                    message += ab.getName() + ", ";
+                                }
+                                message = message.substring(0, message.length() - 2) + ". ";
+                            }
+                            message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                                    ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
+                                    + (". You finished this objectiv : " + objectiveFound.getDescription() + ".");
+                        }
+                    } else {
+                        if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
+                            message += " Congrats, you leveled up ! You can now learn :";
+                            for (Ability ab : this.player.abilitiesAbleToLearn()) {
+                                message += ab.getName() + ", ";
+                            }
+                            message = message.substring(0, message.length() - 2) + ". ";
+                        }
+                        message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
+                                ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
+                    }
+                } else if (((NPC) e).attack(this.player, 0)) { // If the target kills the player
+                    ((NPC) e).setHps(((NPC) e).getBaseHps());
+                    message += ("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
+                            .getName() + ".");
+                    this.player.setLocation(game.getMainMap().getSpawnPoint());
+                    message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
+                    ((NPC) e).setInFight(false);
+                    this.player.setInFight(false);
+                    this.player.setHps(this.player.getBaseHps());
+                } else { // The fight is still going on
+                    message += ("Hps of the ennemy after the assault : " + e.getHp())
+                            + ("\nYour Hps after the attack : " + player.getHp())
+                            + ("\nYou may now flee,keep on fighting or equip an item.");
+                }
+                return message;
+            } else {
+                return "You dont have enough mana in order to cast this spell";
+            }
+        } else {
+            return "Check if you have learned this ability of if the entity is nearby";
+        }
+    }
+
+    /**
+     * This method is called whenever the user wishes to learn an ability
+     */
+    @Listener({"learn"})
+    public String learn(Ability a) {
+        if (a != null) {
+            this.player.learn(a);
+            return "You learned this ability " + a.getName() + "!";
+        } else {
+            return "Error : Check if you can learn this ability or if it even exists.";
         }
     }
 
@@ -396,9 +616,18 @@ public class CommandListener {
                     this.player.pickUp(i);
                     objectiveFound.finish();
                     if (this.player.getCurrentQuest() == null) {
-                        return("You picked up " + i.getName() + ".") +
+                        String message = "";
+                        if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
+                            message += " Congrats, you leveled up ! You can now learn :";
+                            for (Ability a : this.player.abilitiesAbleToLearn()) {
+                                message += a.getName() + ", ";
+                            }
+                            message = message.substring(0, message.length()-2) + ". ";
+                        }
+                        message += ("You picked up " + i.getName() + ".") +
                                 ("You finished this objective : " + objectiveFound.getDescription() +
                                         ". You have now finished this quest : " + savedQuest.getDescription() + "!");
+                        return message;
                     }
                     return("You picked up " + i.getName() + ".") +
                             ("You finished this objective : " + objectiveFound.getDescription() + ".");

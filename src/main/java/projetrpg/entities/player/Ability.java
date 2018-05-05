@@ -32,11 +32,17 @@ public class Ability implements Describable {
      */
     private AttackType type;
 
-    public Ability(String name, int minLevelRequired, double damage, AttackType type) {
+    private boolean isLocked;
+
+    private int cost;
+
+    public Ability(String name, int minLevelRequired, double damage, AttackType type, int cost) {
         this.name = name;
         this.minLevelRequired = minLevelRequired;
         this.damage = damage;
         this.type = type;
+        this.isLocked = true;
+        this.cost = cost;
     }
 
     @Override
@@ -60,4 +66,17 @@ public class Ability implements Describable {
     public AttackType getType() {
         return this.type;
     }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
 }
+

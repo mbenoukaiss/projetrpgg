@@ -155,7 +155,7 @@ public class NPC extends Entity implements Describable, Damageable, Attacker, IO
      * @return true if the attack killed the target, false if not.
      */
     @Override
-    public boolean attack(Damageable target) {
+    public boolean attack(Damageable target, int damage) {
         return target.damage(this.baseDamage);
     }
 

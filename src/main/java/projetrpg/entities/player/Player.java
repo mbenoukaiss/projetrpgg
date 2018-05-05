@@ -40,10 +40,18 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     @Expose("item")
     private Item itemInHand;
 
+    @Expose("mana")
+    private int mana;
+
+    private int baseMana;
+
     /**
      * Their abilities.
      */
     private HashSet<Ability> abilities;
+
+    private Set<Ability> AllAbilities;
+
 
     /**
      * The damage it deals without any weapon.
@@ -60,7 +68,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
 
     private Set<IObserver> observers;
 
-    public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage, EntityType type, boolean isHostile, int maxCapacity) {
+    private NPC ennemy;
+
+    public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage,
+                  EntityType type, boolean isHostile, int maxCapacity, int mana) {
         super(name, location, type, isHostile, hp);
         this.experience = experience;
         this.itemInHand = itemInHand;
@@ -68,7 +79,18 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         abilities = new HashSet<>();
         inventory = new Inventory(maxCapacity);
         observers = new HashSet<>();
+        this.AllAbilities = new HashSet<>();
+        ennemy = null;
+        this.mana = mana;
+        this.baseMana = mana;
+    }
 
+    public int getMana() {
+        return mana;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
     }
 
     public int getExperience() {
@@ -148,13 +170,19 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     }
 
     @Override
-    public boolean attack(Damageable target) {
+    public boolean attack(Damageable target, int damage) {
         this.isInFight = true;
-        if (target.damage(this.baseDamage + ((itemInHand == null)? 0 : itemInHand.getDamage()))) {
+        this.ennemy = (NPC) target;
+        if (target.damage(damage)) {
                 this.isInFight = false;
+                this.ennemy = null;
                 return true;
         }
         return false;
+    }
+
+    public NPC getEnnemy() {
+        return ennemy;
     }
 
     public void pickUp(Item i) {
@@ -194,7 +222,6 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
 
     @Override
     public void update(IObservable a) {
-        this.experience+=((Quest) a).getExpRewarded();
         ((Quest) a).getReward().forEach(item -> this.inventory.add(item));
         this.currentQuest = null;
     }
@@ -229,9 +256,31 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     public Boolean canLevelUp(int otherXP) {
         if (this.getLevel(this.experience+otherXP) > this.getLevel()) {
             this.experience+=otherXP;
+            for (Ability a : this.AllAbilities) {
+                if (a.getMinLevelRequired() <= this.getLevel()) {
+                    a.setLocked(false);
+                }
+            }
             return true;
         }
         this.experience+=otherXP;
         return false;
+    }
+    public void addAbbility(Ability a) {
+        this.AllAbilities.add(a);
+    }
+
+    public void learn(Ability a) {
+        this.abilities.add(a);
+    }
+
+    public Set<Ability> abilitiesAbleToLearn() {
+        Set<Ability> ab = new HashSet<>();
+        for (Ability a : this.AllAbilities) {
+            if (!a.isLocked()) {
+                ab.add(a);
+            }
+        }
+        return ab;
     }
 }

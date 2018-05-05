@@ -6,6 +6,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
+import projetrpg.entities.player.Ability;
+import projetrpg.entities.player.AttackType;
 import projetrpg.entities.player.Player;
 import projetrpg.utils.Pair;
 import projetrpg.map.*;
@@ -81,24 +83,28 @@ public class Main extends Application {
         forest.addItemToInventory(Item.TOOLKIT);
 
         //NPC's initialization.
-        NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 100,
-                20, "Im gonna kill you !");
+        NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 300,
+                10, "Im gonna kill you !");
+        NPC bog = new NPC("Bog", estRegion, EntityType.VAMPIRE, true, 10, 1,
+                "I'm weak");
         NPC jean = new NPC("Jean", southRegion, EntityType.VILLAGER, false, 100,
                 0, "Hey, you are our hero...blablabla....very important... save the universe ... " +
                 "blablabla... You may now start your first Quest : A new Dawn!");
         //Player initialization.
         Player player = new Player("Hervé", 0, centerRegion, null, 100,
-                10, EntityType.PLAYER, false, 50);
+                10, EntityType.PLAYER, false, 50, 50);
 
         Collection<Quest> quests = new HashSet<>();
         Objective firstObjective = new Objective("Kill Zorg", ObjectiveType.KILL);
         Objective secondObjective = new Objective("Pickup the Apple", ObjectiveType.PICKUP);
+        Objective thirdObjective = new Objective("Use the Apple", ObjectiveType.USE);
         Quest firstQuest = new Quest(10, "A new Dawn", "Start your beautiful journey " +
                 "towards saving the universe", 0);
         quests.add(firstQuest);
 
         firstQuest.linkObjective(firstObjective);
         firstQuest.linkObjective(secondObjective);
+        firstQuest.linkObjective(thirdObjective);
         firstQuest.addObserver(player);
         firstQuest.linkRewardedItem(Item.APPLE);
         firstQuest.linkRewardedItem(Item.FLASHLIGHT);
@@ -106,6 +112,13 @@ public class Main extends Application {
         firstObjective.addObserver(firstQuest);
         secondObjective.setConcernedItem(Item.APPLE);
         secondObjective.addObserver(firstQuest);
+        thirdObjective.addObserver(firstQuest);
+        thirdObjective.setConcernedItem(Item.APPLE);
+
+        Ability fireBall = new Ability("FireBall", 1, 30, AttackType.LINE, 10);
+        Ability waterBeam = new Ability("WaterBeam", 2, 50, AttackType.AOE, 20);
+        player.addAbbility(fireBall);
+        player.addAbbility(waterBeam);
 
         //MainMap initialization.
         mainMap.setMainCharacter(player);
