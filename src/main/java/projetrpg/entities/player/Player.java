@@ -270,14 +270,18 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         this.AllAbilities.add(a);
     }
 
-    public void learn(Ability a) {
-        this.abilities.add(a);
+    public String learn(Ability a) {
+        if (!this.abilities.contains(a)) {
+            this.abilities.add(a);
+            return "You learned this ability " + a.getName() + "!";
+        }
+        return "You have already learned this spell";
     }
 
     public Set<Ability> abilitiesAbleToLearn() {
         Set<Ability> ab = new HashSet<>();
         for (Ability a : this.AllAbilities) {
-            if (!a.isLocked()) {
+            if (!a.isLocked() && !this.abilities.contains(a)) {
                 ab.add(a);
             }
         }

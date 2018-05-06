@@ -94,14 +94,14 @@ public class GameController {
             public ListCell<String> call(ListView<String> param) {
                 return new ListCell<String>() {
                     {
-                        prefWidthProperty().bind(objectivesDisplay.widthProperty().subtract(20)); // 1
-                        setMaxWidth(Control.USE_PREF_SIZE); //2
+                        prefWidthProperty().bind(objectivesDisplay.widthProperty().subtract(20));
+                        setMaxWidth(Control.USE_PREF_SIZE);
                     }
 
                     @Override
                     protected void updateItem(String item, boolean empty) {
                         if (item != null && !empty) {
-                            this.setWrapText(true); // 3
+                            this.setWrapText(true);
                             setText(item);
                         } else {
                             setText(null);

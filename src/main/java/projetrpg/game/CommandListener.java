@@ -519,8 +519,7 @@ public class CommandListener {
     @Listener({"learn"})
     public String learn(Ability a) {
         if (a != null) {
-            this.player.learn(a);
-            return "You learned this ability " + a.getName() + "!";
+            return this.player.learn(a);
         } else {
             return "Error : Check if you can learn this ability or if it even exists.";
         }
