@@ -18,6 +18,7 @@ import projetrpg.quest.ObjectiveType;
 import projetrpg.quest.Quest;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 
 /**
@@ -129,11 +130,7 @@ public class CommandListener {
                     objectiveFound.finish();
                     if (this.player.getCurrentQuest() == null) {
                         if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded() + savedQuest.getExpRewarded())) {
-                            message += " Congrats, you leveled up ! You can now learn :";
-                            for (Ability a : this.player.abilitiesAbleToLearn()) {
-                                message += a.getName() + ", ";
-                            }
-                            message = message.substring(0, message.length()-2) + ". ";
+                            message+=this.canLevelUp();
                         }
                         message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                 ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
@@ -142,12 +139,8 @@ public class CommandListener {
                                 " And gained " + savedQuest.getExpRewarded() + " exp!");
                         return message;
                     } else {
-                        if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
-                            message += " Congrats, you leveled up ! You can now learn :";
-                            for (Ability a : this.player.abilitiesAbleToLearn()) {
-                                message += a.getName() + ", ";
-                            }
-                            message = message.substring(0, message.length()-2) + ". ";
+                            if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
+                                message+=this.canLevelUp();
                         }
                         message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                 ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
@@ -156,11 +149,7 @@ public class CommandListener {
                     }
                 } else {
                     if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
-                        message += " Congrats, you leveled up ! You can now learn :";
-                        for (Ability a : this.player.abilitiesAbleToLearn()) {
-                            message += a.getName() + ", ";
-                        }
-                        message = message.substring(0, message.length()-2) + ". ";
+                        message+=this.canLevelUp();
                     }
                     message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                             ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
@@ -232,11 +221,7 @@ public class CommandListener {
                     if (this.player.getCurrentQuest() == null) {
                         String message = "";
                         if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
-                            message += " Congrats, you leveled up ! You can now learn :";
-                            for (Ability a : this.player.abilitiesAbleToLearn()) {
-                                message += a.getName() + ", ";
-                            }
-                            message = message.substring(0, message.length()-2) + ". ";
+                            message+=this.canLevelUp();
                         }
                         message += e.getDialogue() + " You finished this objective : " + objectiveFound.getDescription() +
                                 ". You have now finished this quest : " + savedQuest.getDescription() + "!";
@@ -300,11 +285,7 @@ public class CommandListener {
                             objectiveFound.finish();
                             if (this.player.getCurrentQuest() == null) {
                                 if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
-                                    message += " Congrats, you leveled up ! You can now learn :";
-                                    for (Ability a : this.player.abilitiesAbleToLearn()) {
-                                        message += a.getName() + ", ";
-                                    }
-                                    message = message.substring(0, message.length()-2) + ". ";
+                                    message+=this.canLevelUp();
                                 }
                                 message += ("You ate : " + e.getName() + ", + " + e.getType().getHpGiven() + " HPS") +
                                         ("\nYou now have " + this.player.getHp() + " HPS.") +
@@ -325,11 +306,7 @@ public class CommandListener {
                             if (this.player.getCurrentQuest() == null) {
                                 String message = "";
                                 if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
-                                    message += " Congrats, you leveled up ! You can now learn :";
-                                    for (Ability a : this.player.abilitiesAbleToLearn()) {
-                                        message += a.getName() + ", ";
-                                    }
-                                    message = message.substring(0, message.length()-2) + ". ";
+                                    message+=this.canLevelUp();
                                 }
                                 message += ("You used : " + e.getName() +
                                         ("You finished this objective : " + objectiveFound.getDescription() +
@@ -367,11 +344,7 @@ public class CommandListener {
                         objectiveFound.finish();
                         if (this.player.getCurrentQuest() == null) {
                             if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded() + savedQuest.getExpRewarded())) {
-                                message += " Congrats, you leveled up ! You can now learn :";
-                                for (Ability ab : this.player.abilitiesAbleToLearn()) {
-                                    message += ab.getName() + ", ";
-                                }
-                                message = message.substring(0, message.length()-2) + ". ";
+                                message+=this.canLevelUp();
                             }
                             message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                     ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
@@ -380,11 +353,7 @@ public class CommandListener {
                                     " And gained " + savedQuest.getExpRewarded() + " exp!");
                         } else {
                             if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
-                                message += " Congrats, you leveled up ! You can now learn :";
-                                for (Ability ab : this.player.abilitiesAbleToLearn()) {
-                                    message += ab.getName() + ", ";
-                                }
-                                message = message.substring(0, message.length()-2) + ". ";
+                                message+=this.canLevelUp();
                             }
                             message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                     ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
@@ -392,11 +361,7 @@ public class CommandListener {
                         }
                     } else {
                         if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
-                            message += " Congrats, you leveled up ! You can now learn :";
-                            for (Ability ab : this.player.abilitiesAbleToLearn()) {
-                                message += ab.getName() + ", ";
-                            }
-                            message = message.substring(0, message.length()-2) + ". ";
+                            message+=this.canLevelUp();
                         }
                         message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                 ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
@@ -456,11 +421,7 @@ public class CommandListener {
                         objectiveFound.finish();
                         if (this.player.getCurrentQuest() == null) {
                             if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded() + savedQuest.getExpRewarded())) {
-                                message += " Congrats, you leveled up ! You can now learn :";
-                                for (Ability ab : this.player.abilitiesAbleToLearn()) {
-                                    message += ab.getName() + ", ";
-                                }
-                                message = message.substring(0, message.length() - 2) + ". ";
+                                message+=this.canLevelUp();
                             }
                             message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                     ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
@@ -469,11 +430,7 @@ public class CommandListener {
                                     " And gained " + savedQuest.getExpRewarded() + " exp!");
                         } else {
                             if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
-                                message += " Congrats, you leveled up ! You can now learn :";
-                                for (Ability ab : this.player.abilitiesAbleToLearn()) {
-                                    message += ab.getName() + ", ";
-                                }
-                                message = message.substring(0, message.length() - 2) + ". ";
+                                message+=this.canLevelUp();
                             }
                             message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                     ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel())
@@ -481,11 +438,7 @@ public class CommandListener {
                         }
                     } else {
                         if (this.player.canLevelUp(((NPC) e).getType().getExperienceRewarded())) {
-                            message += " Congrats, you leveled up ! You can now learn :";
-                            for (Ability ab : this.player.abilitiesAbleToLearn()) {
-                                message += ab.getName() + ", ";
-                            }
-                            message = message.substring(0, message.length() - 2) + ". ";
+                            message+=this.canLevelUp();
                         }
                         message += ("Congrats, you killed : " + ((Entity) e).getName() + ", you won " +
                                 ((Entity) e).getType().getExperienceRewarded() + " exp! You are level " + this.player.getLevel());
@@ -573,18 +526,18 @@ public class CommandListener {
     public String repair(Teleporter t) {
         if (!this.player.isInFight()) {
             if (t != null) {
-                boolean canRepair;
-                for (Item i : t.getItemsNeededToRepair()) {
-                    canRepair = false;
-                    for (Item pi : this.player.getInventory().getAll()) {
-                        if (pi.getName().equalsIgnoreCase(i.getName())) {
-                            canRepair = true;
-                        }
+                ArrayList<Item> itemsNeeded = new ArrayList<>(t.getItemsNeededToRepair());
+                for (Item i : this.player.getInventory().getAll()) {
+                    if (itemsNeeded.contains(i)) {
+                        itemsNeeded.remove(i);
                     }
-                    if (!canRepair) return("You do not have the required items in order to repair this teleporter.");
                 }
-                t.repair();
-                return("You repaired this teleporter : " + t.getName());
+                if (itemsNeeded.isEmpty()) {
+                    t.repair();
+                    return("You repaired this teleporter : " + t.getName());
+                } else {
+                    return "You do not have the required items in order to repair this teleporter";
+                }
             } else {
                 return("Error : Check if this teleporter is in your region.");
             }
@@ -617,11 +570,7 @@ public class CommandListener {
                     if (this.player.getCurrentQuest() == null) {
                         String message = "";
                         if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
-                            message += " Congrats, you leveled up ! You can now learn :";
-                            for (Ability a : this.player.abilitiesAbleToLearn()) {
-                                message += a.getName() + ", ";
-                            }
-                            message = message.substring(0, message.length()-2) + ". ";
+                            message+=this.canLevelUp();
                         }
                         message += ("You picked up " + i.getName() + ".") +
                                 ("You finished this objective : " + objectiveFound.getDescription() +
@@ -701,6 +650,16 @@ public class CommandListener {
         } else { // If the player is in a fight
             return("Error : You can only fight or flee.");
         }
+    }
+
+    public String canLevelUp() {
+        String message = "";
+        message += " Congrats, you leveled up ! You can now learn :";
+        for (Ability a : this.player.abilitiesAbleToLearn()) {
+            message += a.getName() + ", ";
+        }
+        message = message.substring(0, message.length()-2) + ". ";
+        return message;
     }
 }
 

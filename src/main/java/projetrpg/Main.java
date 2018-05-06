@@ -74,12 +74,14 @@ public class Main extends Application {
 
         Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
         ctovtp.first.addItemToRepair(Item.TOOLKIT);
+        ctovtp.first.addItemToRepair(Item.TOOLKIT);
         ctovtp.second.addItemToRepair(Item.FLASHLIGHT);
 
         // Items linking to regions.
         northRegion.addItemToInventory(Item.HATCHET);
         southRegion.addItemToInventory(Item.APPLE);
         estRegion.addItemToInventory(Item.FLASHLIGHT);
+        forest.addItemToInventory(Item.TOOLKIT);
         forest.addItemToInventory(Item.TOOLKIT);
 
         //NPC's initialization.
