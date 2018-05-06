@@ -79,7 +79,7 @@
                <children>
                 <Button id="save" mnemonicParsing="false" text="Save" />
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button id="titleScreen" mnemonicParsing="false" text="Home" />
+                  <Button id="titleScreen" mnemonicParsing="false" onAction="#buttonHome" text="Home" />
                   <Button id="quit" mnemonicParsing="false" onAction="#buttonQuit" text="Quit" />
                </children>
             </HBox>

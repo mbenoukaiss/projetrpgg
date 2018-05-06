@@ -2,16 +2,22 @@ package projetrpg;
 
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ability;
 import projetrpg.entities.player.AttackType;
 import projetrpg.entities.player.Player;
+import projetrpg.game.HomeView;
 import projetrpg.utils.Pair;
 import projetrpg.map.*;
 
+import java.io.IOException;
 import java.util.*;
 
 import com.google.gson.Gson;
@@ -29,11 +35,32 @@ import projetrpg.utils.AnnotationExclusionStrategy;
  */
 public class Main extends Application {
 
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
+        launchMenu();
+    }
 
-        primaryStage.setTitle("Galaxy Explorer");
-        primaryStage.getIcons().add(new Image("icon.png"));
+    public static void main(String ... args) {
+        launch(args);
+    }
+
+    public void launchMenu() throws IOException {
+        HomeView homeView = new HomeView(this);
+        primaryStage.setScene(homeView.getScene());
+        primaryStage.show();
+
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
+        primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 3);
+    }
+
+    public void launchMainGame() throws IOException {
+
+        this.primaryStage.setTitle("Galaxy Explorer");
+        this.primaryStage.getIcons().add(new Image("icon.png"));
 
         MainMap mainMap = new MainMap("FacticeMap");
 
@@ -129,7 +156,7 @@ public class Main extends Application {
         regions.forEach(mainMap::addRegion);
         quests.forEach(mainMap::addQuest);
 
-        testSerialization(mainMap);
+        //testSerialization(mainMap);
 
         //Party initialization.
         Game game = new Game(mainMap);
@@ -137,11 +164,12 @@ public class Main extends Application {
         GameView vue = new GameView(game, this);
         primaryStage.setScene(vue.getScene());
         primaryStage.show();
+
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 1.5);
+        primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 3);
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     /**
      * Méthode de test pour la sérialisation/déserialisation

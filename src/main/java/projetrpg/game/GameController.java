@@ -12,18 +12,21 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
+import projetrpg.Main;
 import projetrpg.commands.CommandParser;
 import projetrpg.commands.InvalidCommandException;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ability;
 import projetrpg.quest.Objective;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class GameController {
 
+    private Main main;
     private Game game;
     private CommandParser parser;
     private String logs = "";
@@ -43,7 +46,8 @@ public class GameController {
     private ListView<String> spellsDisplay = new ListView<>();
 
 
-    GameController(Game game) {
+    GameController(Game game, Main main) {
+        this.main = main;
         this.game = game;
         parser = game.getParser();
     }
@@ -51,6 +55,8 @@ public class GameController {
     public void buttonQuit() {
         Platform.exit();
     }
+
+    public void buttonHome() throws IOException { main.launchMenu(); }
 
     public void enterCommand(KeyEvent e) {
         Calendar cal = Calendar.getInstance();

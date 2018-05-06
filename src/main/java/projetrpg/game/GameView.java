@@ -23,7 +23,7 @@ public class GameView {
         this.languageBundle = ResourceBundle.getBundle("bundles/game", Locale.ENGLISH);
 
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui.fxml"));
-        loader.setController(new GameController(game));
+        loader.setController(new GameController(game, this.main));
         loader.setResources(languageBundle);
 
         this.scene = new Scene(loader.load(), 900, 600);
