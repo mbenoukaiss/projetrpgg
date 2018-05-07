@@ -1,5 +1,6 @@
 package projetrpg.map;
 
+import projetrpg.Describable;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
 
@@ -14,8 +15,12 @@ import java.util.Objects;
  * @author mhevin
  * @author mbenoukaiss
  */
-public class Teleporter {
+public class Teleporter implements Describable {
 
+    /**
+     * The highest ID for the Teleporter.
+     * Necessary for deserialization.
+     */
     private static int currentId = 0;
 
     /**
@@ -42,7 +47,7 @@ public class Teleporter {
     /**
      * Region where the teleporter is.
      */
-    private Region location;
+    Region location;
 
     /**
      * The items required to repair this teleporter.
@@ -74,6 +79,7 @@ public class Teleporter {
         if(id >= currentId) currentId = id+1;
     }
 
+    @Override
     public String describe() {
         String items = "";
         for(Item i : this.itemsNeededToRepair) {
@@ -148,24 +154,40 @@ public class Teleporter {
         itemsNeededToRepair.add(item);
     }
 
+    /**
+     * Repairs the teleporter.
+     */
     public void repair() {
         this.repaired = true;
     }
 
+    /**
+     * Tells if the teleporter is repaired.
+     *
+     * @return True if the teleporter is repaired.
+     */
     public boolean isRepaired() {
         return repaired;
     }
 
+    /**
+     * Adds an item to the list of items required
+     * to repair the teleporter.
+     *
+     * @param item The item.
+     */
     public void addItemToRepair(Item item) {
         this.itemsNeededToRepair.add(item);
     }
 
+    /**
+     * Getter for the items required to repair
+     * the teleporter.
+     *
+     * @return List of items required.
+     */
     public ArrayList<Item> getItemsNeededToRepair() {
         return (ArrayList<Item>) itemsNeededToRepair.clone();
-    }
-
-    public void setLocation(Region location) {
-        this.location = location;
     }
 
     @Override

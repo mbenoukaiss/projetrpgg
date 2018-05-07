@@ -3,8 +3,6 @@ package projetrpg;
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -13,7 +11,7 @@ import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ability;
 import projetrpg.entities.player.AttackType;
 import projetrpg.entities.player.Player;
-import projetrpg.game.HomeView;
+import projetrpg.menu.HomeView;
 import projetrpg.utils.Pair;
 import projetrpg.map.*;
 

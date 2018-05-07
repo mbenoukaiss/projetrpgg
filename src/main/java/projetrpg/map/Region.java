@@ -18,6 +18,9 @@ import java.util.*;
 @JsonAdapter(RegionSerializer.class)
 public class Region implements Describable {
 
+    /**
+     * The default capacity of a room.
+     */
     private static final int DEFAULT_ROOM_ITEM_CAPACITY = 10;
 
     /**
@@ -269,7 +272,7 @@ public class Region implements Describable {
      */
     public void addTeleporter(Teleporter t) {
         this.teleporters.add(t);
-        t.setLocation(this);
+        t.location = this;
     }
 
     /**

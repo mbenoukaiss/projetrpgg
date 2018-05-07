@@ -1,4 +1,4 @@
-package projetrpg.game;
+package projetrpg.menu;
 
 import javafx.application.Application;
 import javafx.application.Platform;

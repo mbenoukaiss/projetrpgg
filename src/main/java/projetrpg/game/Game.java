@@ -15,12 +15,25 @@ import java.util.*;
 
 import java.util.Scanner;
 
+/**
+ * A game.
+ */
 public class Game {
 
+    /**
+     * The map.
+     */
     MainMap map;
 
+    /**
+     * The list with a description of
+     * each command
+     */
     final String manual;
 
+    /**
+     * The command parser.
+     */
     CommandParser parser = new CommandParser();
 
     public Game(MainMap m) {
@@ -48,6 +61,10 @@ public class Game {
         commandRegisterer();
     }
 
+    /**
+     * Registers all the commands available
+     * in this game.
+     */
     public void commandRegisterer() {
 
         Scanner sc = new Scanner(System.in);

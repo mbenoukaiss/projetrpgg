@@ -10,12 +10,31 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * The view of a game.
+ */
 public class GameView {
 
-    private ResourceBundle languageBundle;
-    private Game game;
-    private Scene scene;
+    /**
+     * Reference to the application.
+     */
     private Main main;
+
+    /**
+     * The game.
+     */
+    private Game game;
+
+    /**
+     * The resource bundle for the user
+     * interface.
+     */
+    private ResourceBundle languageBundle;
+
+    /**
+     * The current scene.
+     */
+    private Scene scene;
 
     public GameView(Game game, Main main) throws IOException {
         this.game = game;
@@ -29,6 +48,11 @@ public class GameView {
         this.scene = new Scene(loader.load(), 900, 600);
     }
 
+    /**
+     * Getter for the scene.
+     *
+     * @return The scene of the game.
+     */
     public Scene getScene() {
         return scene;
     }
