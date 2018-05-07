@@ -84,8 +84,8 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     private NPC enemy;
 
     public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage,
-                  EntityType type, boolean isHostile, int maxCapacity, int mana) {
-        super(name, location, type, isHostile, hp);
+                  EntityType type, int maxCapacity, int mana) {
+        super(name, location, type, false, hp);
         this.experience = experience;
         this.itemInHand = itemInHand;
         this.baseDamage = baseDamage;

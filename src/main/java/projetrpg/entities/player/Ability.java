@@ -68,7 +68,7 @@ public class Ability implements Describable {
     }
 
     public boolean isLocked(int playerLevel) {
-        return playerLevel >= minLevelRequired;
+        return playerLevel < minLevelRequired;
     }
 
     public int getCost() {

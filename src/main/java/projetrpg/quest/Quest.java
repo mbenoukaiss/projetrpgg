@@ -87,13 +87,11 @@ public class Quest extends Observable implements IObserver, Comparable<Quest> {
     @Override
     public void update(IObservable a) {
         boolean over = true;
-
         for(Objective o : this.objectives) {
             if (!o.isFinished()) {
                 over = false;
             }
         }
-
         if (over) {
             this.finish();
             notifyObservers();

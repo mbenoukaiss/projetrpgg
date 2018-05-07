@@ -115,7 +115,7 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         TeleporterSerializer.linkTeleporters();
 
         //Avoid memory leaks
-        idNPCMap = null;
+        idNPCMap = new HashMap<>();
 
         return map;
     }

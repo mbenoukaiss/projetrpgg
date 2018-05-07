@@ -23,7 +23,7 @@ public class TeleporterSerializer implements JsonSerializer<Teleporter>, JsonDes
         });
 
         //Avoid memory leaks
-        linkIdTeleporter = null;
+        linkIdTeleporter = new HashMap<>();
     }
 
     @Override
