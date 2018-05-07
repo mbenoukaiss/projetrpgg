@@ -17,23 +17,15 @@ import java.util.Scanner;
 
 public class Game {
 
-    /**
-     * The map.
-     */
-    private MainMap mainMap;
+    MainMap map;
 
-    /**
-     * The list with a description of
-     * each command
-     */
-    private String manuel;
+    final String manual;
 
-    private CommandParser parser = new CommandParser();
-
+    CommandParser parser = new CommandParser();
 
     public Game(MainMap m) {
-        this.mainMap = m;
-        manuel = "User guide : \n" +
+        this.map = m;
+        manual = "User guide : \n" +
                 "-attack : on an entity \n" +
                 "-talk : on an non hostile entity \n" +
                 "-fleefrom : on an entity you are fighting with \n" +
@@ -55,11 +47,6 @@ public class Game {
                 "-help : to see the user guide.\n\n";
         commandRegisterer();
     }
-
-    public String getManuel() {
-        return manuel;
-    }
-
 
     public void commandRegisterer() {
 
@@ -111,7 +98,7 @@ public class Game {
         });
 
         parser.registerCommand("take", Teleporter.class, (player, arg) -> {
-            for (Teleporter teleporter : this.mainMap.getMainCharacter().getLocation().getTeleporters()) {
+            for (Teleporter teleporter : this.map.getMainCharacter().getLocation().getTeleporters()) {
                 if (teleporter.getName().equalsIgnoreCase(arg)) {
                     return teleporter;
                 }
@@ -234,7 +221,7 @@ public class Game {
         });
 
         parser.registerCommand("start", Quest.class, (player, arg) -> {
-            for (Quest quest : this.mainMap.getQuests()) {
+            for (Quest quest : this.map.getQuests()) {
                 if (quest.getName().equalsIgnoreCase(arg)) {
                     return quest;
                 }
@@ -247,25 +234,10 @@ public class Game {
         parser.registerCommand("help", String.class);
 
         try {
-            parser.registerListener(new CommandListener(mainMap.getMainCharacter(), this), CommandListener.class);
+            parser.registerListener(new CommandListener(map.getMainCharacter(), this), CommandListener.class);
         } catch (InvalidAnnotationException e) {
             e.printStackTrace();
         }
     }
 
-    public MainMap getMainMap() {
-        return mainMap;
-    }
-
-    public CommandParser getParser() {
-        return parser;
-    }
-
-    public Region findRegion(Region region, String regionName) {
-        if (region.getName().equalsIgnoreCase(regionName)) return region;
-        for (Region region1 : region.getContainedRegions()) {
-            return findRegion(region1, regionName);
-        }
-        return null;
-    }
 }

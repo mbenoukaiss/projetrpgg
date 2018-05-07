@@ -47,7 +47,7 @@ public class CommandListener {
      */
     @Listener({"help"})
     public String help(String arg) {
-        return game.getManuel();
+        return game.manual;
     }
 
 
@@ -155,9 +155,9 @@ public class CommandListener {
                 }
             } else if (((NPC) e).attack(this.player, 0)) { // If the target kills the player
                 ((NPC) e).setHps(((NPC) e).getBaseHps());
-                message += ("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
+                message += ("You died, you have been redirected to the spawn point : " + game.map.getSpawnPoint()
                         .getName()+ ".");
-                this.player.setLocation(game.getMainMap().getSpawnPoint());
+                this.player.setLocation(game.map.getSpawnPoint());
                 message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                 ((NPC) e).setInFight(false);
                 this.player.setHps(this.player.getBaseHps());
@@ -364,9 +364,9 @@ public class CommandListener {
                     }
                 } else if (((NPC) e).attack(this.player, 0)) { // If the target kills the player
                     ((NPC) e).setHps(((NPC) e).getBaseHps());
-                    message += ("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
+                    message += ("You died, you have been redirected to the spawn point : " + game.map.getSpawnPoint()
                             .getName()+ ".");
-                    this.player.setLocation(game.getMainMap().getSpawnPoint());
+                    this.player.setLocation(game.map.getSpawnPoint());
                     message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                     ((NPC) e).setInFight(false);
                     this.player.setHps(this.player.getBaseHps());
@@ -440,9 +440,9 @@ public class CommandListener {
                     }
                 } else if (((NPC) e).attack(this.player, 0)) { // If the target kills the player
                     ((NPC) e).setHps(((NPC) e).getBaseHps());
-                    message += ("You died, you have been redirected to the spawn point : " + game.getMainMap().getSpawnPoint()
+                    message += ("You died, you have been redirected to the spawn point : " + game.map.getSpawnPoint()
                             .getName() + ".");
-                    this.player.setLocation(game.getMainMap().getSpawnPoint());
+                    this.player.setLocation(game.map.getSpawnPoint());
                     message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                     ((NPC) e).setInFight(false);
                     this.player.setHps(this.player.getBaseHps());

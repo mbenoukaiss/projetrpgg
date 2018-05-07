@@ -1,34 +1,26 @@
 package projetrpg.game;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
 import projetrpg.Main;
-import projetrpg.commands.CommandParser;
 import projetrpg.commands.InvalidCommandException;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ability;
 import projetrpg.quest.Objective;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Calendar;
-import java.util.ResourceBundle;
 
 public class GameController {
 
     private Main main;
     private Game game;
-    private CommandParser parser;
     private String logs = "";
     @FXML
     private TextField commandField;
@@ -49,7 +41,6 @@ public class GameController {
     GameController(Game game, Main main) {
         this.main = main;
         this.game = game;
-        parser = game.getParser();
     }
 
     public void buttonQuit() {
@@ -63,7 +54,7 @@ public class GameController {
         if (KeyCode.ENTER == e.getCode()) {
             try {
                 logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
-                        parser.parse(game.getMainMap().getMainCharacter(), commandField.getText()).send() + "\n\n";
+                        game.parser.parse(game.map.getMainCharacter(), commandField.getText()).send() + "\n\n";
             } catch (InvalidCommandException e1) {
                 logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
                         e1.getMessage() + "\n\n";
@@ -82,12 +73,12 @@ public class GameController {
 
     public void inventoryDisplay() {
         ObservableList<String> items =FXCollections.observableArrayList();
-        for(Item i : game.getMainMap().getMainCharacter().getInventory().getAll()) {
+        for(Item i : game.map.getMainCharacter().getInventory().getAll()) {
             items.add(i.getName());
         }
         inventoryDisplay.setItems(items);
-        if (this.game.getMainMap().getMainCharacter().getItemInHand() != null) {
-            inventoryDisplay.getSelectionModel().select(this.game.getMainMap().getMainCharacter().getItemInHand().getName());
+        if (game.map.getMainCharacter().getItemInHand() != null) {
+            inventoryDisplay.getSelectionModel().select(game.map.getMainCharacter().getItemInHand().getName());
         } else {
             inventoryDisplay.getSelectionModel().select("");
         }
@@ -118,8 +109,8 @@ public class GameController {
             }
         });
         ObservableList<String> objectivs =FXCollections.observableArrayList();
-        if (game.getMainMap().getMainCharacter().getCurrentQuest() != null) {
-            for (Objective o : this.game.getMainMap().getMainCharacter().getCurrentQuest().getObjectives()) {
+        if (game.map.getMainCharacter().getCurrentQuest() != null) {
+            for (Objective o : game.map.getMainCharacter().getCurrentQuest().getObjectives()) {
                 if (!o.isFinished()) {
                     objectivs.add(o.getDescription());
                 }
@@ -130,13 +121,13 @@ public class GameController {
 
     public void locationDisplay() {
         locationField.setWrapText(true);
-        locationField.setText(game.getMainMap().getMainCharacter().getLocation().describe());
+        locationField.setText(game.map.getMainCharacter().getLocation().describe());
     }
 
     public void questDisplay() {
         questField.setWrapText(true);
-        if (game.getMainMap().getMainCharacter().getCurrentQuest() != null) {
-            questField.setText(game.getMainMap().getMainCharacter().getCurrentQuest().getName());
+        if (game.map.getMainCharacter().getCurrentQuest() != null) {
+            questField.setText(game.map.getMainCharacter().getCurrentQuest().getName());
         } else {
             questField.setText("");
         }
@@ -144,8 +135,8 @@ public class GameController {
 
     public void spellsDisplay() {
         ObservableList<String> spells = FXCollections.observableArrayList();
-        if (game.getMainMap().getMainCharacter().getAbilities() != null) {
-            for (Ability a : this.game.getMainMap().getMainCharacter().getAbilities()) {
+        if (game.map.getMainCharacter().getAbilities() != null) {
+            for (Ability a : game.map.getMainCharacter().getAbilities()) {
                 spells.add(a.getName());
             }
         }
@@ -154,7 +145,7 @@ public class GameController {
 
     public void initialize() {
         textLogs.setWrapText(true);
-        textLogs.appendText(game.getManuel() +
+        textLogs.appendText(game.manual +
                 "\n\nYour name is Hervé ! Talk to jean located in south in order to start your journey towards " +
                 "saving the universe!\n\n");
         inventoryDisplay();
