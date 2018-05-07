@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import projetrpg.entities.NPC;
 import projetrpg.entities.player.Player;
+import projetrpg.quest.Quest;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Type;
@@ -46,6 +47,9 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         JsonElement mainCharacter = jsonSerializationContext.serialize(mainMap.getMainCharacter());
         map.add("maincharacter", mainCharacter);
 
+        JsonArray quests = jsonSerializationContext.serialize(mainMap.getQuests()).getAsJsonArray();
+        map.add("quests", quests);
+
         JsonArray regions = jsonSerializationContext.serialize(mainMap.getRegions()).getAsJsonArray();
         map.add("regions", regions);
 
@@ -77,6 +81,13 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
                 jsonMap.get("maincharacter"),
                 Player.class
         ));
+
+        JsonArray quests = jsonMap.get("quests").getAsJsonArray();
+        for(JsonElement quest : quests) {
+            map.addQuest(deserializationContext.deserialize(quest, Quest.class));
+        }
+
+        map.getQuests().forEach(q -> q.addObserver(map.getMainCharacter()));
 
         //Each region associated with its id
         Map<Integer, Region> regionWithId = new HashMap<>();

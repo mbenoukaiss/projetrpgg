@@ -121,7 +121,7 @@ public class Main extends Application {
                 "blablabla... You may now start your first Quest : A new Dawn!");
         //Player initialization.
         Player player = new Player("Hervé", 0, centerRegion, null, 100,
-                10, EntityType.PLAYER, false, 50, 50);
+                10, EntityType.PLAYER, 50, 50);
 
         Collection<Quest> quests = new HashSet<>();
         Objective firstObjective = new Objective("Kill Zorg", ObjectiveType.KILL);
@@ -156,7 +156,7 @@ public class Main extends Application {
         regions.forEach(mainMap::addRegion);
         quests.forEach(mainMap::addQuest);
 
-        //testSerialization(mainMap);
+        testSerialization(mainMap);
 
         //Party initialization.
         Game game = new Game(mainMap);
@@ -182,6 +182,7 @@ public class Main extends Application {
     public void testSerialization(MainMap map) {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
+                .enableComplexMapKeySerialization()
                 .setExclusionStrategies(new AnnotationExclusionStrategy())
                 .registerTypeAdapter(Objective.class, new ObjectiveSerializer())
                 .registerTypeAdapter(Quest.class, new QuestSerializer())
