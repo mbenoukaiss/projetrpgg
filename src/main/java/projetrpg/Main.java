@@ -86,7 +86,7 @@ public class Main extends Application {
         Region westRegion = new Region(5, "West", null);
         regions.add(westRegion);
 
-        Region forest = new Region(6, "Forest", westRegion);
+        Region forest = new Region(6, "Forest", centerRegion);
         Region cave = new Region(7, "Cave", forest);
         Region flowerPlains = new Region(8, "Flower Plains", southRegion);
         Region flowerMountains = new Region(9, "Flower Mountains", southRegion);
@@ -98,6 +98,8 @@ public class Main extends Application {
         centerRegion.linkToDirection(southRegion, Direction.SOUTH);
         centerRegion.linkToDirection(estRegion, Direction.EST);
         centerRegion.linkToDirection(westRegion, Direction.WEST);
+        westRegion.addItemNeeded(Item.FLASHLIGHT);
+        westRegion.addItemNeeded(Item.TOOLKIT);
 
         Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
         ctovtp.first.addItemToRepair(Item.TOOLKIT);

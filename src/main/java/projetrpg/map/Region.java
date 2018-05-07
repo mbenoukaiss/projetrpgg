@@ -66,6 +66,11 @@ public class Region implements Describable {
      */
     protected List<Item> itemsNeeded;
 
+    /**
+     * The player's ship's level needed
+     */
+    protected int shipLevelRequired;
+
     Region() {
         this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
@@ -154,6 +159,13 @@ public class Region implements Describable {
         }
         if (teleporters.length() > 0) teleporters = teleporters.substring(0, teleporters.length() -2) + ".";
         d+=" And this region contains those teleporters : " + teleporters;
+        if (!itemsNeeded.isEmpty()) {
+            d+=" You'll need those items in order to go there : ";
+            for (Item i : this.itemsNeeded) {
+                d+= i.getName() + ",";
+            }
+            d = d.substring(0, d.length()-1);
+        }
         return d;
     }
 
@@ -300,5 +312,9 @@ public class Region implements Describable {
 
     public void addItemNeeded(Item item) {
         if (!this.itemsNeeded.contains(item)) this.itemsNeeded.add(item);
+    }
+
+    public void setShipLevelRequired(int shipLevelRequired) {
+        this.shipLevelRequired = shipLevelRequired;
     }
 }

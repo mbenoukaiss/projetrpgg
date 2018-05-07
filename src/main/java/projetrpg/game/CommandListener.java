@@ -479,10 +479,20 @@ public class CommandListener {
     public String move(Region r) {
         if (!this.player.isInFight()) { // If the player is not engaged in a fight
             if (r != null) { // If the region exists and is connected to the player's location
-                this.player.move(r);
-                return("You moved to the " + r.describe());
+                ArrayList<Item> regionItems = new ArrayList<>(r.getItemsNeeded());
+                for (Item i : this.player.getInventory().getAll()) {
+                    if (regionItems.contains(i)) {
+                        regionItems.remove(i);
+                    }
+                }
+                if (regionItems.isEmpty()) {
+                    this.player.move(r);
+                    return ("You moved to the " + r.describe());
+                } else {
+                    return ("You do not have the required items in order to enter this location");
+                }
             } else { // If the region doesnt exists and/or is not connected to the player's location
-                return("Error : check if this location is connected to your location.");
+                return("Error : check if this location is connected to your location. Maybe try travelling to it");
             }
         } else { // If the player is engaged in a fight
             return("Error : You can only fight or flee.");

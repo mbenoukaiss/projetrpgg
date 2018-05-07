@@ -158,6 +158,10 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
      */
     public boolean canLevelUp(int otherXP) {
         if (this.getLevel(this.experience+otherXP) > this.getLevel()) {
+            this.baseHps+=10;
+            this.baseMana+=10;
+            this.setHps(this.baseHps);
+            this.setMana(this.baseMana);
             this.experience+=otherXP;
             return true;
         }

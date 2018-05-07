@@ -51,6 +51,7 @@ public class Game {
                 "-start : on a quest in order to start it\n" +
                 "-giveup : in order to abandon your current quest\n" +
                 "-learn : on an ability\n" +
+                "-travel : on a region\n" +
                 "-help : to see the user guide.\n\n";
         commandRegisterer();
     }
