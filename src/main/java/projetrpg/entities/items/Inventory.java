@@ -23,6 +23,11 @@ public class Inventory implements Describable {
      */
     private ArrayList<Item> items;
 
+    /**
+     * Create an inventory.
+     *
+     * @param maxCapacity The capacity of this inventory
+     */
     public Inventory(int maxCapacity) {
         this.maxCapacity = maxCapacity;
         this.items = new ArrayList<>();
@@ -30,6 +35,7 @@ public class Inventory implements Describable {
 
     /**
      * Ask this object to describe itself.
+     *
      * @return the description as a string.
      */
     @Override
@@ -83,7 +89,6 @@ public class Inventory implements Describable {
             items.add(i);
         }
     }
-
 
     /**
      * Removes an item.

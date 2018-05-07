@@ -3,14 +3,12 @@ package projetrpg.game;
 import projetrpg.Describable;
 import projetrpg.commands.Listener;
 import projetrpg.entities.player.Ability;
-import projetrpg.game.Game;
 import projetrpg.entities.Damageable;
 import projetrpg.entities.Entity;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
-import projetrpg.map.MainMap;
 import projetrpg.map.Region;
 import projetrpg.map.Teleporter;
 import projetrpg.quest.Objective;
@@ -114,7 +112,7 @@ public class CommandListener {
             + ("\nHps of the ennemy before the assault : " + e.getHp())
             + ("\nYour Hps before the attack : " + player.getHp())
             + ("\n......\nHes attacking you!");
-            if (this.player.attack(e, (this.player.getItemInHand() == null )? this.player.baseDamage() : this.player.gettrueDamage())) { // If the attack kills the target
+            if (this.player.attack(e, (this.player.getItemInHand() == null )? this.player.baseDamage() : this.player.getTrueDamage())) { // If the attack kills the target
                 Objective objectiveFound = null;
                 boolean isConcerned = false;
                 if (this.player.getCurrentQuest() != null) {
@@ -162,7 +160,6 @@ public class CommandListener {
                 this.player.setLocation(game.getMainMap().getSpawnPoint());
                 message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                 ((NPC) e).setInFight(false);
-                this.player.setInFight(false);
                 this.player.setHps(this.player.getBaseHps());
                 return message;
             } else { // The fight is still going on
@@ -247,7 +244,6 @@ public class CommandListener {
         if (e != null && e.isInFight()) { // If the NPC exists and is in fight with the player
             e.setHps(e.getBaseHps());
             e.setInFight(false);
-            this.player.setInFight(false);
             return("You fled from " + e.getName() + ".");
         } else { // If the player is not fighting this entity
             return("Error : check if you are in fight with this entity.");
@@ -321,15 +317,15 @@ public class CommandListener {
                         return "";
                 }
             } else if (this.player.isInFight() && o instanceof Ability){ // If the item is not in the player's inventory
-                Damageable e = this.player.getEnnemy();
+                Damageable e = this.player.getEnemy();
                 Objective objectiveFound = null;
                 Ability a = (Ability) o;
-                String message = "You used " + a.getName() + " on " + this.player.getEnnemy().getName() + "."
-                        + (player.getEnnemy().getName() + " : " + this.player.getEnnemy().getDialogue())
-                        + ("\nHps of the ennemy before the assault : " + player.getEnnemy().getHp()
+                String message = "You used " + a.getName() + " on " + this.player.getEnemy().getName() + "."
+                        + (player.getEnemy().getName() + " : " + this.player.getEnemy().getDialogue())
+                        + ("\nHps of the ennemy before the assault : " + player.getEnemy().getHp()
                         + ("\nYour Hps before the attack : " + player.getHp())
                         + ("\n......\nHes attacking you!"));
-                if (this.player.attack(player.getEnnemy(), (int)a.getDamage())) {
+                if (this.player.attack(player.getEnemy(), (int)a.getDamage())) {
                     boolean isConcerned = false;
                     if (this.player.getCurrentQuest() != null) {
                         for (Objective obj : this.player.getCurrentQuest().getObjectives()) {
@@ -373,7 +369,6 @@ public class CommandListener {
                     this.player.setLocation(game.getMainMap().getSpawnPoint());
                     message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                     ((NPC) e).setInFight(false);
-                    this.player.setInFight(false);
                     this.player.setHps(this.player.getBaseHps());
                 } else { // The fight is still going on
                     message += ("Hps of the ennemy after the assault : " + e.getHp())
@@ -450,7 +445,6 @@ public class CommandListener {
                     this.player.setLocation(game.getMainMap().getSpawnPoint());
                     message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                     ((NPC) e).setInFight(false);
-                    this.player.setInFight(false);
                     this.player.setHps(this.player.getBaseHps());
                 } else { // The fight is still going on
                     message += ("Hps of the ennemy after the assault : " + e.getHp())
@@ -640,7 +634,7 @@ public class CommandListener {
     }
 
     @Listener({"giveup"})
-    public String abandon(String s) {
+    public String abandon(String ignored) {
         if (!this.player.isInFight()) {
             Quest sq = this.player.getCurrentQuest();
             if (sq != null) this.player.getCurrentQuest().abandon();
@@ -655,7 +649,7 @@ public class CommandListener {
     public String canLevelUp() {
         String message = "";
         message += " Congrats, you leveled up ! You can now learn :";
-        for (Ability a : this.player.abilitiesAbleToLearn()) {
+        for (Ability a : this.player.learnableAbilities()) {
             message += a.getName() + ", ";
         }
         message = message.substring(0, message.length()-2) + ". ";

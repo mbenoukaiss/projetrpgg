@@ -54,8 +54,10 @@ public abstract class Entity {
     }
 
     /**
+     * Setter for the location in which this
+     * entity is.
      *
-     * @param location
+     * @param location The new location
      */
     public void setLocation(Region location) {
         this.location = location;
@@ -109,6 +111,11 @@ public abstract class Entity {
         this.location = r;
     }
 
+    /**
+     * Getter for the hostility of this entity.
+     *
+     * @return True if the entity is hostile.
+     */
     public boolean isHostile() {
         return isHostile;
     }

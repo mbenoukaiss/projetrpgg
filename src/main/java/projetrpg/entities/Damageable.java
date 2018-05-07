@@ -7,6 +7,21 @@ package projetrpg.entities;
  * @author mbenoukaiss
  */
 public interface Damageable {
-    public boolean damage(int value);
-    public int getHp();
+
+    /**
+     * Method called when this entity
+     * should take damages.
+     *
+     * @param value The amount of damages
+     *              it should take.
+     * @return True if it died.
+     */
+    boolean damage(int value);
+
+    /**
+     * Return the amount of HP.
+     *
+     * @return The amount of HP.
+     */
+    int getHp();
 }

@@ -16,6 +16,10 @@ import java.util.Set;
  */
 public class NPC extends Entity implements Describable, Damageable, Attacker, IObservable {
 
+    /**
+     * The highest ID for the NPC.
+     * Necessary for deserialization.
+     */
     private static int currentId = 0;
 
     /**
@@ -39,6 +43,9 @@ public class NPC extends Entity implements Describable, Damageable, Attacker, IO
     @SerializationIgnore
     private boolean inFight;
 
+    /**
+     * Observers for the observer pattern.
+     */
     @SerializationIgnore
     private Set<IObserver> observers;
 
@@ -186,6 +193,11 @@ public class NPC extends Entity implements Describable, Damageable, Attacker, IO
         observers.clear();
     }
 
+    /**
+     * Changes the highest ID.
+     *
+     * @param currentId The new highest ID.
+     */
     public static void setCurrentId(int currentId) {
         NPC.currentId = currentId;
     }

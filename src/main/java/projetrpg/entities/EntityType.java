@@ -11,8 +11,15 @@ public enum EntityType {
     VILLAGER(1, true),
     VAMPIRE(5, true);
 
+    /**
+     * The amount of experience given to the player
+     * when he kills this entity.
+     */
     private final int experienceRewarded;
 
+    /**
+     * True if the entity can be killed.
+     */
     private final boolean isKillable;
 
     EntityType(int experienceRewarded, boolean isKillable) {

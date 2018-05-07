@@ -12,8 +12,11 @@ import projetrpg.observer.IObserver;
 import projetrpg.quest.Quest;
 import projetrpg.utils.SerializationIgnore;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The main character.
@@ -40,18 +43,24 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     @Expose("item")
     private Item itemInHand;
 
+    /**
+     * The amount of mana the player has.
+     */
     @Expose("mana")
     private int mana;
 
+    /**
+     * The amount of mana the player gets by
+     * default (e.g. when he dies, he get this amount
+     * of mana)
+     */
     private int baseMana;
 
     /**
-     * Their abilities.
+     * The abilities the player could learn (or has
+     * learned), value tells if he learned them or not.
      */
-    private HashSet<Ability> abilities;
-
-    private Set<Ability> AllAbilities;
-
+    private Map<Ability, Boolean> abilities;
 
     /**
      * The damage it deals without any weapon.
@@ -59,16 +68,20 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     private int baseDamage;
 
     /**
-     * Whether or not this Player is fighting.
+     * The quest this player is currently doing.
      */
-    @SerializationIgnore
-    private boolean isInFight;
-
     private Quest currentQuest;
 
+    /**
+     * Observers for the observer pattern.
+     */
     private Set<IObserver> observers;
 
-    private NPC ennemy;
+    /**
+     * The enemy this player is fighting.
+     */
+    @SerializationIgnore
+    private NPC enemy;
 
     public Player(String name, int experience, Region location, Item itemInHand, int hp, int baseDamage,
                   EntityType type, boolean isHostile, int maxCapacity, int mana) {
@@ -76,61 +89,128 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         this.experience = experience;
         this.itemInHand = itemInHand;
         this.baseDamage = baseDamage;
-        abilities = new HashSet<>();
+        abilities = new HashMap<>();
         inventory = new Inventory(maxCapacity);
         observers = new HashSet<>();
-        this.AllAbilities = new HashSet<>();
-        ennemy = null;
+        enemy = null;
         this.mana = mana;
         this.baseMana = mana;
     }
 
+    /**
+     * Returns the current amount of mana.
+     *
+     * @return The mana
+     */
     public int getMana() {
         return mana;
     }
 
+    /**
+     * Set the amount of mana.
+     *
+     * @param mana The new mana.
+     */
     public void setMana(int mana) {
         this.mana = mana;
     }
 
-    public int getExperience() {
-        return this.experience;
+    /**
+     * Getter for the current enemy.
+     *
+     * @return The enemy.
+     */
+    public NPC getEnemy() {
+        return enemy;
     }
 
+    /**
+     * Tells if this player is fighting or not.
+     *
+     * @return True if the player is fighting.
+     */
+    public boolean isInFight() {
+        return enemy != null;
+    }
+
+    /**
+     * Getter for the level of this player based
+     * on its experience.
+     *
+     * @return The level.
+     */
     public int getLevel() { return (int) (0.5 * Math.sqrt((double) experience)); }
 
+    /**
+     * Calculate the level based on the given
+     * experience.
+     *
+     * @param exp The experience
+     * @return The level.
+     */
     private int getLevel(int exp) { return (int) (0.5 * Math.sqrt((double) exp)); }
 
+    /**
+     * Tells if the player will level up.
+     *
+     * @param otherXP The future amount of XP.
+     * @return True if the player will level up
+     */
+    public boolean canLevelUp(int otherXP) {
+        if (this.getLevel(this.experience+otherXP) > this.getLevel()) {
+            this.experience+=otherXP;
+            return true;
+        }
+        this.experience+=otherXP;
+        return false;
+    }
+
+    /**
+     * Getter for the player's inventory.
+     *
+     * @return The inventory.
+     */
     public Inventory getInventory() {
         return inventory;
     }
 
+    /**
+     * Getter for the item in the item in
+     * the player's hand.
+     *
+     * @return The item in its hand.
+     */
     public Item getItemInHand() {
         return this.itemInHand;
     }
 
+    /**
+     * Getter for the amount of damage this player
+     * deals (base damage + item in hand).
+     *
+     * @return The true damage
+     */
+    public int getTrueDamage() {
+        return this.baseDamage+this.itemInHand.getDamage();
+    }
+
+    /**
+     * Getter for the current quest.
+     *
+     * @return The current quest.
+     */
     public Quest getCurrentQuest() {
         return currentQuest;
     }
 
+    /**
+     * Changes the current quest.
+     *
+     * @param currentQuest The new quest.
+     */
     public void setCurrentQuest(Quest currentQuest) {
         this.currentQuest = currentQuest;
         if (currentQuest != null) this.currentQuest.start();
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public int getHp() {
-        return this.hps;
-    }
-
-    @Override
-    public Region getLocation() {
-        return this.location;
     }
 
     @Override
@@ -142,82 +222,138 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     }
 
     @Override
-    public int baseDamage() {
-        return this.baseDamage;
-    }
-
-    public int gettrueDamage() {
-        return this.baseDamage+this.itemInHand.getDamage();
-    }
-
-    @Override
     public boolean damage(int value) {
-        this.isInFight = true;
-        this.hps-=value;
+        this.hps -= value;
         return (this.hps <= 0);
     }
 
-    public boolean isInFight() {
-        return isInFight;
-    }
-
-    public void setInFight(boolean inFight) {
-        isInFight = inFight;
-    }
-
-    public HashSet<Ability> getAbilities() {
-        return (HashSet<Ability>) abilities.clone();
+    @Override
+    public int getHp() {
+        return this.hps;
     }
 
     @Override
     public boolean attack(Damageable target, int damage) {
-        this.isInFight = true;
-        this.ennemy = (NPC) target;
+        this.enemy = (NPC) target;
+
         if (target.damage(damage)) {
-                this.isInFight = false;
-                this.ennemy = null;
-                return true;
+            this.enemy = null;
+            return true;
         }
         return false;
     }
 
-    public NPC getEnnemy() {
-        return ennemy;
+    @Override
+    public int baseDamage() {
+        return this.baseDamage;
     }
 
+    /**
+     * Adds an ability to the abilities.
+     * It is not considered as "learned" by default.
+     *
+     * @param a The new ability
+     */
+    public void addAbbility(Ability a) {
+        abilities.put(a, false);
+    }
+
+    /**
+     * Getter for all the abilities this player
+     * knows/learned.
+     *
+     * @return All the known abilities.
+     */
+    public Set<Ability> getAbilities() {
+        return abilities.keySet().stream()
+                .filter(a -> abilities.get(a))
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Makes the player learn an ability.
+     *
+     * @param a The ability to try to learn
+     * @return The message
+     */
+    //TODO: Change the return type?
+    public String learn(Ability a) {
+        if (!abilities.get(a)) {
+            abilities.put(a, true);
+            return "You learned this ability " + a.getName() + "!";
+        }
+
+        return "You have already learned this spell";
+    }
+
+    /**
+     * Getter for all the abilities the player can
+     * learn now, meaning he has the required level.
+     *
+     * @return All the learnable abilities.
+     */
+    public Set<Ability> learnableAbilities() {
+        Set<Ability> ab = new HashSet<>();
+
+        for (Ability a : this.abilities.keySet()) {
+            if(!a.isLocked(getLevel()) && !abilities.get(a)) {
+                ab.add(a);
+            }
+        }
+
+        return ab;
+    }
+
+    /**
+     * Pick up an item.
+     *
+     * @param i The item.
+     */
     public void pickUp(Item i) {
         this.inventory.add(i);
         this.location.getInventory().remove(i);
     }
 
+    /**
+     * Ditch an item.
+     *
+     * @param i The item.
+     */
     public void ditch(Item i) {
         this.location.getInventory().add(i);
         this.inventory.remove(i);
         if (this.itemInHand == i) this.itemInHand = null;
     }
 
+    /**
+     * Consume an item.
+     *
+     * @param i The item.
+     */
     public void consume(Item i) {
         if (i.getType() == ItemType.FOOD) this.inventory.remove(i);
     }
 
+    /**
+     * Equip an item.
+     *
+     * @param i The item.
+     */
     public void equip(Item i) {
         if (this.inventory.getAll().contains(i)) {
             this.itemInHand = i;
         }
     }
 
+    /**
+     * Unequip an item.
+     *
+     * @param i The item.
+     */
     public void unequip(Item i) {
         if (this.itemInHand == i) {
             this.itemInHand = null;
         }
-    }
-
-    public void addItemToInventory(Item item) {
-        this.inventory.add(item);
-    }
-
-    public void addAbilityToAbilities(Ability ability) {
-        this.abilities.add(ability);
     }
 
     @Override
@@ -253,38 +389,4 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         observers.clear();
     }
 
-    public Boolean canLevelUp(int otherXP) {
-        if (this.getLevel(this.experience+otherXP) > this.getLevel()) {
-            this.experience+=otherXP;
-            for (Ability a : this.AllAbilities) {
-                if (a.getMinLevelRequired() <= this.getLevel()) {
-                    a.setLocked(false);
-                }
-            }
-            return true;
-        }
-        this.experience+=otherXP;
-        return false;
-    }
-    public void addAbbility(Ability a) {
-        this.AllAbilities.add(a);
-    }
-
-    public String learn(Ability a) {
-        if (!this.abilities.contains(a)) {
-            this.abilities.add(a);
-            return "You learned this ability " + a.getName() + "!";
-        }
-        return "You have already learned this spell";
-    }
-
-    public Set<Ability> abilitiesAbleToLearn() {
-        Set<Ability> ab = new HashSet<>();
-        for (Ability a : this.AllAbilities) {
-            if (!a.isLocked() && !this.abilities.contains(a)) {
-                ab.add(a);
-            }
-        }
-        return ab;
-    }
 }

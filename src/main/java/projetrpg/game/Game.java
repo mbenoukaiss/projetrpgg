@@ -197,7 +197,7 @@ public class Game {
         });
 
         parser.registerCommand("learn", Ability.class, (player, arg) -> {
-            for (Ability a : player.abilitiesAbleToLearn()) {
+            for (Ability a : player.learnableAbilities()) {
                 if (a.getName().equalsIgnoreCase(arg)) {
                     return a;
                 }

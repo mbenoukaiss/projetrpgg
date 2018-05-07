@@ -32,8 +32,9 @@ public class Ability implements Describable {
      */
     private AttackType type;
 
-    private boolean isLocked;
-
+    /**
+     * The mana cost
+     */
     private int cost;
 
     public Ability(String name, int minLevelRequired, double damage, AttackType type, int cost) {
@@ -41,7 +42,6 @@ public class Ability implements Describable {
         this.minLevelRequired = minLevelRequired;
         this.damage = damage;
         this.type = type;
-        this.isLocked = true;
         this.cost = cost;
     }
 
@@ -67,16 +67,13 @@ public class Ability implements Describable {
         return this.type;
     }
 
-    public boolean isLocked() {
-        return isLocked;
+    public boolean isLocked(int playerLevel) {
+        return playerLevel >= minLevelRequired;
     }
 
     public int getCost() {
         return cost;
     }
 
-    public void setLocked(boolean locked) {
-        isLocked = locked;
-    }
 }
 
