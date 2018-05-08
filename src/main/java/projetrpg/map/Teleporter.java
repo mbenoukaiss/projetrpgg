@@ -21,7 +21,7 @@ public class Teleporter implements Describable {
      * The highest ID for the Teleporter.
      * Necessary for deserialization.
      */
-    private static int currentId = 0;
+    static int currentId = 0;
 
     /**
      * Id of the teleporter.
@@ -191,6 +191,18 @@ public class Teleporter implements Describable {
     }
 
     @Override
+    public String toString() {
+        return "Teleporter{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", linkedTeleporter=" + ((linkedTeleporter != null)? linkedTeleporter.getId() : -1) +
+                ", repaired=" + repaired +
+                ", location=" + location +
+                ", itemsNeededToRepair=" + itemsNeededToRepair +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if(this == o) return true;
         if(o == null || getClass() != o.getClass()) return false;
@@ -203,6 +215,11 @@ public class Teleporter implements Describable {
                         linkedTeleporter.getId() == that.linkedTeleporter.getId()) &&
                 Objects.equals(location, that.location) &&
                 Objects.equals(itemsNeededToRepair, that.itemsNeededToRepair);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, repaired, location, itemsNeededToRepair);
     }
 
 }

@@ -2,6 +2,8 @@ package projetrpg.quest;
 
 import projetrpg.observer.Observable;
 
+import java.util.Objects;
+
 public class Objective<T> extends Observable {
 
     /**
@@ -87,4 +89,19 @@ public class Objective<T> extends Observable {
         return type;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Objective<?> objective = (Objective<?>) o;
+        return finished == objective.finished &&
+                Objects.equals(description, objective.description) &&
+                type == objective.type &&
+                Objects.equals(concernedObject, objective.concernedObject);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(finished, description, type, concernedObject);
+    }
 }

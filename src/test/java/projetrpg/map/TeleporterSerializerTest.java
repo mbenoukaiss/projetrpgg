@@ -16,7 +16,7 @@ public class TeleporterSerializerTest {
             .registerTypeAdapter(Region.class, new RegionSerializer())
             .create();
 
-    Teleporter t1 = new Teleporter("t1", null);
+    private Teleporter t1 = new Teleporter("t1", null);
     private String serializedT1 =
             "{\n" +
             "  \"id\": 0,\n" +
@@ -26,7 +26,7 @@ public class TeleporterSerializerTest {
             "  \"requirements\": []\n" +
             "}";
 
-    Teleporter t2 = new Teleporter("t2", null);
+    private Teleporter t2 = new Teleporter("t2", null);
     private String serializedT2 =
             "{\n" +
             "  \"id\": 1,\n" +
@@ -36,7 +36,7 @@ public class TeleporterSerializerTest {
             "  \"requirements\": []\n" +
             "}";
 
-    Teleporter t3 = new Teleporter("t3", null);
+    private Teleporter t3 = new Teleporter("t3", null);
     private String serializedT3 =
             "{\n" +
             "  \"id\": 2,\n" +
@@ -45,6 +45,11 @@ public class TeleporterSerializerTest {
             "  \"link\": -1,\n" +
             "  \"requirements\": []\n" +
             "}";
+
+    public TeleporterSerializerTest() {
+        //Reset ID that may have changed because of previous tests
+        Teleporter.currentId = 0;
+    }
 
     private void initialization() {
         t1.link(t2);
