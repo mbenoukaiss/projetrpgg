@@ -719,21 +719,25 @@ public class CommandListener {
     @Listener({"travel"})
     public String travel(Region r) {
         if (!this.player.isInFight()) {
-            if (this.player.getLocation() == this.player.getShip()) {
-                ArrayList<Item> regionItems = new ArrayList<>(r.getItemsNeeded());
-                for (Item i : this.player.getInventory().getAll()) {
-                    if (regionItems.contains(i)) {
-                        regionItems.remove(i);
+            if (r != null) {
+                if (this.player.getLocation() == this.player.getShip()) {
+                    ArrayList<Item> regionItems = new ArrayList<>(r.getItemsNeeded());
+                    for (Item i : this.player.getInventory().getAll()) {
+                        if (regionItems.contains(i)) {
+                            regionItems.remove(i);
+                        }
                     }
-                }
-                if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()) {
-                    this.player.move(r);
-                    return ("You moved to the " + r.describe());
+                    if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()) {
+                        this.player.move(r);
+                        return ("You moved to the " + r.describe());
+                    } else {
+                        return ("You do not have the required items in order to enter this location or your ship isnt high level enough");
+                    }
                 } else {
-                    return ("You do not have the required items in order to enter this location or your ship isnt high level enough");
+                    return "You must be in your ship in order to travel";
                 }
             } else {
-                return "You must be in your ship in order to travel";
+                return "Error, check if you can travel to this region";
             }
         } else {
             return "You can only fight or flee";

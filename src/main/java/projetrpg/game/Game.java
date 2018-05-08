@@ -296,7 +296,7 @@ public class Game {
             return region;
         }
         for (Region region1 : region.getContainedRegions()) {
-            findRegion(region1, regionName);
+            return findRegion(region1, regionName);
         }
         return null;
     }
