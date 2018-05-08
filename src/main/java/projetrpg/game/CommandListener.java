@@ -9,6 +9,8 @@ import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
+import projetrpg.entities.player.Ship;
+import projetrpg.entities.player.ShipAmelioration;
 import projetrpg.map.Region;
 import projetrpg.map.Teleporter;
 import projetrpg.quest.Objective;
@@ -17,6 +19,8 @@ import projetrpg.quest.Quest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 
 /**
@@ -55,24 +59,40 @@ public class CommandListener {
      * This method is called whenever the user wishes to see a stat
      */
     @Listener({"see"})
-    public String see(Field field) {
+    public String see(Field field) throws IllegalAccessException {
         if (field != null) { // If the attribute was found
             field.setAccessible(true);
-            try {
-                Object value = field.get(this.player);
-                if (value == null) {
-                    return "You have nothing equipped.";
-                } else if (value instanceof Region) {
-                    return((((Region) value).getName()));
-                } else if (value instanceof Item) {
-                    return(((Item) value).getName());
-                } else if (value instanceof Inventory) {
-                    return(((Inventory) value).describe());
-                } else {
-                    return(String.valueOf(value));
+            if (field.getDeclaringClass() == Player.class || field.getDeclaringClass() == Entity.class) {
+                try {
+                    Object value = field.get(this.player);
+                    if (value == null) {
+                        return "You have nothing equipped.";
+                    } else if (value instanceof Region) {
+                        return ((((Region) value).getName()));
+                    } else if (value instanceof Item) {
+                        return (((Item) value).getName());
+                    } else if (value instanceof Inventory) {
+                        return (((Inventory) value).describe());
+                    } else {
+                        return (String.valueOf(value));
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            } else if (field.getDeclaringClass() == Ship.class) {
+                switch (field.getName()) {
+                    case "actualFuel":
+                        return String.valueOf(field.getInt(this.player.getShip()));
+                    case "level":
+                        return String.valueOf(field.getInt(this.player.getShip()));
+                    case "ameliorations":
+                        String am = "";
+                        for (ShipAmelioration a : (HashSet<ShipAmelioration>)field.get(this.player.getShip())) {
+                            am+=a.getDescription() + ", ";
+                        }
+                        am = am.substring(0, am.length()-2);
+                        return am;
+                }
             }
         } else { // If the attribute was not found
             return("Error : make sure you typed the right attribute to see.");
@@ -160,6 +180,7 @@ public class CommandListener {
                 this.player.setLocation(game.map.getSpawnPoint());
                 message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                 ((NPC) e).setInFight(false);
+                this.player.setEnemy(null);
                 this.player.setHps(this.player.getBaseHps());
                 return message;
             } else { // The fight is still going on
@@ -369,6 +390,7 @@ public class CommandListener {
                     this.player.setLocation(game.map.getSpawnPoint());
                     message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                     ((NPC) e).setInFight(false);
+                    this.player.setEnemy(null);
                     this.player.setHps(this.player.getBaseHps());
                 } else { // The fight is still going on
                     message += ("Hps of the ennemy after the assault : " + e.getHp())
@@ -445,6 +467,7 @@ public class CommandListener {
                     this.player.setLocation(game.map.getSpawnPoint());
                     message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                     ((NPC) e).setInFight(false);
+                    this.player.setEnemy(null);
                     this.player.setHps(this.player.getBaseHps());
                 } else { // The fight is still going on
                     message += ("Hps of the ennemy after the assault : " + e.getHp())
@@ -479,6 +502,12 @@ public class CommandListener {
     public String move(Region r) {
         if (!this.player.isInFight()) { // If the player is not engaged in a fight
             if (r != null) { // If the region exists and is connected to the player's location
+                if (r.getName().equalsIgnoreCase(this.player.getShip().getName())) {
+                    this.player.getShip().setLastRegion(this.player.getLocation());
+                    this.player.move(r);
+                    return "You moved to your ship. You can now go to : " +
+                            this.player.getShip().getLastRegion().getName();
+                }
                 ArrayList<Item> regionItems = new ArrayList<>(r.getItemsNeeded());
                 for (Item i : this.player.getInventory().getAll()) {
                     if (regionItems.contains(i)) {
@@ -655,8 +684,63 @@ public class CommandListener {
             return("Error : You can only fight or flee.");
         }
     }
+    @Listener({"improve"})
+    public String improve(ShipAmelioration amelioration) {
+        if (!this.player.isInFight()) {
+            if (this.player.getLocation() == this.player.getShip()) {
+                if (amelioration != null) {
+                    if (this.player.getShip().getAmeliorations().contains(amelioration)) {
+                        List<Item> shipItems = new ArrayList<>(amelioration.getItemsNeeded());
+                        for (Item i : this.player.getInventory().getAll()) {
+                            if (shipItems.contains(i)) {
+                                shipItems.remove(i);
+                            }
+                        }
+                        if (shipItems.isEmpty() && this.player.getShip().getLevel() >= amelioration.getShipLevelNeeded()) {
+                            this.player.getShip().improve(amelioration);
+                            return "You have successfully improved your ship with this improvement :" + amelioration.getDescription() + "!";
+                        } else {
+                            return "Check if your ship is enough high level or if you have the required items";
+                        }
+                    } else {
+                        return "You have already improved this part of your ship";
+                    }
+                } else {
+                    return "You can only improve the radar, the engine or the reactors";
+                }
+            } else {
+                return "You must be in your ship in order to improve it.";
+            }
+        } else {
+            return "You can only fight or flee";
+        }
+    }
 
-    private String canLevelUp() {
+    @Listener({"travel"})
+    public String travel(Region r) {
+        if (!this.player.isInFight()) {
+            if (this.player.getLocation() == this.player.getShip()) {
+                ArrayList<Item> regionItems = new ArrayList<>(r.getItemsNeeded());
+                for (Item i : this.player.getInventory().getAll()) {
+                    if (regionItems.contains(i)) {
+                        regionItems.remove(i);
+                    }
+                }
+                if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()) {
+                    this.player.move(r);
+                    return ("You moved to the " + r.describe());
+                } else {
+                    return ("You do not have the required items in order to enter this location or your ship isnt high level enough");
+                }
+            } else {
+                return "You must be in your ship in order to travel";
+            }
+        } else {
+            return "You can only fight or flee";
+        }
+    }
+
+    public String canLevelUp() {
         String message = "";
         message += " Congrats, you leveled up ! You can now learn :";
         for (Ability a : this.player.learnableAbilities()) {

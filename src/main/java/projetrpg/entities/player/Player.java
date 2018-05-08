@@ -78,6 +78,11 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     private Set<IObserver> observers;
 
     /**
+     * The ship of the player.
+     */
+    private Ship ship;
+
+    /**
      * The enemy this player is fighting.
      */
     @SerializationIgnore
@@ -392,4 +397,15 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         observers.clear();
     }
 
+    public void setShip(Ship s) {
+        this.ship = s;
+    }
+
+    public Ship getShip() {
+        return ship;
+    }
+
+    public void setEnemy(NPC enemy) {
+        this.enemy = enemy;
+    }
 }

@@ -8,9 +8,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
-import projetrpg.entities.player.Ability;
-import projetrpg.entities.player.AttackType;
-import projetrpg.entities.player.Player;
+import projetrpg.entities.player.*;
 import projetrpg.menu.HomeView;
 import projetrpg.utils.Pair;
 import projetrpg.map.*;
@@ -50,9 +48,7 @@ public class Main extends Application {
         primaryStage.setScene(homeView.getScene());
         primaryStage.show();
 
-        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
-        primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 3);
+        primaryStage.centerOnScreen();
     }
 
     public void launchMainGame() throws IOException {
@@ -95,9 +91,7 @@ public class Main extends Application {
         centerRegion.linkToDirection(northRegion, Direction.NORTH);
         centerRegion.linkToDirection(southRegion, Direction.SOUTH);
         centerRegion.linkToDirection(estRegion, Direction.EST);
-        centerRegion.linkToDirection(westRegion, Direction.WEST);
-        westRegion.addItemNeeded(Item.FLASHLIGHT);
-        westRegion.addItemNeeded(Item.TOOLKIT);
+        westRegion.setShipLevelRequired(2);
 
         Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
         ctovtp.first.addItemToRepair(Item.TOOLKIT);
@@ -122,6 +116,11 @@ public class Main extends Application {
         //Player initialization.
         Player player = new Player("Hervé", 0, centerRegion, null, 100,
                 10, EntityType.PLAYER, 50, 50);
+        Ship playerShip = new Ship(11, "Hervé's Ship", null, 50);
+        player.setShip(playerShip);
+        ShipAmelioration.ENGINE_AMELIORATION.addItemNeeded(Item.TOOLKIT);
+        ShipAmelioration.REACTORS_AMELIORATION.addItemNeeded(Item.KNIFE);
+        ShipAmelioration.RADAR_AMELIORATION.addItemNeeded(Item.FLASHLIGHT);
 
         Collection<Quest> quests = new HashSet<>();
         Objective<NPC> firstObjective = new Objective<>("Kill Zorg", ObjectiveType.KILL);
@@ -164,10 +163,8 @@ public class Main extends Application {
         GameView vue = new GameView(game, this);
         primaryStage.setScene(vue.getScene());
         primaryStage.show();
+        primaryStage.centerOnScreen();
 
-        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 1.5);
-        primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 3);
     }
 
 

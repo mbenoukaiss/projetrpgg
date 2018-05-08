@@ -5,6 +5,8 @@ import projetrpg.entities.Entity;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ability;
+import projetrpg.entities.player.Ship;
+import projetrpg.entities.player.ShipAmelioration;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
 import projetrpg.map.Teleporter;
@@ -42,13 +44,13 @@ public class Game {
                 "-attack : on an entity \n" +
                 "-talk : on an non hostile entity \n" +
                 "-fleefrom : on an entity you are fighting with \n" +
-                "-move : on a region thats connected to the one you're in \n" +
+                "-move : on a region thats connected to the one you're in or on your ship \n" +
                 "-pickup : on an item present int the map you're in \n" +
                 "-equip : on an item present in your inventory \n" +
                 "-ditch : on an item thats present in your inventory \n" +
                 "-unequip : on an item you have in head \n" +
                 "-use : on an item you have in your inventory or an ability you learned\n" +
-                "-see : on an attribute you wish to see the status" + "\n" +
+                "-see : on an attribute of yours or of your ship you wish to see the status" + "\n" +
                 "-describe location : to see your locations's infos\n" +
                 "-describe : on an entity, an item, or a teleporter in order to see its infos\n" +
                 "-take : on a teleporter you repaired\n" +
@@ -57,6 +59,7 @@ public class Game {
                 "-giveup : in order to giveup your current quest\n" +
                 "-learn : on an ability\n" +
                 "-travel : on a region\n" +
+                "-improve : on a possible amelioration of your ship (radar, engine, reactors)\n" +
                 "-help : to see the user guide.\n\n";
         commandRegisterer();
     }
@@ -98,6 +101,9 @@ public class Game {
         });
 
         parser.registerCommand("move", Region.class, (player, arg)-> {
+            if (player.getLocation() == player.getShip() && arg.equalsIgnoreCase(player.getShip().getLastRegion().getName())) {
+                return player.getShip().getLastRegion();
+            }
             for (Region r : player.getLocation().getRegionOnDirection().values()) {
                 if (r.getName().toLowerCase().equals(arg.toLowerCase())) {
                     return r;
@@ -111,6 +117,9 @@ public class Game {
             if (player.getLocation().getParent() != null &&
                     player.getLocation().getParent().getName().equalsIgnoreCase(arg))
                 return player.getLocation().getParent();
+            if (arg.equalsIgnoreCase("ship")) {
+                return player.getShip();
+            }
             return null;
         });
 
@@ -193,9 +202,12 @@ public class Game {
             List<Field> fields = new ArrayList<>();
             fields.addAll(Arrays.asList(player.getClass().getDeclaredFields()));
             fields.addAll(Arrays.asList(player.getClass().getSuperclass().getDeclaredFields()));
+            fields.addAll(Arrays.asList(player.getShip().getClass().getDeclaredFields()));
             for (Field field : fields) {
                 if (field.isAnnotationPresent(Expose.class)) {
-                    if (field.getAnnotation(Expose.class).value().equalsIgnoreCase(arg)) return field;
+                    if (field.getAnnotation(Expose.class).value().equalsIgnoreCase(arg)) {
+                        return field;
+                    }
                 }
             }
             return null;
@@ -209,6 +221,28 @@ public class Game {
             }
             return null;
         });
+
+        parser.registerCommand("improve", ShipAmelioration.class, (player, s) -> {
+            switch(s.toLowerCase()) {
+                case "radar":
+                    return ShipAmelioration.RADAR_AMELIORATION;
+                case "engine":
+                    return ShipAmelioration.ENGINE_AMELIORATION;
+                case "reactors":
+                    return ShipAmelioration.REACTORS_AMELIORATION;
+                default:
+                    return null;
+            }
+        });
+
+        parser.registerCommand("travel", Region.class, ((player, s) -> {
+            for (Region region : this.map.getRegions()) {
+                if (findRegion(region, s) != null) {
+                    return findRegion(region, s);
+                }
+            }
+            return null;
+        }));
 
         parser.registerCommand("describe", Object.class, (player, arg) -> {
             for (Entity e : player.getLocation().getEntities()) {
@@ -255,6 +289,16 @@ public class Game {
         } catch (InvalidAnnotationException e) {
             e.printStackTrace();
         }
+    }
+
+    public Region findRegion(Region region, String regionName) {
+        if (region.getName().equalsIgnoreCase(regionName)) {
+            return region;
+        }
+        for (Region region1 : region.getContainedRegions()) {
+            findRegion(region1, regionName);
+        }
+        return null;
     }
 
 }

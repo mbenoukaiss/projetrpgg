@@ -5,6 +5,7 @@ import projetrpg.Describable;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
+import projetrpg.entities.player.Ship;
 
 import java.util.*;
 
@@ -144,6 +145,9 @@ public class Region implements Describable {
      */
     @Override
     public String describe() {
+        if (this instanceof Ship) {
+            return "You are in your ship, you can now move to " + ((Ship) this).getLastRegion().getName() + ".";
+        }
         String d = "Region : " + this.name + ", contains those items : ";
         for(Item i: this.inventory.getAll()) {
             d+=i.getName() +", ";
@@ -155,7 +159,8 @@ public class Region implements Describable {
         }
         d = d.substring(0, d.length()-2) + ". From there you can go to : " + (this.getRegionNamesOnDirection())
                 + ((this.parent == null)? "" : "," + this.getParent().getName())
-                + ((this.getContainedRegions().isEmpty())? "" : "," + this.getContainedRegionsNames())+ ".";
+                + ((this.getContainedRegions().isEmpty())? "" : "," + this.getContainedRegionsNames())+ "."
+                + ". And your ship aswell.";
         String teleporters = "";
         for(Teleporter t : this.getTeleporters()) {
             teleporters += t.getName() + ", ";
@@ -315,6 +320,10 @@ public class Region implements Describable {
 
     public void addItemNeeded(Item item) {
         if (!this.itemsNeeded.contains(item)) this.itemsNeeded.add(item);
+    }
+
+    public int getShipLevelRequired() {
+        return shipLevelRequired;
     }
 
     public void setShipLevelRequired(int shipLevelRequired) {

@@ -1,6 +1,10 @@
 package projetrpg.entities.player;
 
+import projetrpg.game.Expose;
 import projetrpg.map.Region;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a ship.
@@ -16,17 +20,36 @@ public class Ship extends Region {
     /**
      * The actuel fuel of the ship
      */
+    @Expose("fuel")
     private int actualFuel;
 
     /**
      * The level of the ship
      */
+    @Expose("ship level")
     private int level;
+
+    /**
+     * Possible ameliorations of the ship;
+     */
+    @Expose("ship improvements")
+    private Set<ShipAmelioration> ameliorations;
+
+    /**
+     * The last region the player was on before entering his ship
+     */
+    private Region lastRegion;
 
     public Ship(int id, String name, Region parent, int baseFuel) {
         super(id, name, parent);
         this.baseFuel = baseFuel;
+        this.actualFuel = this.baseFuel;
         this.level = 1;
+        this.ameliorations = new HashSet<>();
+        this.ameliorations.add(ShipAmelioration.ENGINE_AMELIORATION);
+        this.ameliorations.add(ShipAmelioration.RADAR_AMELIORATION);
+        this.ameliorations.add(ShipAmelioration.REACTORS_AMELIORATION);
+        lastRegion = null;
     }
 
     /**
@@ -51,5 +74,26 @@ public class Ship extends Region {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public void improve(ShipAmelioration amelioration) {
+        this .level += 1;
+        finishAmelioration(amelioration);
+    }
+
+    public Set<ShipAmelioration> getAmeliorations() {
+        return ameliorations;
+    }
+
+    private void finishAmelioration(ShipAmelioration a) {
+        this.ameliorations.remove(a);
+    }
+
+    public void setLastRegion(Region lastRegion) {
+        this.lastRegion = lastRegion;
+    }
+
+    public Region getLastRegion() {
+        return lastRegion;
     }
 }
