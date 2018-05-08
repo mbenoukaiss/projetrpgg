@@ -117,7 +117,7 @@ public class CommandListener {
                 boolean isConcerned = false;
                 if (this.player.getCurrentQuest() != null) {
                     for (Objective o : this.player.getCurrentQuest().getObjectives()) {
-                        if (o.getType() == ObjectiveType.KILL && o.getConcernedNPC() == e) {
+                        if (o.getType() == ObjectiveType.KILL && o.getConcernedObject() == e) {
                             objectiveFound = o;
                             isConcerned = true;
                         }
@@ -206,7 +206,7 @@ public class CommandListener {
                 boolean isConcerned = false;
                 if (this.player.getCurrentQuest() != null) {
                     for (Objective o : this.player.getCurrentQuest().getObjectives()) {
-                        if (o.getType() == ObjectiveType.TALK && o.getConcernedNPC() == e) {
+                        if (o.getType() == ObjectiveType.TALK && o.getConcernedObject() == e) {
                             objectiveFound = o;
                             isConcerned = true;
                         }
@@ -262,7 +262,7 @@ public class CommandListener {
                 boolean isConcerned = false;
                 if (this.player.getCurrentQuest() != null) {
                     for (Objective obj : this.player.getCurrentQuest().getObjectives()) {
-                        if (obj.getType() == ObjectiveType.USE && obj.getConcernedItem() == e) {
+                        if (obj.getType() == ObjectiveType.USE && obj.getConcernedObject() == e) {
                             objectiveFound = obj;
                             isConcerned = true;
                         }
@@ -329,7 +329,7 @@ public class CommandListener {
                     boolean isConcerned = false;
                     if (this.player.getCurrentQuest() != null) {
                         for (Objective obj : this.player.getCurrentQuest().getObjectives()) {
-                            if (obj.getType() == ObjectiveType.KILL && obj.getConcernedNPC() == e) {
+                            if (obj.getType() == ObjectiveType.KILL && obj.getConcernedObject() == e) {
                                 objectiveFound = obj;
                                 isConcerned = true;
                             }
@@ -405,7 +405,7 @@ public class CommandListener {
                     boolean isConcerned = false;
                     if (this.player.getCurrentQuest() != null) {
                         for (Objective obj : this.player.getCurrentQuest().getObjectives()) {
-                            if (obj.getType() == ObjectiveType.KILL && obj.getConcernedNPC() == e) {
+                            if (obj.getType() == ObjectiveType.KILL && obj.getConcernedObject() == e) {
                                 objectiveFound = obj;
                                 isConcerned = true;
                             }
@@ -561,7 +561,7 @@ public class CommandListener {
                 boolean isConcerned = false;
                 if (this.player.getCurrentQuest() != null) {
                     for (Objective o : this.player.getCurrentQuest().getObjectives()) {
-                        if (o.getType() == ObjectiveType.PICKUP && o.getConcernedItem() == i) {
+                        if (o.getType() == ObjectiveType.PICKUP && o.getConcernedObject() == i) {
                             objectiveFound = o;
                             isConcerned = true;
                         }
@@ -644,10 +644,10 @@ public class CommandListener {
     }
 
     @Listener({"giveup"})
-    public String abandon(String ignored) {
+    public String giveup(String ignored) {
         if (!this.player.isInFight()) {
             Quest sq = this.player.getCurrentQuest();
-            if (sq != null) this.player.getCurrentQuest().abandon();
+            if (sq != null) this.player.getCurrentQuest().giveUp();
             this.player.setCurrentQuest(null);
             if (sq != null) return "You gave up on this quest : " + sq.getName() + ".";
             return "No quest to give up";
@@ -656,7 +656,7 @@ public class CommandListener {
         }
     }
 
-    public String canLevelUp() {
+    private String canLevelUp() {
         String message = "";
         message += " Congrats, you leveled up ! You can now learn :";
         for (Ability a : this.player.learnableAbilities()) {

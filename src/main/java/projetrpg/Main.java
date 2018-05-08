@@ -124,9 +124,9 @@ public class Main extends Application {
                 10, EntityType.PLAYER, 50, 50);
 
         Collection<Quest> quests = new HashSet<>();
-        Objective firstObjective = new Objective("Kill Zorg", ObjectiveType.KILL);
-        Objective secondObjective = new Objective("Pickup the Apple", ObjectiveType.PICKUP);
-        Objective thirdObjective = new Objective("Use the Apple", ObjectiveType.USE);
+        Objective<NPC> firstObjective = new Objective<>("Kill Zorg", ObjectiveType.KILL);
+        Objective<Item> secondObjective = new Objective<>("Pickup the Apple", ObjectiveType.PICKUP);
+        Objective<Item> thirdObjective = new Objective<>("Use the Apple", ObjectiveType.USE);
         Quest firstQuest = new Quest(10, "A new Dawn", "Start your beautiful journey " +
                 "towards saving the universe", 0);
         quests.add(firstQuest);
@@ -137,12 +137,12 @@ public class Main extends Application {
         firstQuest.addObserver(player);
         firstQuest.linkRewardedItem(Item.APPLE);
         firstQuest.linkRewardedItem(Item.FLASHLIGHT);
-        firstObjective.setConcernedNPC(zorg);
+        firstObjective.setConcernedObject(zorg);
         firstObjective.addObserver(firstQuest);
-        secondObjective.setConcernedItem(Item.APPLE);
+        secondObjective.setConcernedObject(Item.APPLE);
         secondObjective.addObserver(firstQuest);
         thirdObjective.addObserver(firstQuest);
-        thirdObjective.setConcernedItem(Item.APPLE);
+        thirdObjective.setConcernedObject(Item.APPLE);
 
         Ability fireBall = new Ability("FireBall", 1, 30, AttackType.LINE, 10);
         Ability waterBeam = new Ability("WaterBeam", 2, 50, AttackType.AOE, 20);

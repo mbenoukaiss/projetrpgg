@@ -18,10 +18,7 @@ public class ObjectiveSerializer implements JsonSerializer<Objective>, JsonDeser
         jsonObjective.addProperty("finished", objective.finished);
         jsonObjective.addProperty("description", objective.description);
         jsonObjective.add("type", jsonSerializationContext.serialize(objective.type));
-        if(objective.concernedNPC != null)
-            jsonObjective.add("npc", jsonSerializationContext.serialize(objective.concernedNPC.getId()));
-        if(objective.concernedItem != null)
-            jsonObjective.add("item", jsonSerializationContext.serialize(objective.concernedItem));
+        jsonObjective.add("concerned", jsonSerializationContext.serialize(objective.concernedObject));
 
         return jsonObjective;
     }
@@ -34,10 +31,11 @@ public class ObjectiveSerializer implements JsonSerializer<Objective>, JsonDeser
         objective.finished = jsonObjective.get("finished").getAsBoolean();
         objective.description = jsonObjective.get("description").getAsString();
         objective.type = jsonDeserializationContext.deserialize(jsonObjective.get("type"), ObjectiveType.class);
+        /*
         if(jsonObjective.has("npc"))
             objective.concernedNPC = MapSerializer.getNPC(jsonObjective.get("npc").getAsInt());
         if(jsonObjective.has("item"))
-            objective.concernedItem = jsonDeserializationContext.deserialize(jsonObjective.get("item"), Item.class);
+            objective.concernedItem = jsonDeserializationContext.deserialize(jsonObjective.get("item"), Item.class);*/
 
         return objective;
     }

@@ -54,7 +54,7 @@ public class Game {
                 "-take : on a teleporter you repaired\n" +
                 "-repair : on a teleporter you wish to repair\n" +
                 "-start : on a quest in order to start it\n" +
-                "-giveup : in order to abandon your current quest\n" +
+                "-giveup : in order to giveup your current quest\n" +
                 "-learn : on an ability\n" +
                 "-travel : on a region\n" +
                 "-help : to see the user guide.\n\n";

@@ -214,7 +214,6 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
      */
     public void setCurrentQuest(Quest currentQuest) {
         this.currentQuest = currentQuest;
-        if (currentQuest != null) this.currentQuest.start();
     }
 
     @Override

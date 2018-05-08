@@ -1,16 +1,28 @@
 package projetrpg.quest;
 
-import projetrpg.entities.NPC;
-import projetrpg.entities.items.Item;
 import projetrpg.observer.Observable;
 
-public class Objective extends Observable {
+public class Objective<T> extends Observable {
 
+    /**
+     * If the objective is finished.
+     */
     protected boolean finished;
+
+    /**
+     * The description of this objective.
+     */
     protected String description;
+
+    /**
+     * The type of the objective.
+     */
     protected ObjectiveType type;
-    protected NPC concernedNPC;
-    protected Item concernedItem;
+
+    /**
+     * The concerned object.
+     */
+    protected T concernedObject;
 
     Objective() {
 
@@ -22,40 +34,57 @@ public class Objective extends Observable {
         this.type = type;
     }
 
+    /**
+     * Tells if this objective is finished.
+     *
+     * @return True if the objective is finished.
+     */
+    public boolean isFinished() {
+        return finished;
+    }
+
+    /**
+     * Consider this objective as finished.
+     */
     public void finish() {
         this.finished = true;
         this.notifyObservers();
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
+    /**
+     * Getter for the concerned object.
+     *
+     * @return The concerned object.
+     */
+    public T getConcernedObject() {
+        return concernedObject;
     }
 
-    public void setConcernedNPC(NPC concernedNPC) {
-        this.concernedNPC = concernedNPC;
+    /**
+     * Setter for the concerned object.
+     *
+     * @param concernedObject The new object.
+     */
+    public void setConcernedObject(T concernedObject) {
+        this.concernedObject = concernedObject;
     }
 
-    public void setConcernedItem(Item concernedItem) {
-        this.concernedItem = concernedItem;
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
-
+    /**
+     * Getter for the description.
+     *
+     * @return The description of this objective.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Getter for the type of objective.
+     *
+     * @return The type of this objective.
+     */
     public ObjectiveType getType() {
         return type;
     }
 
-    public NPC getConcernedNPC() {
-        return concernedNPC;
-    }
-
-    public Item getConcernedItem() {
-        return concernedItem;
-    }
 }
