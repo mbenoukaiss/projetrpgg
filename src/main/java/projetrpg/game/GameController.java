@@ -122,7 +122,6 @@ public class GameController implements Initializable {
 
         if (KeyCode.ENTER == e.getCode()) {
             String logs;
-
             try {
                 logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
                         game.parser.parse(game.map.getMainCharacter(), commandField.getText()).send() + "\n\n";

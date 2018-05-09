@@ -13,6 +13,7 @@ import projetrpg.map.Teleporter;
 import projetrpg.quest.Quest;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 import java.util.Scanner;
@@ -50,7 +51,15 @@ public class Game {
                 "-ditch : on an item thats present in your inventory \n" +
                 "-unequip : on an item you have in head \n" +
                 "-use : on an item you have in your inventory or an ability you learned\n" +
-                "-see : on an attribute of yours or of your ship you wish to see the status" + "\n" +
+                "-see : on an attribute of yours or of your ship you wish to see the status :\n" +
+                "       -health : your current hps\n" +
+                "       -xp : your experience\n" +
+                "       -item : your item equipped\n" +
+                "       -mana : your current mana\n" +
+                "       -location : your current location\n" +
+                "       -ship level : your ship level\n" +
+                "       -fuel : your ship fuel\n" +
+                "       -ship improvements : your available ship improvements" + "\n" +
                 "-describe location : to see your locations's infos\n" +
                 "-describe : on an entity, an item, or a teleporter in order to see its infos\n" +
                 "-take : on a teleporter you repaired\n" +
@@ -198,7 +207,14 @@ public class Game {
             return null;
         });
 
-        parser.registerCommand("see", Field.class, (player, arg)-> {
+        parser.registerCommand("see", Object.class, (player, arg)-> {
+            for (Method m : player.getClass().getDeclaredMethods()) {
+                if (m.isAnnotationPresent(Expose.class)) {
+                    if (m.getAnnotation(Expose.class).value().equalsIgnoreCase(arg)) {
+                        return m;
+                    }
+                }
+            }
             List<Field> fields = new ArrayList<>();
             fields.addAll(Arrays.asList(player.getClass().getDeclaredFields()));
             fields.addAll(Arrays.asList(player.getClass().getSuperclass().getDeclaredFields()));

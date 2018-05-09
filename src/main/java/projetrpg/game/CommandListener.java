@@ -1,5 +1,6 @@
 package projetrpg.game;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import projetrpg.Describable;
 import projetrpg.commands.Listener;
 import projetrpg.entities.player.Ability;
@@ -18,9 +19,9 @@ import projetrpg.quest.ObjectiveType;
 import projetrpg.quest.Quest;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 
 /**
@@ -59,39 +60,60 @@ public class CommandListener {
      * This method is called whenever the user wishes to see a stat
      */
     @Listener({"see"})
-    public String see(Field field) throws IllegalAccessException {
-        if (field != null) { // If the attribute was found
-            field.setAccessible(true);
-            if (field.getDeclaringClass() == Player.class || field.getDeclaringClass() == Entity.class) {
-                try {
-                    Object value = field.get(this.player);
-                    if (value == null) {
-                        return "You have nothing equipped.";
-                    } else if (value instanceof Region) {
-                        return ((((Region) value).getName()));
-                    } else if (value instanceof Item) {
-                        return (((Item) value).getName());
-                    } else if (value instanceof Inventory) {
-                        return (((Inventory) value).describe());
-                    } else {
-                        return (String.valueOf(value));
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            } else if (field.getDeclaringClass() == Ship.class) {
-                switch (field.getName()) {
-                    case "actualFuel":
-                        return String.valueOf(field.getInt(this.player.getShip()));
-                    case "level":
-                        return String.valueOf(field.getInt(this.player.getShip()));
-                    case "ameliorations":
-                        String am = "";
-                        for (ShipAmelioration a : (HashSet<ShipAmelioration>)field.get(this.player.getShip())) {
-                            am+=a.getDescription() + ", ";
+    public String see(Object o) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        if (o != null) { // If the attribute was found
+            if (o instanceof Field) {
+                Field field = (Field)o;
+                field.setAccessible(true);
+                if (field.getDeclaringClass() == Player.class || field.getDeclaringClass() == Entity.class) {
+                    try {
+                        Object value = field.get(this.player);
+                        if (value == null) {
+                            return "You have nothing equipped.";
+                        } else if (value instanceof Region) {
+                            return ((((Region) value).getName()));
+                        } else if (value instanceof Item) {
+                            return (((Item) value).getName());
+                        } else if (value instanceof Inventory) {
+                            return (((Inventory) value).describe());
+                        } else {
+                            return (String.valueOf(value));
                         }
-                        am = am.substring(0, am.length()-2);
-                        return am;
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                } else if (field.getDeclaringClass() == Ship.class) {
+                    switch (field.getName()) {
+                        case "actualFuel":
+                            return String.valueOf(field.getInt(this.player.getShip()));
+                        case "level":
+                            return String.valueOf(field.getInt(this.player.getShip()));
+                        case "ameliorations":
+                            String am = "";
+                            for (ShipAmelioration a : (HashSet<ShipAmelioration>) field.get(this.player.getShip())) {
+                                am += a.getDescription() + ", ";
+                            }
+                            am = am.substring(0, am.length() - 2);
+                            return am;
+                    }
+                }
+            } else if (o instanceof Method) {
+                Method m = (Method) o;
+                m.setAccessible(true);
+                if (m.invoke(this.player) != null) {
+                    HashSet<Ability> abilities = new HashSet<>((Set<Ability>) m.invoke(this.player));
+                    if (!abilities.isEmpty()) {
+                        String message = "";
+                        for (Ability a : abilities) {
+                            message += a.getName() + ", ";
+                        }
+                        if (message.length() > 2) message = message.substring(0, message.length() - 2);
+                        return message;
+                    } else {
+                        return "You have no abilities to learn.";
+                    }
+                } else {
+                    return "You have no abilities to learn.";
                 }
             }
         } else { // If the attribute was not found
@@ -203,7 +225,7 @@ public class CommandListener {
                         this.player.setCurrentQuest(q);
                         return "You started this quest :" + q.getName() + "!";
                     } else {
-                        return "You dont meet the required level in order to start this quest.";
+                        return "You dont meet the required level in order to start this quest you need to be level " + q.getLevelRequired() +".";
                     }
                 } else {
                     return "You may only start one quest at a time, finish the one you started.";
@@ -476,7 +498,7 @@ public class CommandListener {
                 }
                 return message;
             } else {
-                return "You dont have enough mana in order to cast this spell";
+                return "You dont have enough mana in order to cast this spell, you need " + a.getCost() + "mana.";
             }
         } else {
             return "Check if you have learned this ability of if the entity is nearby";
@@ -518,7 +540,13 @@ public class CommandListener {
                     this.player.move(r);
                     return ("You moved to the " + r.describe());
                 } else {
-                    return ("You do not have the required items in order to enter this location");
+                    String message = "";
+                    for (Item i : r.getItemsNeeded()) {
+                        message+= i.getName() +",";
+                    }
+                    message = message.substring(0, message.length()-1);
+                    return ("You do not have the required items in order to enter this location. You need those items : "
+                            + message + ".");
                 }
             } else { // If the region doesnt exists and/or is not connected to the player's location
                 return("Error : check if this location is connected to your location. Maybe try travelling to it");
@@ -543,7 +571,8 @@ public class CommandListener {
                     this.player.move(teleporter.getLinkedTeleporter().getLocation());
                     return("You teleported to the : " + teleporter.getLinkedTeleporter().getLocation().describe());
                 }
-                return("You cant take to this teleporter" + "." + " Check if you have repaired it AND the linked teleporter");
+                return("You cant take to this teleporter" + "." + " Check if you have repaired it AND the linked teleporter" +
+                "Try repairing it with the repair command.");
             } else { // If the region doesnt exists and/or is not connected to the player's location
                 return("Error : check if this location exists.");
             }
@@ -569,7 +598,13 @@ public class CommandListener {
                     t.repair();
                     return("You repaired this teleporter : " + t.getName());
                 } else {
-                    return "You do not have the required items in order to repair this teleporter";
+                    String message = "";
+                    for (Item i : t.getItemsNeededToRepair()) {
+                        message+= i.getName() +",";
+                    }
+                    message = message.substring(0, message.length()-1);
+                    return ("You do not have the required items in order to enter this location. You need those items : "
+                            + message + ".");
                 }
             } else {
                 return("Error : Check if this teleporter is in your region.");
@@ -700,7 +735,13 @@ public class CommandListener {
                             this.player.getShip().improve(amelioration);
                             return "You have successfully improved your ship with this improvement :" + amelioration.getDescription() + "!";
                         } else {
-                            return "Check if your ship is enough high level or if you have the required items";
+                            String message = "";
+                            for (Item i : amelioration.getItemsNeeded()) {
+                                message+= i.getName() +",";
+                            }
+                            message = message.substring(0, message.length()-1);
+                            return ("You do not have the required items in order to enter this location. You need those items : "
+                                    + message + ". And you need your ship to be level + " + amelioration.getShipLevelNeeded() + ".");
                         }
                     } else {
                         return "You have already improved this part of your ship";
@@ -727,17 +768,28 @@ public class CommandListener {
                             regionItems.remove(i);
                         }
                     }
-                    if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()) {
+                    if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()
+                            && this.player.getShip().getActualFuel() >= this.player.getShip().getTravelCost()) {
                         this.player.move(r);
                         return ("You moved to the " + r.describe());
                     } else {
-                        return ("You do not have the required items in order to enter this location or your ship isnt high level enough");
+                        String message = "";
+                        if (!r.getItemsNeeded().isEmpty()) {
+                            for (Item i : r.getItemsNeeded()) {
+                                message+=i.getName() + ", ";
+                            }
+                            message = message.substring(0, message.length() - 2);
+                        }
+                        return "Maybe you dont have enough fuel, you need 10 fuel. " +
+                                " Maybe your ship isnt high level enough, he needs to be level " + r.getShipLevelRequired() +
+                                ((message.isEmpty()) ? message : ". Or maybe you do not have the required items in order to enter this location." +
+                                "You need those items : " + message + ".");
                     }
                 } else {
                     return "You must be in your ship in order to travel";
                 }
             } else {
-                return "Error, check if you can travel to this region";
+                return "Error, check if this is a valid region";
             }
         } else {
             return "You can only fight or flee";

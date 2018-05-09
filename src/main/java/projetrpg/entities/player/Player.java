@@ -300,6 +300,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
      *
      * @return All the learnable abilities.
      */
+    @Expose("abilities")
     public Set<Ability> learnableAbilities() {
         Set<Ability> ab = new HashSet<>();
 

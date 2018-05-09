@@ -69,29 +69,29 @@ public class Main extends Application {
         // SOUTH contains a region FLOWERPLAINS
         // EST contains a region VOLCANO
         ArrayList<Region> regions = new ArrayList<>();
-        Region centerRegion = new Region(1, "Center", null);
+        Region centerRegion = new Region(1, "Center", null, 0);
         regions.add(centerRegion);
-        Region northRegion = new Region(2, "North", null);
+        Region northRegion = new Region(2, "North", null, 0);
         regions.add(northRegion);
-        Region southRegion = new Region(3, "South", null);
+        Region southRegion = new Region(3, "South", null, 0);
         regions.add(southRegion);
-        Region estRegion = new Region(4, "Est", null);
+        Region estRegion = new Region(4, "Est", null, 0);
         regions.add(estRegion);
-        Region westRegion = new Region(5, "West", null);
+        Region westRegion = new Region(5, "West", null, 2);
         regions.add(westRegion);
+        westRegion.addItemNeeded(Item.KNIFE);
 
-        Region forest = new Region(6, "Forest", centerRegion);
-        Region cave = new Region(7, "Cave", forest);
-        Region flowerPlains = new Region(8, "Flower Plains", southRegion);
-        Region flowerMountains = new Region(9, "Flower Mountains", southRegion);
+        Region forest = new Region(6, "Forest", centerRegion, 0);
+        Region cave = new Region(7, "Cave", forest, 0);
+        Region flowerPlains = new Region(8, "Flower Plains", southRegion, 0);
+        Region flowerMountains = new Region(9, "Flower Mountains", southRegion, 0);
         flowerMountains.linkToDirection(flowerPlains, Direction.NORTH);
-        Region volcano = new Region(10, "Volcano", estRegion);
+        Region volcano = new Region(10, "Volcano", estRegion, 0);
 
         // Regions linking.
         centerRegion.linkToDirection(northRegion, Direction.NORTH);
         centerRegion.linkToDirection(southRegion, Direction.SOUTH);
         centerRegion.linkToDirection(estRegion, Direction.EST);
-        westRegion.setShipLevelRequired(2);
 
         Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
         ctovtp.first.addItemToRepair(Item.TOOLKIT);
@@ -104,6 +104,7 @@ public class Main extends Application {
         estRegion.addItemToInventory(Item.FLASHLIGHT);
         forest.addItemToInventory(Item.TOOLKIT);
         forest.addItemToInventory(Item.TOOLKIT);
+        forest.addItemNeeded(Item.KNIFE);
 
         //NPC's initialization.
         NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 300,
@@ -114,9 +115,9 @@ public class Main extends Application {
                 0, "Hey, you are our hero...blablabla....very important... save the universe ... " +
                 "blablabla... You may now start your first Quest : A new Dawn!");
         //Player initialization.
+        Ship playerShip = new Ship(11, "Hervé's Ship", null, 50);
         Player player = new Player("Hervé", 0, centerRegion, null, 100,
                 10, EntityType.PLAYER, 50, 50);
-        Ship playerShip = new Ship(11, "Hervé's Ship", null, 50);
         player.setShip(playerShip);
         ShipAmelioration.ENGINE_AMELIORATION.addItemNeeded(Item.TOOLKIT);
         ShipAmelioration.REACTORS_AMELIORATION.addItemNeeded(Item.KNIFE);

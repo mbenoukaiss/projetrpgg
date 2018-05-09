@@ -84,7 +84,7 @@ public class Region implements Describable {
         this.itemsNeeded = new ArrayList<>();
     }
 
-    public Region(int id, String name, Region parent) {
+    public Region(int id, String name, Region parent, int shipLevelRequired) {
         this.id = id;
         this.name = name;
         this.parent = parent;
@@ -94,6 +94,7 @@ public class Region implements Describable {
         this.teleporters = new HashSet<>();
         this.inventory = new Inventory(DEFAULT_ROOM_ITEM_CAPACITY);
         this.itemsNeeded = new ArrayList<>();
+        this.shipLevelRequired = shipLevelRequired;
 
         if(parent != null)
             parent.addContainedRegion(this);
@@ -148,25 +149,34 @@ public class Region implements Describable {
         if (this instanceof Ship) {
             return "You are in your ship, you can now move to " + ((Ship) this).getLastRegion().getName() + ".";
         }
-        String d = "Region : " + this.name + ", contains those items : ";
-        for(Item i: this.inventory.getAll()) {
-            d+=i.getName() +", ";
+        String d = "Region : " + this.name;
+        if (!this.inventory.getAll().isEmpty()) {
+            d+=", contains those items : ";
+            for(Item i: this.inventory.getAll()) {
+                d+=i.getName() +", ";
+            }
+            d = d.substring(0, d.length()-2);
         }
-        d = d.substring(0, d.length()-2);
-        d+=". And those entities :";
-        for(NPC e: this.entities) {
-            d+=e.getName() +", ";
+        if (!this.entities.isEmpty()) {
+            d += ". And those entities :";
+            for (NPC e : this.entities) {
+                d += e.getName() + ", ";
+            }
+            d = d.substring(0, d.length()-2);
         }
-        d = d.substring(0, d.length()-2) + ". From there you can go to : " + (this.getRegionNamesOnDirection())
-                + ((this.parent == null)? "" : "," + this.getParent().getName())
-                + ((this.getContainedRegions().isEmpty())? "" : "," + this.getContainedRegionsNames())+ "."
-                + ". And your ship aswell.";
-        String teleporters = "";
-        for(Teleporter t : this.getTeleporters()) {
-            teleporters += t.getName() + ", ";
+        if (!this.getRegionNamesOnDirection().isEmpty()) {
+            d += ". From there you can go to : " + (this.getRegionNamesOnDirection())
+                    + ((this.parent == null) ? "" : "," + this.getParent().getName())
+                    + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
+                    + " And your ship aswell.";
         }
-        if (teleporters.length() > 0) teleporters = teleporters.substring(0, teleporters.length() -2) + ".";
-        d+=" And this region contains those teleporters : " + teleporters;
+        if (!this.teleporters.isEmpty()) {
+            d += " Contains those teleporters :";
+            for (Teleporter t : this.teleporters) {
+                d += t.getName() + ", ";
+            }
+            d = d.substring(0, d.length()-2);
+        }
         if (!itemsNeeded.isEmpty()) {
             d+=" You'll need those items in order to go there : ";
             for (Item i : this.itemsNeeded) {
@@ -326,7 +336,4 @@ public class Region implements Describable {
         return shipLevelRequired;
     }
 
-    public void setShipLevelRequired(int shipLevelRequired) {
-        this.shipLevelRequired = shipLevelRequired;
-    }
 }

@@ -1,5 +1,6 @@
 package projetrpg.entities.player;
 
+import projetrpg.Describable;
 import projetrpg.game.Expose;
 import projetrpg.map.Region;
 
@@ -10,7 +11,9 @@ import java.util.Set;
  * Represents a ship.
  * Created by mhevin on 07/05/18.
  */
-public class Ship extends Region {
+public class Ship extends Region implements Describable{
+
+    private int TRAVEL_COST;
 
     /**
      * The base fuel of the ship
@@ -41,7 +44,7 @@ public class Ship extends Region {
     private Region lastRegion;
 
     public Ship(int id, String name, Region parent, int baseFuel) {
-        super(id, name, parent);
+        super(id, name, parent, 0);
         this.baseFuel = baseFuel;
         this.actualFuel = this.baseFuel;
         this.level = 1;
@@ -50,6 +53,7 @@ public class Ship extends Region {
         this.ameliorations.add(ShipAmelioration.RADAR_AMELIORATION);
         this.ameliorations.add(ShipAmelioration.REACTORS_AMELIORATION);
         lastRegion = null;
+        this.TRAVEL_COST = 10;
     }
 
     /**
@@ -66,6 +70,14 @@ public class Ship extends Region {
      */
     public int getActualFuel() {
         return actualFuel;
+    }
+
+    public void setActualFuel(int actualFuel) {
+        this.actualFuel = actualFuel;
+    }
+
+    public int getTravelCost() {
+        return TRAVEL_COST;
     }
 
     public int getLevel() {
@@ -95,5 +107,10 @@ public class Ship extends Region {
 
     public Region getLastRegion() {
         return lastRegion;
+    }
+
+    @Override
+    public String describe() {
+        return "Hervé's ship : \n -Level : " + this.level;
     }
 }

@@ -12,7 +12,6 @@ import java.lang.annotation.Target;
  * it will be available in the see command.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
 public @interface Expose {
 
     /**
