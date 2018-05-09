@@ -10,10 +10,10 @@ public class RegionTest {
 
     @Test
     public void getContainedRegions() {
-        Region southRegion = new Region(3, "South", null);
+        Region southRegion = new Region(3, "South", null, 0);
 
-        Region flowerPlains = new Region(8, "Flower Plains", southRegion);
-        Region flowerMountains = new Region(9, "Flower Mountains", southRegion);
+        Region flowerPlains = new Region(8, "Flower Plains", southRegion, 0);
+        Region flowerMountains = new Region(9, "Flower Mountains", southRegion, 0);
 
         ArrayList<Region> south = new ArrayList<>();
         south.add(flowerPlains);
@@ -24,9 +24,9 @@ public class RegionTest {
 
     @Test
     public void getParent() {
-        Region southRegion = new Region(3, "South", null);
+        Region southRegion = new Region(3, "South", null, 0);
 
-        Region flowerPlains = new Region(8, "Flower Plains", southRegion);
+        Region flowerPlains = new Region(8, "Flower Plains", southRegion, 0);
 
         assertEquals(southRegion, flowerPlains.getParent());
     }
@@ -34,9 +34,9 @@ public class RegionTest {
     @Test
     public void linkToDirection() {
 
-        Region centerRegion = new Region(1, "Center", null);
-        Region northRegion = new Region(2, "North", null);
-        Region southRegion = new Region(3, "South", null);
+        Region centerRegion = new Region(1, "Center", null, 0);
+        Region northRegion = new Region(2, "North", null, 0);
+        Region southRegion = new Region(3, "South", null, 0);
 
         centerRegion.linkToDirection(northRegion, Direction.NORTH);
         centerRegion.linkToDirection(southRegion, Direction.SOUTH);

@@ -113,7 +113,7 @@ public class Game {
             if (player.getLocation() == player.getShip() && arg.equalsIgnoreCase(player.getShip().getLastRegion().getName())) {
                 return player.getShip().getLastRegion();
             }
-            for (Region r : player.getLocation().getRegionOnDirection().values()) {
+            for (Region r : player.getLocation().getGoingableRegions()) {
                 if (r.getName().toLowerCase().equals(arg.toLowerCase())) {
                     return r;
                 }

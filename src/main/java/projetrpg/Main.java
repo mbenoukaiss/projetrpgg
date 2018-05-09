@@ -86,13 +86,13 @@ public class Main extends Application {
         Region cave = new Region(7, "Cave", forest, 0);
         Region flowerPlains = new Region(8, "Flower Plains", southRegion, 0);
         Region flowerMountains = new Region(9, "Flower Mountains", southRegion, 0);
-        flowerMountains.linkToDirection(flowerPlains, Direction.NORTH);
+        flowerMountains.addGoingableRegion(flowerPlains);
         Region volcano = new Region(10, "Volcano", estRegion, 0);
 
         // Regions linking.
-        centerRegion.linkToDirection(northRegion, Direction.NORTH);
-        centerRegion.linkToDirection(southRegion, Direction.SOUTH);
-        centerRegion.linkToDirection(estRegion, Direction.EST);
+        centerRegion.addGoingableRegion(northRegion);
+        centerRegion.addGoingableRegion(southRegion);
+        centerRegion.addGoingableRegion(estRegion);
 
         Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
         ctovtp.first.addItemToRepair(Item.TOOLKIT);
@@ -120,6 +120,9 @@ public class Main extends Application {
         Player player = new Player("Hervé", 0, centerRegion, null, 100,
                 10, EntityType.PLAYER, 50, 50);
         player.setShip(playerShip);
+        for (Region r: regions) {
+            r.addGoingableRegion(playerShip);
+        }
         ShipAmelioration.ENGINE_AMELIORATION.addItemNeeded(Item.TOOLKIT);
         ShipAmelioration.REACTORS_AMELIORATION.addItemNeeded(Item.KNIFE);
         ShipAmelioration.RADAR_AMELIORATION.addItemNeeded(Item.FLASHLIGHT);
@@ -154,7 +157,11 @@ public class Main extends Application {
         mainMap.setMainCharacter(player);
         mainMap.setSpawnPoint(centerRegion);
         mainMap.setHumanCount(100);
-        regions.forEach(mainMap::addRegion);
+        for (Region r : regions) {
+            System.out.println(r.getName());
+            mainMap.addRegion(r);
+        }
+        mainMap.addRegion(playerShip);
         quests.forEach(mainMap::addQuest);
 
         testSerialization(mainMap);

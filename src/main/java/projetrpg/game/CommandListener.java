@@ -200,7 +200,7 @@ public class CommandListener {
                 message += ("You died, you have been redirected to the spawn point : " + game.map.getSpawnPoint()
                         .getName()+ ".");
                 this.player.setLocation(game.map.getSpawnPoint());
-                message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
+                message += ("You can now go to :" + this.player.getLocation().getGoingableRegionNames());
                 ((NPC) e).setInFight(false);
                 this.player.setEnemy(null);
                 this.player.setHps(this.player.getBaseHps());
@@ -410,7 +410,7 @@ public class CommandListener {
                     message += ("You died, you have been redirected to the spawn point : " + game.map.getSpawnPoint()
                             .getName()+ ".");
                     this.player.setLocation(game.map.getSpawnPoint());
-                    message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
+                    message += ("You can now go to :" + this.player.getLocation().getGoingableRegionNames());
                     ((NPC) e).setInFight(false);
                     this.player.setEnemy(null);
                     this.player.setHps(this.player.getBaseHps());
@@ -487,7 +487,7 @@ public class CommandListener {
                     message += ("You died, you have been redirected to the spawn point : " + game.map.getSpawnPoint()
                             .getName() + ".");
                     this.player.setLocation(game.map.getSpawnPoint());
-                    message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
+                    message += ("You can now go to :" + this.player.getLocation().getGoingableRegionNames());
                     ((NPC) e).setInFight(false);
                     this.player.setEnemy(null);
                     this.player.setHps(this.player.getBaseHps());

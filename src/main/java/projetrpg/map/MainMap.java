@@ -17,7 +17,7 @@ import java.util.TreeSet;
  * @author mhevin
  * @author mbenoukaiss
  */
-@JsonAdapter(MapSerializer.class)
+//@JsonAdapter(MapSerializer.class)
 public class MainMap {
 
     /**
