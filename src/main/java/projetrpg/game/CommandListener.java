@@ -603,7 +603,7 @@ public class CommandListener {
                         message+= i.getName() +",";
                     }
                     message = message.substring(0, message.length()-1);
-                    return ("You do not have the required items in order to enter this location. You need those items : "
+                    return ("You do not have the required items in order to repair this teleporter. You need those items : "
                             + message + ".");
                 }
             } else {
@@ -740,8 +740,8 @@ public class CommandListener {
                                 message+= i.getName() +",";
                             }
                             message = message.substring(0, message.length()-1);
-                            return ("You do not have the required items in order to enter this location. You need those items : "
-                                    + message + ". And you need your ship to be level + " + amelioration.getShipLevelNeeded() + ".");
+                            return ("You do not have the required items in order to execute this improvement. You need those items : "
+                                    + message + ". And you need your ship to be level " + amelioration.getShipLevelNeeded() + ".");
                         }
                     } else {
                         return "You have already improved this part of your ship";
