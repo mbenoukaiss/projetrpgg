@@ -32,6 +32,7 @@ import projetrpg.utils.AnnotationExclusionStrategy;
 public class Main extends Application {
 
     private Stage primaryStage;
+    private MainMap mainMap;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -56,7 +57,7 @@ public class Main extends Application {
         this.primaryStage.setTitle("Galaxy Explorer");
         this.primaryStage.getIcons().add(new Image("icon.png"));
 
-        MainMap mainMap = new MainMap("FacticeMap");
+        this.mainMap = new MainMap("FacticeMap");
 
         //Regions initialization :
         //          NORTH
@@ -166,6 +167,15 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.centerOnScreen();
 
+    }
+
+    public void displayMap() {
+        Stage map = new Stage();
+        MapDisplay display = new MapDisplay(this.mainMap);
+        display.draw();
+        map.setScene(display.getScene());
+        map.show();
+        map.centerOnScreen();
     }
 
 

@@ -229,4 +229,9 @@ public class GameController implements Initializable {
         spellsDisplay.setItems(spells);
     }
 
+    public void mapDisplay() {
+        System.out.println("aaaaa");
+        this.main.displayMap();
+    }
+
 }
