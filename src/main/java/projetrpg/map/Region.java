@@ -16,7 +16,7 @@ import java.util.*;
  * @author mhevin
  * @author mbenoukaiss
  */
-//@JsonAdapter(RegionSerializer.class)
+@JsonAdapter(RegionSerializer.class)
 public class Region implements Describable {
 
     /**
@@ -42,7 +42,7 @@ public class Region implements Describable {
     /**
      * The adjacent regions.
      */
-    protected Set<Region> goingableRegions;
+    protected Map<Direction, Region> regionOnDirection;
 
     /**
      * The regions DIRECTLY contained in this region.
@@ -76,8 +76,8 @@ public class Region implements Describable {
     protected int shipLevelRequired;
 
     Region() {
+        this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
-        this.goingableRegions = new HashSet<>();
         this.entities = new HashSet<>();
         this.teleporters = new HashSet<>();
         this.inventory = new Inventory(DEFAULT_ROOM_ITEM_CAPACITY);
@@ -88,8 +88,8 @@ public class Region implements Describable {
         this.id = id;
         this.name = name;
         this.parent = parent;
+        this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
-        this.goingableRegions = new HashSet<>();
         this.entities = new HashSet<>();
         this.teleporters = new HashSet<>();
         this.inventory = new Inventory(DEFAULT_ROOM_ITEM_CAPACITY);
@@ -164,8 +164,8 @@ public class Region implements Describable {
             }
             d = d.substring(0, d.length()-2);
         }
-        if (!this.getGoingableRegionNames().isEmpty()) {
-            d += ". From there you can go to : " + (this.getGoingableRegionNames())
+        if (!this.getRegionNamesOnDirection().isEmpty()) {
+            d += ". From there you can go to : " + (this.getRegionNamesOnDirection())
                     + ((this.parent == null) ? "" : "," + this.getParent().getName())
                     + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
                     + " And your ship aswell.";
@@ -191,9 +191,9 @@ public class Region implements Describable {
      * Accessor for the names of the linked regions as a String.
      * @return the names.
      */
-    public String getGoingableRegionNames() {
+    public String getRegionNamesOnDirection() {
         String r ="";
-        for(Region i : this.goingableRegions) {
+        for(Region i : this.regionOnDirection.values()) {
             r += i.name + ",";
         }
         if (r.length() > 0) r = r.substring(0, r.length() -1);
@@ -211,6 +211,14 @@ public class Region implements Describable {
         }
         if (r.length() > 0) r = r.substring(0, r.length() -1);
         return r;
+    }
+
+    /**
+     * Accessor for the regions contained.
+     * @return the regions.
+     */
+    public Map<Direction, Region> getRegionOnDirection() {
+        return regionOnDirection;
     }
 
     /**
@@ -245,6 +253,14 @@ public class Region implements Describable {
         if(r == this) throw new IllegalArgumentException("A region can't contain itself");
         r.parent = this;
         containedRegions.add(r);
+    }
+
+    /**
+     * Used to add a region with a direction
+     * @param r the region
+     */
+    public void addRegionTowards(Direction d, Region r) {
+        regionOnDirection.put(d, r);
     }
 
     /**
@@ -285,15 +301,27 @@ public class Region implements Describable {
     /**
      * Link regions to another region.
      * @param r the region that you wish to associate.
+     * @param direction the direction where the @param r is.
      */
-    public void addGoingableRegion(Region r) {
-        if (!this.goingableRegions.contains(r)) {
-            this.goingableRegions.add(r);
+    public void linkToDirection(Region r, Direction direction) {
+        switch (direction) {
+            case EST:
+                this.regionOnDirection.put(Direction.EST, r);
+                r.regionOnDirection.put(Direction.WEST, this);
+                break;
+            case WEST:
+                this.regionOnDirection.put(Direction.WEST, r);
+                r.regionOnDirection.put(Direction.EST, this);
+                break;
+            case NORTH:
+                this.regionOnDirection.put(Direction.NORTH, r);
+                r.regionOnDirection.put(Direction.SOUTH, this);
+                break;
+            case SOUTH:
+                this.regionOnDirection.put(Direction.SOUTH, r);
+                r.regionOnDirection.put(Direction.NORTH, this);
+                break;
         }
-    }
-
-    public Set<Region> getGoingableRegions() {
-        return goingableRegions;
     }
 
     public List<Item> getItemsNeeded() {

@@ -76,7 +76,7 @@ public class Main extends Application {
         regions.add(northRegion);
         Region southRegion = new Region(3, "South", null, 0);
         regions.add(southRegion);
-        Region estRegion = new Region(4, "Est", null, 0);
+        Region estRegion = new Region(4, "East", null, 0);
         regions.add(estRegion);
         Region westRegion = new Region(5, "West", null, 2);
         regions.add(westRegion);
@@ -85,14 +85,15 @@ public class Main extends Application {
         Region forest = new Region(6, "Forest", centerRegion, 0);
         Region cave = new Region(7, "Cave", forest, 0);
         Region flowerPlains = new Region(8, "Flower Plains", southRegion, 0);
-        Region flowerMountains = new Region(9, "Flower Mountains", southRegion, 0);
-        flowerMountains.addGoingableRegion(flowerPlains);
+        Region flowerMountains = new Region(9, "Flower", southRegion, 0);
+        flowerMountains.linkToDirection(flowerPlains, Direction.NORTH);
         Region volcano = new Region(10, "Volcano", estRegion, 0);
 
         // Regions linking.
-        centerRegion.addGoingableRegion(northRegion);
-        centerRegion.addGoingableRegion(southRegion);
-        centerRegion.addGoingableRegion(estRegion);
+        centerRegion.linkToDirection(northRegion, Direction.NORTH);
+        centerRegion.linkToDirection(southRegion, Direction.SOUTH);
+        centerRegion.linkToDirection(estRegion, Direction.EST);
+        centerRegion.linkToDirection(westRegion, Direction.WEST);
 
         Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
         ctovtp.first.addItemToRepair(Item.TOOLKIT);
@@ -120,9 +121,6 @@ public class Main extends Application {
         Player player = new Player("Hervé", 0, centerRegion, null, 100,
                 10, EntityType.PLAYER, 50, 50);
         player.setShip(playerShip);
-        for (Region r: regions) {
-            r.addGoingableRegion(playerShip);
-        }
         ShipAmelioration.ENGINE_AMELIORATION.addItemNeeded(Item.TOOLKIT);
         ShipAmelioration.REACTORS_AMELIORATION.addItemNeeded(Item.KNIFE);
         ShipAmelioration.RADAR_AMELIORATION.addItemNeeded(Item.FLASHLIGHT);
@@ -157,11 +155,7 @@ public class Main extends Application {
         mainMap.setMainCharacter(player);
         mainMap.setSpawnPoint(centerRegion);
         mainMap.setHumanCount(100);
-        for (Region r : regions) {
-            System.out.println(r.getName());
-            mainMap.addRegion(r);
-        }
-        mainMap.addRegion(playerShip);
+        regions.forEach(mainMap::addRegion);
         quests.forEach(mainMap::addQuest);
 
         testSerialization(mainMap);

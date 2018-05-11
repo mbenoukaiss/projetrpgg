@@ -6,7 +6,7 @@ import org.junit.Test;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Item;
 import projetrpg.map.Region;
-//import projetrpg.map.RegionSerializer;
+import projetrpg.map.RegionSerializer;
 import projetrpg.map.Teleporter;
 import projetrpg.map.TeleporterSerializer;
 import projetrpg.utils.AnnotationExclusionStrategy;
