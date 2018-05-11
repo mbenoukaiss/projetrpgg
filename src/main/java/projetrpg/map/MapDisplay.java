@@ -9,6 +9,8 @@ import javafx.scene.input.SwipeEvent;
 import javafx.scene.paint.Color;
 import projetrpg.game.Game;
 
+import java.util.Set;
+
 /**
  * Created by mhevin on 09/05/18.
  */
@@ -53,7 +55,11 @@ public class MapDisplay {
         int i = 0;
         int x = 150;
         int y = 150;
-        for (Region region : this.map.getMainCharacter().getLocation().getContainedRegions()) {
+        Set<Region> goingableRegion = this.map.getMainCharacter().getLocation().getContainedRegions();
+        if (this.map.getMainCharacter().getLocation().getParent() != null) {
+            goingableRegion.add(this.map.getMainCharacter().getLocation().getParent());
+        }
+        for (Region region : goingableRegion) {
             if (i % 2 != 0) {
                 x=150;
                 y+=250;

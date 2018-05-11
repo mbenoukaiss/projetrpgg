@@ -169,6 +169,11 @@ public class Region implements Describable {
                     + ((this.parent == null) ? "" : "," + this.getParent().getName())
                     + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
                     + " And your ship aswell.";
+        } else {
+            d += ". From there you can go to : "
+                    + ((this.parent == null) ? "" : "," + this.getParent().getName())
+                    + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
+                    + " And your ship aswell.";
         }
         if (!this.teleporters.isEmpty()) {
             d += " Contains those teleporters :";
