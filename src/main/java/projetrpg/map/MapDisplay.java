@@ -70,7 +70,7 @@ public class MapDisplay {
             g.fillText(region.getName(), x-25, y+50);
             x+=200;
         }
-        g.setFill(Color.DARKVIOLET);
+        g.setFill(Color.MEDIUMVIOLETRED);
         g.fillOval(225, 225, 50, 50);
     }
 
