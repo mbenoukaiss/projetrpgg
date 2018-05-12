@@ -59,11 +59,10 @@
          <children>
             <VBox prefHeight="515.0" prefWidth="110.0" GridPane.rowSpan="3">
                <children>
-                  <Label id="playerName" fx:id="playerName" />
                   <Label prefHeight="16.0" prefWidth="47.0" text="Map : " />
                    <Canvas fx:id="mapDisplayCanvas" height="265.0" width="406.0" />
-                  <Label prefHeight="45.0" prefWidth="97.0" text="Inventory : " textAlignment="CENTER" wrapText="true" />
-                  <ListView id="inventory" fx:id="inventoryDisplay" maxWidth="-Infinity" prefHeight="218.0" prefWidth="109.0" VBox.vgrow="ALWAYS" />
+                   <Label prefHeight="16.0" prefWidth="75.0" text="Planets : " />
+                  <Canvas fx:id="planetsDisplay" height="220.0" width="406.0" />
                </children>
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.vgrow="ALWAYS">
@@ -81,7 +80,6 @@
                 <Button id="save" mnemonicParsing="false" text="Save" />
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                         <Button layoutX="140.0" layoutY="3.0" mnemonicParsing="false" onAction="#planetMapDisplay" prefHeight="26.0" prefWidth="75.0" text="Planets" />
                      </children></Pane>
                   <Button id="titleScreen" mnemonicParsing="false" onAction="#buttonHome" text="Home" />
                   <Button id="quit" mnemonicParsing="false" onAction="#buttonQuit" text="Quit" />
@@ -90,13 +88,13 @@
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowSpan="3">
                <children>
                   <Label prefHeight="16.0" prefWidth="118.0" text="Current Quest : " wrapText="true" />
-                  <TextArea fx:id="questField" editable="false" prefHeight="50.0" prefWidth="113.0" />
-                  <Label prefHeight="34.0" prefWidth="113.0" text="Objectives :" wrapText="true" />
                   <TextFlow id="hints" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <ListView id="mission" fx:id="objectivesDisplay" prefHeight="209.0" prefWidth="112.0" />
+                         <ListView id="mission" fx:id="objectivesDisplay" prefHeight="154.0" prefWidth="120.0" />
+                         <Label prefHeight="45.0" prefWidth="97.0" text="Inventory : " textAlignment="CENTER" wrapText="true" />
+                         <ListView id="inventory" fx:id="inventoryDisplay" maxWidth="-Infinity" prefHeight="157.0" prefWidth="109.0" VBox.vgrow="ALWAYS" />
                          <Label prefHeight="37.0" prefWidth="126.0" text="Spells : " wrapText="true" />
-                         <ListView fx:id="spellsDisplay" prefHeight="179.0" prefWidth="113.0" />
+                         <ListView fx:id="spellsDisplay" prefHeight="133.0" prefWidth="113.0" />
                      </children></TextFlow>
                </children>
             </VBox>

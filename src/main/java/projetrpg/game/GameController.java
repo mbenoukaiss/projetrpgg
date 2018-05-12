@@ -72,11 +72,6 @@ public class GameController implements Initializable {
     @FXML
     private ListView<String> objectivesDisplay = new ListView<>();
 
-    /**
-     * The current quest.
-     */
-    @FXML
-    private TextArea questField = new TextArea("");
 
     /**
      * The list of the spells.
@@ -86,6 +81,9 @@ public class GameController implements Initializable {
 
     @FXML
     private Canvas mapDisplayCanvas = new Canvas();
+
+    @FXML
+    private Canvas planetsDisplay = new Canvas();
 
 
     GameController(Game game, Main main) {
@@ -103,8 +101,8 @@ public class GameController implements Initializable {
         locationDisplay();
         objectivesDisplay();
         spellsDisplay();
-        questDisplay();
         localMapDisplay();
+        planetMapDisplay();
     }
 
     /**
@@ -144,10 +142,10 @@ public class GameController implements Initializable {
             inventoryDisplay();
             inventoryDisplay();
             locationDisplay();
-            questDisplay();
             objectivesDisplay();
             spellsDisplay();
             localMapDisplay();
+            planetMapDisplay();
         }
     }
 
@@ -172,30 +170,10 @@ public class GameController implements Initializable {
      * Updates the objectives.
      */
     public void  objectivesDisplay() {
-        objectivesDisplay.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-            @Override
-            public ListCell<String> call(ListView<String> param) {
-                return new ListCell<String>() {
-                    {
-                        prefWidthProperty().bind(objectivesDisplay.widthProperty().subtract(20));
-                        setMaxWidth(Control.USE_PREF_SIZE);
-                    }
-
-                    @Override
-                    protected void updateItem(String item, boolean empty) {
-                        if (item != null && !empty) {
-                            this.setWrapText(true);
-                            setText(item);
-                        } else {
-                            setText(null);
-                        }
-                    }
-
-                };
-            }
-        });
         ObservableList<String> objectivs =FXCollections.observableArrayList();
         if (game.map.getMainCharacter().getCurrentQuest() != null) {
+            objectivs.add(this.game.map.getMainCharacter().getCurrentQuest().getName() + ":");
+            objectivs.add("Objectivs : ");
             for (Objective o : game.map.getMainCharacter().getCurrentQuest().getObjectives()) {
                 if (!o.isFinished()) {
                     objectivs.add(o.getDescription());
@@ -203,6 +181,7 @@ public class GameController implements Initializable {
             }
         }
         objectivesDisplay.setItems(objectivs);
+        objectivesDisplay.getSelectionModel().selectFirst();
     }
 
     /**
@@ -213,17 +192,6 @@ public class GameController implements Initializable {
         locationField.setText(game.map.getMainCharacter().getLocation().describe());
     }
 
-    /**
-     * Updates the quest.
-     */
-    public void questDisplay() {
-        questField.setWrapText(true);
-        if (game.map.getMainCharacter().getCurrentQuest() != null) {
-            questField.setText(game.map.getMainCharacter().getCurrentQuest().getName());
-        } else {
-            questField.setText("");
-        }
-    }
 
     /**
      * Updates the spells.
@@ -245,7 +213,9 @@ public class GameController implements Initializable {
     }
 
     public void planetMapDisplay() {
-        this.main.displayPlanets();
+        SnapshotParameters params = new SnapshotParameters();
+        WritableImage img = this.main.displayPlanets().snapshot(params, null);
+        this.planetsDisplay.getGraphicsContext2D().drawImage(img, 0, 0);
     }
 
 

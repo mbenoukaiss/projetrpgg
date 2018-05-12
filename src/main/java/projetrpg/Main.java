@@ -65,7 +65,7 @@ public class Main extends Application {
         regions.add(earth);
         Region mars = new Region(2, "Mars", null, 1);
         regions.add(mars);
-        Region moon = new Region(3, "Moon", null, 2);
+        Region moon = new Region(3, "Moon", null, 1);
         regions.add(moon);
         Region venus = new Region(4, "Venus", null, 2);
         regions.add(venus);
@@ -78,16 +78,15 @@ public class Main extends Application {
         Region flowerPlains = new Region(8, "Flower", earth, 0);
         Region flowerHill = new Region(9, "Flower Hill", earth, 0);
         Region volcano = new Region(10, "Volcano", mars, 0);
+        Region crater = new Region(12, "Crater",moon, 0);
         mars.setLandingRegion(volcano);
         earth.setLandingRegion(forest);
+        moon.setLandingRegion(crater);
 
         forest.linkToDirection(flowerHill, Direction.SOUTH);
         flowerHill.linkToDirection(flowerPlains, Direction.EST);
 
         Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
-        ctovtp.first.addItemToRepair(Item.TOOLKIT);
-        ctovtp.first.addItemToRepair(Item.TOOLKIT);
-        ctovtp.second.addItemToRepair(Item.FLASHLIGHT);
 
         // Items linking to regions.
         mars.addItemToInventory(Item.HATCHET);
@@ -165,13 +164,9 @@ public class Main extends Application {
         return display.drawLocal();
     }
 
-    public void displayPlanets() {
-        Stage map = new Stage();
+    public Canvas displayPlanets() {
         MapDisplay display = new MapDisplay(this.mainMap);
-        display.drawPlanets();
-        map.setScene(display.getScene());
-        map.show();
-        map.centerOnScreen();
+        return display.drawPlanets();
     }
 
 

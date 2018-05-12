@@ -7,6 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.SwipeEvent;
 import javafx.scene.paint.Color;
+import projetrpg.entities.player.Player;
 import projetrpg.entities.player.Ship;
 import projetrpg.game.Game;
 
@@ -21,7 +22,6 @@ import java.util.Set;
 public class MapDisplay {
 
     private MainMap map;
-    private Scene scene;
 
     public MapDisplay(MainMap map) {
         this.map = map;
@@ -34,13 +34,11 @@ public class MapDisplay {
         return canvas;
     }
 
-    public void drawPlanets() {
-        Group root = new Group();
-        Canvas canvas = new Canvas(600, 600);
+    public Canvas drawPlanets() {
+        Canvas canvas = new Canvas(406.0, 220.0);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         drawPlanets(gc);
-        root.getChildren().add(canvas);
-        this.scene = new Scene(root);
+        return canvas;
     }
 
     private void drawRegion(GraphicsContext g) {
@@ -89,48 +87,55 @@ public class MapDisplay {
     }
 
     public void drawPlanets(GraphicsContext g) {
-        int x = 50, y = 50;
+        int x = 100;
+        int y = 50;
         int i = 0;
-        HashMap<Region, Point> regionCoordinates = new HashMap<>();
         Region playerRegion = new Region();
-        for (Region r : this.map.getRegions()) {
-            if (this.containsRegion(r, this.map.getMainCharacter().getLocation()) ||
+        HashMap<Region, Point> regionsCoordinates = new HashMap<>();
+        for (Region region : this.map.getRegions()) {
+            if (this.containsRegion(region, this.map.getMainCharacter().getLocation()) ||
                     (this.map.getMainCharacter().getLocation() == this.map.getMainCharacter().getShip() &&
-                    this.containsRegion(r, this.map.getMainCharacter().getShip().getLastRegion()))) {
-                playerRegion = r;
+                    this.containsRegion(region, this.map.getMainCharacter().getShip().getLastRegion()))) {
+                playerRegion = region;
             }
-            regionCoordinates.put(r, new Point(x, y));
-            x+=350;
+            regionsCoordinates.put(region, new Point(x, y));
+            x+=200;
             if (i % 2 != 0) {
-                y += 100;
-                x=50;
+                y+=50;
+                x = 100;
             }
             i++;
         }
-
         g.setStroke(Color.GRAY);
-        g.setLineWidth(5);
+        g.setLineWidth(4);
         for (Region region : this.map.getRegions()) {
-            if (this.map.getMainCharacter().canTravelTo(region)) {
-                g.strokeLine(regionCoordinates.get(playerRegion).x,
-                        regionCoordinates.get(playerRegion).y,
-                        regionCoordinates.get(region).x, regionCoordinates.get(region).y);
-            }
-            if (this.containsRegion(region, this.map.getMainCharacter().getLocation()) ||
-                    this.containsRegion(region, this.map.getMainCharacter().getShip().getLastRegion())) {
+            Player player = this.map.getMainCharacter();
+            if (region == playerRegion) {
                 g.setFill(Color.SANDYBROWN);
-                g.fillOval(regionCoordinates.get(playerRegion).x-25,
-                        regionCoordinates.get(playerRegion).y-25, 50, 50);
+                g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
             } else {
-                g.setFill(Color.BROWN);
-                g.fillOval(regionCoordinates.get(region).x-25, regionCoordinates.get(region).y-25, 50, 50);
+                if (player.canTravelTo(region)) {
+                    g.strokeLine(regionsCoordinates.get(playerRegion).x+15, regionsCoordinates.get(playerRegion).y+15,
+                            regionsCoordinates.get(region).x+15, regionsCoordinates.get(region).y+15);
+                    g.setFill(Color.BROWN);
+                    g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
+                    g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y+45);
+                } else {
+                    g.setFill(Color.BROWN);
+                    g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
+                    g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y+45);
+                }
             }
-            g.fillText(region.getName(), regionCoordinates.get(region).x-25, regionCoordinates.get(region).y+40);
         }
-    }
-
-    public Scene getScene() {
-        return scene;
+        for (Region region : this.map.getRegions()) {
+            Player player = this.map.getMainCharacter();
+            if (region == playerRegion) {
+                g.setFill(Color.SANDYBROWN);
+                g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
+            }
+        }
+        g.fillOval(50,50,10,10);
+        g.fillText("YOU", 20, 60);
     }
 
     private void drawRegion(GraphicsContext g, Direction dir, int x, int y) {

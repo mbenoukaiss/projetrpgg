@@ -110,6 +110,10 @@ public class Game {
         });
 
         parser.registerCommand("move", Region.class, (player, arg)-> {
+            if (player.getLocation().getName().equalsIgnoreCase(arg) || (player.getLocation() == player.getShip() &&
+            arg.equalsIgnoreCase("ship"))) {
+                return null;
+            }
             if (player.getLocation() == player.getShip() && arg.equalsIgnoreCase(player.getShip().getLastRegion().getName())) {
                 return player.getShip().getLastRegion();
             }
