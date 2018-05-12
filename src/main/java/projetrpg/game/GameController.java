@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -154,10 +156,13 @@ public class GameController implements Initializable {
      */
     public void inventoryDisplay() {
         ObservableList<String> items =FXCollections.observableArrayList();
+        items.add("Items : ");
         for(Item i : game.map.getMainCharacter().getInventory().getAll()) {
             items.add(i.getName());
         }
+        inventoryDisplay.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         inventoryDisplay.setItems(items);
+        inventoryDisplay.getSelectionModel().selectFirst();
         if (game.map.getMainCharacter().getItemInHand() != null) {
             inventoryDisplay.getSelectionModel().select(game.map.getMainCharacter().getItemInHand().getName());
         } else {
@@ -171,12 +176,13 @@ public class GameController implements Initializable {
      */
     public void  objectivesDisplay() {
         ObservableList<String> objectivs =FXCollections.observableArrayList();
+        objectivs.add("Quest : ");
         if (game.map.getMainCharacter().getCurrentQuest() != null) {
             objectivs.add(this.game.map.getMainCharacter().getCurrentQuest().getName() + ":");
             objectivs.add("Objectivs : ");
             for (Objective o : game.map.getMainCharacter().getCurrentQuest().getObjectives()) {
                 if (!o.isFinished()) {
-                    objectivs.add(o.getDescription());
+                    objectivs.add("-" + o.getDescription());
                 }
             }
         }
@@ -189,7 +195,7 @@ public class GameController implements Initializable {
      */
     public void locationDisplay() {
         locationField.setWrapText(true);
-        locationField.setText(game.map.getMainCharacter().getLocation().describe());
+        locationField.setText("Location : " + game.map.getMainCharacter().getLocation().describe());
     }
 
 
@@ -198,12 +204,14 @@ public class GameController implements Initializable {
      */
     public void spellsDisplay() {
         ObservableList<String> spells = FXCollections.observableArrayList();
+        spells.add("Spells : ");
         if (game.map.getMainCharacter().getAbilities() != null) {
             for (Ability a : game.map.getMainCharacter().getAbilities()) {
                 spells.add(a.getName());
             }
         }
         spellsDisplay.setItems(spells);
+        spellsDisplay.getSelectionModel().selectFirst();
     }
 
     public void localMapDisplay() {
@@ -217,7 +225,5 @@ public class GameController implements Initializable {
         WritableImage img = this.main.displayPlanets().snapshot(params, null);
         this.planetsDisplay.getGraphicsContext2D().drawImage(img, 0, 0);
     }
-
-
 
 }

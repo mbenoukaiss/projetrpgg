@@ -5,6 +5,10 @@ import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import projetrpg.entities.*;
@@ -46,6 +50,9 @@ public class Main extends Application {
     }
 
     public void launchMenu() throws IOException {
+
+        this.primaryStage.setTitle("Galaxy Explorer Menu");
+        this.primaryStage.getIcons().add(new Image("icon.png"));
         HomeView homeView = new HomeView(this);
         primaryStage.setScene(homeView.getScene());
         primaryStage.show();
@@ -57,7 +64,6 @@ public class Main extends Application {
 
         this.primaryStage.setTitle("Galaxy Explorer");
         this.primaryStage.getIcons().add(new Image("icon.png"));
-
         this.mainMap = new MainMap("FacticeMap");
 
         ArrayList<Region> regions = new ArrayList<>();

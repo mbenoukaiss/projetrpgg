@@ -84,6 +84,8 @@ public class MapDisplay {
         g.setFill(Color.MEDIUMVIOLETRED);
         g.fillOval(188, 117, 30, 30);
         g.fillText("YOU", 217, 160);
+        g.setFill(Color.BROWN);
+        g.fillText("Local map : ", 20, 20);
     }
 
     public void drawPlanets(GraphicsContext g) {
@@ -136,6 +138,8 @@ public class MapDisplay {
         }
         g.fillOval(50,50,10,10);
         g.fillText("YOU", 20, 60);
+        g.setFill(Color.BROWN);
+        g.fillText("Planetary map : ", 20, 20);
     }
 
     private void drawRegion(GraphicsContext g, Direction dir, int x, int y) {
