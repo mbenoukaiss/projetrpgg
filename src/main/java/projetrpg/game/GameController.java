@@ -5,7 +5,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
@@ -81,6 +84,10 @@ public class GameController implements Initializable {
     @FXML
     private ListView<String> spellsDisplay = new ListView<>();
 
+    @FXML
+    private Canvas mapDisplayCanvas = new Canvas();
+
+
     GameController(Game game, Main main) {
         this.main = main;
         this.game = game;
@@ -90,13 +97,14 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         textLogs.setWrapText(true);
         textLogs.appendText(game.manual +
-                "\n\nYour name is Hervé ! Talk to jean located in south in order to start your journey towards " +
+                "\n\nYour name is Hervé ! Talk to jean in order to start your journey towards " +
                 "saving the universe!\n\n");
         inventoryDisplay();
         locationDisplay();
         objectivesDisplay();
         spellsDisplay();
         questDisplay();
+        localMapDisplay();
     }
 
     /**
@@ -139,6 +147,7 @@ public class GameController implements Initializable {
             questDisplay();
             objectivesDisplay();
             spellsDisplay();
+            localMapDisplay();
         }
     }
 
@@ -229,9 +238,16 @@ public class GameController implements Initializable {
         spellsDisplay.setItems(spells);
     }
 
-    public void mapDisplay() {
-        System.out.println("aaaaa");
-        this.main.displayMap();
+    public void localMapDisplay() {
+        SnapshotParameters params = new SnapshotParameters();
+        WritableImage img = this.main.displayMap().snapshot(params, null);
+        this.mapDisplayCanvas.getGraphicsContext2D().drawImage(img, 0, 0);
     }
+
+    public void planetMapDisplay() {
+        this.main.displayPlanets();
+    }
+
+
 
 }

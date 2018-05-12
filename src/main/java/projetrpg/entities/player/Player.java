@@ -1,5 +1,7 @@
 package projetrpg.entities.player;
 
+import com.sun.org.apache.regexp.internal.RE;
+import com.sun.prism.ReadbackGraphics;
 import projetrpg.*;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Inventory;
@@ -12,10 +14,7 @@ import projetrpg.observer.IObserver;
 import projetrpg.quest.Quest;
 import projetrpg.utils.SerializationIgnore;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -408,5 +407,20 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
 
     public void setEnemy(NPC enemy) {
         this.enemy = enemy;
+    }
+
+    public boolean canTravelTo(Region region) {
+        ArrayList<Item> regionItems = new ArrayList<>(region.getItemsNeeded());
+        for (Item i : this.getInventory().getAll()) {
+            if (regionItems.contains(i)) {
+                regionItems.remove(i);
+            }
+        }
+        if (!regionItems.isEmpty()) return false;
+        if (this.getShip().getLevel() >= region.getShipLevelRequired() &&
+                this.getShip().getActualFuel() >= this.getShip().getTravelCost()) {
+            return true;
+        }
+        return false;
     }
 }

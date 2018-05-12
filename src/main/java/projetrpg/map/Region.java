@@ -75,6 +75,8 @@ public class Region implements Describable {
      */
     protected int shipLevelRequired;
 
+    protected Region landingRegion;
+
     Region() {
         this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
@@ -158,7 +160,7 @@ public class Region implements Describable {
             d = d.substring(0, d.length()-2);
         }
         if (!this.entities.isEmpty()) {
-            d += ". And those entities :";
+            d += ". Contains those entities :";
             for (NPC e : this.entities) {
                 d += e.getName() + ", ";
             }
@@ -166,12 +168,11 @@ public class Region implements Describable {
         }
         if (!this.getRegionNamesOnDirection().isEmpty()) {
             d += ". From there you can go to : " + (this.getRegionNamesOnDirection())
-                    + ((this.parent == null) ? "" : "," + this.getParent().getName())
                     + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
                     + " And your ship aswell.";
-        } else {
+        } else if (this.parent != null && this.parent.getLandingRegion() != this){
             d += ". From there you can go to : "
-                    + ((this.parent == null) ? "" : "," + this.getParent().getName())
+                    + this.parent.getName()
                     + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
                     + " And your ship aswell.";
         }
@@ -341,4 +342,11 @@ public class Region implements Describable {
         return shipLevelRequired;
     }
 
+    public Region getLandingRegion() {
+        return landingRegion;
+    }
+
+    public void setLandingRegion(Region landingRegion) {
+        this.landingRegion = landingRegion;
+    }
 }

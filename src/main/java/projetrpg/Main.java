@@ -3,6 +3,7 @@ package projetrpg;
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -59,41 +60,29 @@ public class Main extends Application {
 
         this.mainMap = new MainMap("FacticeMap");
 
-        //Regions initialization :
-        //          NORTH
-        //            |
-        // WEST -- CENTER -- EST
-        //            |
-        //          SOUTH
-        // WEST contains a region FOREST
-        // FOREST contains a region CAVE
-        // SOUTH contains a region FLOWERPLAINS
-        // EST contains a region VOLCANO
         ArrayList<Region> regions = new ArrayList<>();
-        Region centerRegion = new Region(1, "Center", null, 0);
-        regions.add(centerRegion);
-        Region northRegion = new Region(2, "North", null, 0);
-        regions.add(northRegion);
-        Region southRegion = new Region(3, "South", null, 0);
-        regions.add(southRegion);
-        Region estRegion = new Region(4, "East", null, 0);
-        regions.add(estRegion);
-        Region westRegion = new Region(5, "West", null, 2);
-        regions.add(westRegion);
-        westRegion.addItemNeeded(Item.KNIFE);
+        Region earth = new Region(1, "Earth", null, 0);
+        regions.add(earth);
+        Region mars = new Region(2, "Mars", null, 1);
+        regions.add(mars);
+        Region moon = new Region(3, "Moon", null, 2);
+        regions.add(moon);
+        Region venus = new Region(4, "Venus", null, 2);
+        regions.add(venus);
+        Region saturne = new Region(5, "Saturne", null, 3);
+        regions.add(saturne);
+        saturne.addItemNeeded(Item.KNIFE);
 
-        Region forest = new Region(6, "Forest", centerRegion, 0);
+        Region forest = new Region(6, "Forest", earth, 0);
         Region cave = new Region(7, "Cave", forest, 0);
-        Region flowerPlains = new Region(8, "Flower Plains", southRegion, 0);
-        Region flowerMountains = new Region(9, "Flower", southRegion, 0);
-        flowerMountains.linkToDirection(flowerPlains, Direction.NORTH);
-        Region volcano = new Region(10, "Volcano", estRegion, 0);
+        Region flowerPlains = new Region(8, "Flower", earth, 0);
+        Region flowerHill = new Region(9, "Flower Hill", earth, 0);
+        Region volcano = new Region(10, "Volcano", mars, 0);
+        mars.setLandingRegion(volcano);
+        earth.setLandingRegion(forest);
 
-        // Regions linking.
-        centerRegion.linkToDirection(northRegion, Direction.NORTH);
-        centerRegion.linkToDirection(southRegion, Direction.SOUTH);
-        centerRegion.linkToDirection(estRegion, Direction.EST);
-        centerRegion.linkToDirection(westRegion, Direction.WEST);
+        forest.linkToDirection(flowerHill, Direction.SOUTH);
+        flowerHill.linkToDirection(flowerPlains, Direction.EST);
 
         Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
         ctovtp.first.addItemToRepair(Item.TOOLKIT);
@@ -101,24 +90,23 @@ public class Main extends Application {
         ctovtp.second.addItemToRepair(Item.FLASHLIGHT);
 
         // Items linking to regions.
-        northRegion.addItemToInventory(Item.HATCHET);
-        southRegion.addItemToInventory(Item.APPLE);
-        estRegion.addItemToInventory(Item.FLASHLIGHT);
+        mars.addItemToInventory(Item.HATCHET);
+        moon.addItemToInventory(Item.APPLE);
+        venus.addItemToInventory(Item.FLASHLIGHT);
         forest.addItemToInventory(Item.TOOLKIT);
         forest.addItemToInventory(Item.TOOLKIT);
-        forest.addItemNeeded(Item.KNIFE);
 
         //NPC's initialization.
-        NPC zorg = new NPC("Zorg", northRegion, EntityType.VAMPIRE, true, 300,
+        NPC zorg = new NPC("Zorg", volcano, EntityType.VAMPIRE, true, 300,
                 10, "Im gonna kill you !");
-        NPC bog = new NPC("Bog", estRegion, EntityType.VAMPIRE, true, 10, 1,
+        NPC bog = new NPC("Bog", cave, EntityType.VAMPIRE, true, 10, 1,
                 "I'm weak");
-        NPC jean = new NPC("Jean", southRegion, EntityType.VILLAGER, false, 100,
+        NPC jean = new NPC("Jean", forest, EntityType.VILLAGER, false, 100,
                 0, "Hey, you are our hero...blablabla....very important... save the universe ... " +
                 "blablabla... You may now start your first Quest : A new Dawn!");
         //Player initialization.
         Ship playerShip = new Ship(11, "Hervé's Ship", null, 50);
-        Player player = new Player("Hervé", 0, centerRegion, null, 100,
+        Player player = new Player("Hervé", 0, forest, null, 100,
                 10, EntityType.PLAYER, 50, 50);
         player.setShip(playerShip);
         ShipAmelioration.ENGINE_AMELIORATION.addItemNeeded(Item.TOOLKIT);
@@ -153,9 +141,11 @@ public class Main extends Application {
 
         //MainMap initialization.
         mainMap.setMainCharacter(player);
-        mainMap.setSpawnPoint(centerRegion);
+        mainMap.setSpawnPoint(earth);
         mainMap.setHumanCount(100);
-        regions.forEach(mainMap::addRegion);
+        for (Region r : regions) {
+            mainMap.addRegion(r);
+        }
         quests.forEach(mainMap::addQuest);
 
         testSerialization(mainMap);
@@ -170,10 +160,15 @@ public class Main extends Application {
 
     }
 
-    public void displayMap() {
+    public Canvas displayMap() {
+        MapDisplay display = new MapDisplay(this.mainMap);
+        return display.drawLocal();
+    }
+
+    public void displayPlanets() {
         Stage map = new Stage();
         MapDisplay display = new MapDisplay(this.mainMap);
-        display.draw();
+        display.drawPlanets();
         map.setScene(display.getScene());
         map.show();
         map.centerOnScreen();

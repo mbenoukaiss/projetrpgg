@@ -770,8 +770,8 @@ public class CommandListener {
                     }
                     if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()
                             && this.player.getShip().getActualFuel() >= this.player.getShip().getTravelCost()) {
-                        this.player.move(r);
-                        return ("You moved to the " + r.describe());
+                        this.player.move(r.getLandingRegion());
+                        return ("You traveled to the region : " + r.getName() + ". You landed on : " + r.getLandingRegion().describe());
                     } else {
                         String message = "";
                         if (!r.getItemsNeeded().isEmpty()) {

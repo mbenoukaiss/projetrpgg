@@ -45,7 +45,7 @@ public class GameView {
         loader.setController(new GameController(game, this.main));
         loader.setResources(languageBundle);
 
-        this.scene = new Scene(loader.load(), 900, 600);
+        this.scene = new Scene(loader.load(), 1200, 600);
     }
 
     /**
