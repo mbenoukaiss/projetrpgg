@@ -117,11 +117,12 @@ public class MapDisplay {
                 g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
             } else {
                 if (player.canTravelTo(region)) {
-                    g.strokeLine(regionsCoordinates.get(playerRegion).x+15, regionsCoordinates.get(playerRegion).y+15,
-                            regionsCoordinates.get(region).x+15, regionsCoordinates.get(region).y+15);
+                    g.strokeLine(regionsCoordinates.get(playerRegion).x + 15, regionsCoordinates.get(playerRegion).y + 15,
+                            regionsCoordinates.get(region).x + 15, regionsCoordinates.get(region).y + 15);
                     g.setFill(Color.BROWN);
                     g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
-                    g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y+45);
+                    g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y + 45);
+
                 } else {
                     g.setFill(Color.BROWN);
                     g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
@@ -146,7 +147,7 @@ public class MapDisplay {
         g.strokeLine(203, 132, x+12,y+20);
         g.fillOval(x, y, 30, 30);
         g.fillText(this.map.getMainCharacter().getLocation().getRegionOnDirection().get(dir).getName(),
-                x+25, y+40);
+                x+10, y+45);
     }
 
     private boolean containsRegion(Region r, Region r2) {

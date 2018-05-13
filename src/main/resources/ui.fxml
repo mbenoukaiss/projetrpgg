@@ -59,9 +59,9 @@
          <children>
             <VBox prefHeight="515.0" prefWidth="110.0" GridPane.rowSpan="3">
                <children>
-                   <Canvas fx:id="mapDisplayCanvas" height="265.0" width="406.0" />
+                   <Canvas fx:id="mapDisplayCanvas" height="265.0" width="383.0" />
                   <Label />
-                  <Canvas fx:id="planetsDisplay" height="220.0" width="406.0" />
+                  <Canvas fx:id="planetsDisplay" height="220.0" width="383.0" />
                </children>
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.vgrow="ALWAYS">
