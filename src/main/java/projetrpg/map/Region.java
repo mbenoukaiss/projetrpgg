@@ -7,6 +7,7 @@ import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ship;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.*;
 
 /**
@@ -348,5 +349,16 @@ public class Region implements Describable {
 
     public void setLandingRegion(Region landingRegion) {
         this.landingRegion = landingRegion;
+    }
+
+    public Region getPlanet() {
+        Region reg = this;
+        while(reg.getParent() != null) {
+            reg = reg.getParent();
+            if (reg.getParent() == null) {
+                return reg;
+            }
+        }
+        return null;
     }
 }

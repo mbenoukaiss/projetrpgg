@@ -789,7 +789,7 @@ public class CommandListener {
                     return "You must be in your ship in order to travel";
                 }
             } else {
-                return "Error, check if this is a valid region";
+                return "Error, check if this is a valid planet";
             }
         } else {
             return "You can only fight or flee";

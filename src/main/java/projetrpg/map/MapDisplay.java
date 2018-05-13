@@ -92,18 +92,18 @@ public class MapDisplay {
         int x = 100;
         int y = 50;
         int i = 0;
-        Region playerRegion = new Region();
+        Region playerRegion = null;
         HashMap<Region, Point> regionsCoordinates = new HashMap<>();
         for (Region region : this.map.getRegions()) {
-            if (this.containsRegion(region, this.map.getMainCharacter().getLocation()) ||
-                    (this.map.getMainCharacter().getLocation() == this.map.getMainCharacter().getShip() &&
-                    this.containsRegion(region, this.map.getMainCharacter().getShip().getLastRegion()))) {
+            if (this.map.getMainCharacter().getLocation().getPlanet() == region ||
+                    (this.map.getMainCharacter().getShip().getLastRegion() != null &&
+                    this.map.getMainCharacter().getShip().getLastRegion().getPlanet() == region)) {
                 playerRegion = region;
             }
             regionsCoordinates.put(region, new Point(x, y));
-            x+=200;
+            x += 200;
             if (i % 2 != 0) {
-                y+=50;
+                y += 50;
                 x = 100;
             }
             i++;
@@ -123,40 +123,30 @@ public class MapDisplay {
                     g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
                     g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y + 45);
 
-                } else {
-                    g.setFill(Color.BROWN);
-                    g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
-                    g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y+45);
+                    } else {
+                        g.setFill(Color.BROWN);
+                        g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
+                        g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y + 45);
+                    }
                 }
             }
-        }
-        for (Region region : this.map.getRegions()) {
-            Player player = this.map.getMainCharacter();
-            if (region == playerRegion) {
-                g.setFill(Color.SANDYBROWN);
-                g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
+            for (Region region : this.map.getRegions()) {
+                Player player = this.map.getMainCharacter();
+                if (region == playerRegion) {
+                    g.setFill(Color.SANDYBROWN);
+                    g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
+                }
             }
+            g.fillOval(50, 50, 10, 10);
+            g.fillText("YOU", 20, 60);
+            g.setFill(Color.BROWN);
+            g.fillText("Planetary map : ", 20, 20);
         }
-        g.fillOval(50,50,10,10);
-        g.fillText("YOU", 20, 60);
-        g.setFill(Color.BROWN);
-        g.fillText("Planetary map : ", 20, 20);
-    }
 
     private void drawRegion(GraphicsContext g, Direction dir, int x, int y) {
         g.strokeLine(203, 132, x+12,y+20);
         g.fillOval(x, y, 30, 30);
         g.fillText(this.map.getMainCharacter().getLocation().getRegionOnDirection().get(dir).getName(),
                 x+10, y+45);
-    }
-
-    private boolean containsRegion(Region r, Region r2) {
-        if (r.getContainedRegions().contains(r2) || r == r2) {
-            return true;
-        }
-        for (Region region : r.getContainedRegions()) {
-            return containsRegion(region, r2);
-        }
-        return false;
     }
 }
