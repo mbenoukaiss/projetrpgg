@@ -24,14 +24,6 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         return idNPCMap.get(id);
     }
 
-    public static void addRegion(int source, Direction direction, int destination) {
-        if(!directions.containsKey(source)) {
-            directions.put(source, new HashMap<>());
-        }
-
-        directions.get(source).put(direction, destination);
-    }
-
     public static void addRegion(int source, Map<Direction, Integer> direction) {
         directions.put(source, direction);
     }

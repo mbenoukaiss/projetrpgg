@@ -1,8 +1,10 @@
 package projetrpg.quest;
 
 import com.google.gson.*;
+import projetrpg.entities.NPC;
 import projetrpg.entities.items.Item;
 import projetrpg.map.MapSerializer;
+import projetrpg.map.Region;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Type;
@@ -18,24 +20,38 @@ public class ObjectiveSerializer implements JsonSerializer<Objective>, JsonDeser
         jsonObjective.addProperty("finished", objective.finished);
         jsonObjective.addProperty("description", objective.description);
         jsonObjective.add("type", jsonSerializationContext.serialize(objective.type));
-        jsonObjective.add("concerned", jsonSerializationContext.serialize(objective.concernedObject));
+
+        JsonObject concerned = new JsonObject();
+        concerned.addProperty("class", objective.concernedObject.getClass().getCanonicalName());
+        concerned.add("object", jsonSerializationContext.serialize(objective.concernedObject));
+
+        jsonObjective.add("concerned", concerned);
 
         return jsonObjective;
     }
     
     @Override
     public Objective deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-        Objective objective = new Objective();
+        Objective objective = new Objective<>();
         JsonObject jsonObjective = jsonElement.getAsJsonObject();
 
         objective.finished = jsonObjective.get("finished").getAsBoolean();
         objective.description = jsonObjective.get("description").getAsString();
         objective.type = jsonDeserializationContext.deserialize(jsonObjective.get("type"), ObjectiveType.class);
-        /*
-        if(jsonObjective.has("npc"))
-            objective.concernedNPC = MapSerializer.getNPC(jsonObjective.get("npc").getAsInt());
-        if(jsonObjective.has("item"))
-            objective.concernedItem = jsonDeserializationContext.deserialize(jsonObjective.get("item"), Item.class);*/
+
+        try {
+            JsonObject jsonConcerned = jsonObjective.get("concerned").getAsJsonObject();
+
+            Class clazz = Class.forName(jsonConcerned.get("class").getAsString());
+
+            if(clazz == NPC.class) {
+                objective.concernedObject = MapSerializer.getNPC(jsonConcerned.get("object").getAsInt());
+            } else {
+                objective.concernedObject = jsonDeserializationContext.deserialize(jsonConcerned.get("object"), clazz);
+            }
+        } catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         return objective;
     }
