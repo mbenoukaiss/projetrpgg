@@ -257,8 +257,8 @@ public class Game {
 
         parser.registerCommand("travel", Region.class, ((player, s) -> {
             for (Region region : this.map.getRegions()) {
-                if (region.getName().equalsIgnoreCase(s)) {
-                    return region;
+                if (findRegion(region, s) != null) {
+                    return findRegion(region, s);
                 }
             }
             return null;
@@ -311,4 +311,15 @@ public class Game {
         }
     }
 
+    public Region findRegion(Region region, String regionName) {
+        if (region.getName().equalsIgnoreCase(regionName)) {
+            return region;
+        }
+        for (Region region1 : region.getContainedRegions()) {
+            if (findRegion(region1, regionName) != null) {
+                return findRegion(region1, regionName);
+            }
+        }
+        return null;
+    }
 }

@@ -56,8 +56,8 @@ public class Main extends Application {
         this.primaryStage.getIcons().add(new Image("icon.png"));
         HomeView homeView = new HomeView(this);
         primaryStage.setScene(homeView.getScene());
+        primaryStage.setResizable(false);
         primaryStage.show();
-
         primaryStage.centerOnScreen();
     }
 
@@ -70,7 +70,7 @@ public class Main extends Application {
         ArrayList<Region> regions = new ArrayList<>();
         Region earth = new Region(1, "Earth", null, 0);
         regions.add(earth);
-        Region mars = new Region(2, "Mars", null, 1);
+        Region mars = new Region(2, "Mars", null, 2);
         regions.add(mars);
         Region moon = new Region(3, "Moon", null, 1);
         regions.add(moon);
@@ -161,6 +161,7 @@ public class Main extends Application {
 
         GameView vue = new GameView(game, this);
         primaryStage.setScene(vue.getScene());
+        primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.centerOnScreen();
 

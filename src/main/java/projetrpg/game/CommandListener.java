@@ -770,8 +770,23 @@ public class CommandListener {
                     }
                     if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()
                             && this.player.getShip().getActualFuel() >= this.player.getShip().getTravelCost()) {
-                        this.player.move(r.getLandingRegion());
-                        return ("You traveled to the region : " + r.getName() + ". You landed on : " + r.getLandingRegion().describe());
+                        if (this.game.map.getRegions().contains(r)) {
+                            this.player.move(r.getLandingRegion());
+                            return ("You traveled to the region : " + r.getName() + ". You landed on : " + r.getLandingRegion().describe());
+                        } else {
+                            ArrayList<Item> regionItems2 = new ArrayList<>(r.getPlanet().getItemsNeeded());
+                            for (Item i : this.player.getInventory().getAll()) {
+                                if (regionItems2.contains(i)) {
+                                    regionItems2.remove(i);
+                                }
+                            }
+                            if (regionItems2.isEmpty() && r.getPlanet().getShipLevelRequired() <= this.game.map.getMainCharacter().getShip().getLevel()) {
+                                this.player.move(r);
+                                return ("You traveled to the region : " + r.getName() + ".");
+                            } else {
+                                return "You dont have the planet's required items or ship level.";
+                            }
+                        }
                     } else {
                         String message = "";
                         if (!r.getItemsNeeded().isEmpty()) {
@@ -789,7 +804,7 @@ public class CommandListener {
                     return "You must be in your ship in order to travel";
                 }
             } else {
-                return "Error, check if this is a valid planet";
+                return "Error, check if this is a valid region";
             }
         } else {
             return "You can only fight or flee";
