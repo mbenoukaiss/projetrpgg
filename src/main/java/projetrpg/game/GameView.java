@@ -3,8 +3,11 @@ package projetrpg.game;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import projetrpg.Main;
+import projetrpg.map.MainMap;
+import projetrpg.map.MapDisplay;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -42,10 +45,20 @@ public class GameView {
         this.languageBundle = ResourceBundle.getBundle("bundles/game", Locale.ENGLISH);
 
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui.fxml"));
-        loader.setController(new GameController(game, this.main));
+        loader.setController(new GameController(game, this, main));
         loader.setResources(languageBundle);
 
         this.scene = new Scene(loader.load(), 1200, 600);
+    }
+
+    public Canvas generateLocalMap() {
+        MapDisplay display = new MapDisplay(game.map);
+        return display.drawLocal();
+    }
+
+    public Canvas generatePlanetsMap() {
+        MapDisplay display = new MapDisplay(game.map);
+        return display.drawPlanets();
     }
 
     /**

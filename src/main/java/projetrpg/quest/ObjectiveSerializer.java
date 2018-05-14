@@ -23,7 +23,12 @@ public class ObjectiveSerializer implements JsonSerializer<Objective>, JsonDeser
 
         JsonObject concerned = new JsonObject();
         concerned.addProperty("class", objective.concernedObject.getClass().getCanonicalName());
-        concerned.add("object", jsonSerializationContext.serialize(objective.concernedObject));
+
+        if(objective.concernedObject.getClass() == NPC.class) {
+            concerned.addProperty("object", ((NPC) objective.getConcernedObject()).getId());
+        } else {
+            concerned.add("object", jsonSerializationContext.serialize(objective.concernedObject));
+        }
 
         jsonObjective.add("concerned", concerned);
 

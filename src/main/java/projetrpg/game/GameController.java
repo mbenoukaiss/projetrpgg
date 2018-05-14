@@ -41,6 +41,11 @@ public class GameController implements Initializable {
     private Game game;
 
     /**
+     * The game view.
+     */
+    private GameView gameView;
+
+    /**
      * The text field in which the player
      * enters the commands.
      */
@@ -88,8 +93,9 @@ public class GameController implements Initializable {
     private Canvas planetsDisplay = new Canvas();
 
 
-    GameController(Game game, Main main) {
+    GameController(Game game, GameView gameView, Main main) {
         this.main = main;
+        this.gameView = gameView;
         this.game = game;
     }
 
@@ -216,13 +222,13 @@ public class GameController implements Initializable {
 
     public void localMapDisplay() {
         SnapshotParameters params = new SnapshotParameters();
-        WritableImage img = this.main.displayMap().snapshot(params, null);
+        WritableImage img = gameView.generatePlanetsMap().snapshot(params, null);
         this.mapDisplayCanvas.getGraphicsContext2D().drawImage(img, 0, 0);
     }
 
     public void planetMapDisplay() {
         SnapshotParameters params = new SnapshotParameters();
-        WritableImage img = this.main.displayPlanets().snapshot(params, null);
+        WritableImage img = gameView.generatePlanetsMap().snapshot(params, null);
         this.planetsDisplay.getGraphicsContext2D().drawImage(img, 0, 0);
     }
 

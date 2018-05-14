@@ -40,6 +40,8 @@ public class Inventory implements Describable {
      */
     @Override
     public String describe() {
+        if(items.isEmpty()) return "";
+
         StringBuilder d = new StringBuilder();
 
         for(Item i: this.items) {

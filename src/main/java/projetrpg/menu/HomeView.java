@@ -15,14 +15,18 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class HomeView {
+
+    private Home home;
     private Button quitGame;
     private Button loadGame;
     private Button newGame;
     private Scene scene;
     private Main start;
 
-    public HomeView(Main start) {
+    public HomeView(Main start, Home home) {
         this.start = start;
+        this.home = home;
+
         Label title = new Label("Welcome to Galaxy Explorer!");
         quitGame = new Button("Quit");
         loadGame = new Button("Load");
@@ -38,7 +42,7 @@ public class HomeView {
         quitGame.setOnAction(e -> Platform.exit());
         newGame.setOnAction(e -> {
             try {
-                start.launchMainGame();
+                start.launchMainGame(home.getSavesServices().create());
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

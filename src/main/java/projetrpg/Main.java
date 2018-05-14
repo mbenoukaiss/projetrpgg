@@ -15,7 +15,9 @@ import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.*;
 import projetrpg.map.Region;
+import projetrpg.menu.Home;
 import projetrpg.menu.HomeView;
+import projetrpg.menu.Save;
 import projetrpg.utils.Pair;
 import projetrpg.map.*;
 
@@ -38,7 +40,6 @@ import projetrpg.utils.AnnotationExclusionStrategy;
 public class Main extends Application {
 
     private Stage primaryStage;
-    private MainMap mainMap;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -54,23 +55,38 @@ public class Main extends Application {
 
         this.primaryStage.setTitle("Galaxy Explorer Menu");
         this.primaryStage.getIcons().add(new Image("icon.png"));
-        HomeView homeView = new HomeView(this);
+        HomeView homeView = new HomeView(this, new Home("/mnt/ramdisk/wow/"));
         primaryStage.setScene(homeView.getScene());
-        primaryStage.setResizable(false);
         primaryStage.show();
+
         primaryStage.centerOnScreen();
     }
 
-    public void launchMainGame() throws IOException {
-
+    public void launchMainGame(Save save) throws IOException {
         this.primaryStage.setTitle("Galaxy Explorer");
         this.primaryStage.getIcons().add(new Image("icon.png"));
-        this.mainMap = new MainMap("FacticeMap");
+
+        MainMap map = createTestMap();
+        testSerialization(map);
+
+        //Party initialization.
+        System.out.println(save.getMap().getMainCharacter().describe());
+        Game game = new Game(save.getMap());
+
+        GameView vue = new GameView(game, this);
+        primaryStage.setScene(vue.getScene());
+        primaryStage.show();
+        primaryStage.centerOnScreen();
+
+    }
+
+    private MainMap createTestMap() {
+        MainMap mainMap = new MainMap("FacticeMap");
 
         ArrayList<Region> regions = new ArrayList<>();
         Region earth = new Region(1, "Earth", null, 0);
         regions.add(earth);
-        Region mars = new Region(2, "Mars", null, 2);
+        Region mars = new Region(2, "Mars", null, 1);
         regions.add(mars);
         Region moon = new Region(3, "Moon", null, 1);
         regions.add(moon);
@@ -154,27 +170,7 @@ public class Main extends Application {
         }
         quests.forEach(mainMap::addQuest);
 
-        testSerialization(mainMap);
-
-        //Party initialization.
-        Game game = new Game(mainMap);
-
-        GameView vue = new GameView(game, this);
-        primaryStage.setScene(vue.getScene());
-        primaryStage.setResizable(false);
-        primaryStage.show();
-        primaryStage.centerOnScreen();
-
-    }
-
-    public Canvas displayMap() {
-        MapDisplay display = new MapDisplay(this.mainMap);
-        return display.drawLocal();
-    }
-
-    public Canvas displayPlanets() {
-        MapDisplay display = new MapDisplay(this.mainMap);
-        return display.drawPlanets();
+        return mainMap;
     }
 
 
