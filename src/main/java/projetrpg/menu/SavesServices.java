@@ -158,7 +158,8 @@ public class SavesServices {
                 "    \"type\": \"PLAYER\",\n" +
                 "    \"hps\": 100,\n" +
                 "    \"baseHps\": 100,\n" +
-                "    \"isHostile\": false\n" +
+                "    \"isHostile\": false,\n" +
+                "    \"location\": 9\n" +
                 "  },\n" +
                 "  \"quests\": [\n" +
                 "    {\n" +

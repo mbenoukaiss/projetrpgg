@@ -67,7 +67,7 @@ public class Main extends Application {
         this.primaryStage.getIcons().add(new Image("icon.png"));
 
         MainMap map = createTestMap();
-        testSerialization(map);
+        //testSerialization(map);
 
         //Party initialization.
         System.out.println(save.getMap().getMainCharacter().describe());

@@ -37,6 +37,7 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         map.addProperty("humancount", mainMap.getHumanCount());
 
         JsonElement mainCharacter = jsonSerializationContext.serialize(mainMap.getMainCharacter());
+        mainCharacter.getAsJsonObject().addProperty("location", mainMap.getMainCharacter().getLocation().getId());
         map.add("maincharacter", mainCharacter);
 
         JsonArray quests = jsonSerializationContext.serialize(mainMap.getQuests()).getAsJsonArray();
@@ -87,6 +88,14 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
             regionWithId.put(region.getId(), region);
             associateIDwRegions(regionWithId, region);
         }
+
+        //Set player's location
+        map.getMainCharacter().setLocation(regionWithId.get(
+                jsonMap.get("maincharacter").getAsJsonObject()
+                        .get("location").getAsInt()
+        ));
+
+        System.out.println(map.getMainCharacter().getLocation());
 
         //Associate regions to regions using map directions
          directions.forEach((id, dirMap) -> {

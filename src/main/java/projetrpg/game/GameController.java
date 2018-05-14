@@ -222,7 +222,7 @@ public class GameController implements Initializable {
 
     public void localMapDisplay() {
         SnapshotParameters params = new SnapshotParameters();
-        WritableImage img = gameView.generatePlanetsMap().snapshot(params, null);
+        WritableImage img = gameView.generateLocalMap().snapshot(params, null);
         this.mapDisplayCanvas.getGraphicsContext2D().drawImage(img, 0, 0);
     }
 
