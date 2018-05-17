@@ -1,6 +1,7 @@
 package projetrpg.game;
 
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,11 +19,14 @@ import projetrpg.Main;
 import projetrpg.commands.InvalidCommandException;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ability;
+import projetrpg.observer.Observable;
 import projetrpg.quest.Objective;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -92,7 +96,6 @@ public class GameController implements Initializable {
     @FXML
     private Canvas planetsDisplay = new Canvas();
 
-
     GameController(Game game, GameView gameView, Main main) {
         this.main = main;
         this.gameView = gameView;
@@ -134,26 +137,45 @@ public class GameController implements Initializable {
     public void enterCommand(KeyEvent e) {
         Calendar cal = Calendar.getInstance();
 
-        if (KeyCode.ENTER == e.getCode()) {
-            String logs;
-            try {
-                logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
-                        game.parser.parse(game.map.getMainCharacter(), commandField.getText()).send() + "\n\n";
-            } catch (InvalidCommandException e1) {
-                logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
-                        e1.getMessage() + "\n\n";
-            }
+        //If he's typing a command and not doing Ctrl + A||C||D
+        if(e.getCode().isLetterKey() && !e.isControlDown()) {
+            Optional<String> suggestion = game.parser.complete(commandField.getText());
 
-            textLogs.setWrapText(true);
-            textLogs.appendText(logs);
-            commandField.clear();
-            inventoryDisplay();
-            inventoryDisplay();
-            locationDisplay();
-            objectivesDisplay();
-            spellsDisplay();
-            localMapDisplay();
-            planetMapDisplay();
+            if(suggestion.isPresent()) {
+                int begin = commandField.getLength();
+                int end = suggestion.get().length();
+
+                commandField.setText(suggestion.get());
+                commandField.selectRange(begin, end);
+            }
+        }
+
+        if (KeyCode.ENTER == e.getCode()) {
+            if(!commandField.getSelectedText().isEmpty()) {
+                commandField.deselect();
+                commandField.appendText(" ");
+            } else {
+
+                String logs;
+                try {
+                    logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
+                            game.parser.parse(game.map.getMainCharacter(), commandField.getText()).send() + "\n\n";
+                } catch(InvalidCommandException e1) {
+                    logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
+                            e1.getMessage() + "\n\n";
+                }
+
+                textLogs.setWrapText(true);
+                textLogs.appendText(logs);
+                commandField.clear();
+                inventoryDisplay();
+                inventoryDisplay();
+                locationDisplay();
+                objectivesDisplay();
+                spellsDisplay();
+                localMapDisplay();
+                planetMapDisplay();
+            }
         }
     }
 

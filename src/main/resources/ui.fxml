@@ -71,7 +71,7 @@
                   <TextArea id="logs" fx:id="textLogs" editable="false" prefHeight="271.0" />
                </children>
             </VBox>
-            <TextField fx:id="commandField" onKeyPressed="#enterCommand" promptText="Command" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="commandField" onKeyReleased="#enterCommand" promptText="Command" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                <children>
                 <Button id="save" mnemonicParsing="false" text="Save" />

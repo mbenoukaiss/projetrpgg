@@ -76,7 +76,7 @@ public class Game {
      * Registers all the commands available
      * in this game.
      */
-    public void commandRegisterer() {
+    private void commandRegisterer() {
 
         Scanner sc = new Scanner(System.in);
 

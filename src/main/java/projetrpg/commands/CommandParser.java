@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Class used to parse a command.
@@ -113,6 +114,20 @@ public class CommandParser {
         }
 
         return null;
+    }
+
+    /**
+     * Tries to autocomplete a command.
+     * Currently only works for the command itself,
+     * not the arguments.
+     *
+     * @param beginning What the user typed.
+     * @return A command the user would possibly type.
+     */
+    public Optional<String> complete(String beginning) {
+        return commands.keySet().stream()
+                .filter(c -> c.startsWith(beginning))
+                .findFirst();
     }
 
     /**
