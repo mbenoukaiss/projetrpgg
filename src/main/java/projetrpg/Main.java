@@ -67,7 +67,7 @@ public class Main extends Application {
         this.primaryStage.getIcons().add(new Image("icon.png"));
 
         MainMap map = createTestMap();
-        //testSerialization(map);
+        testSerialization(map);
 
         //Party initialization.
         System.out.println(save.getMap().getMainCharacter().describe());
@@ -131,6 +131,7 @@ public class Main extends Application {
         Player player = new Player("Hervé", 0, forest, null, 100,
                 10, EntityType.PLAYER, 50, 50);
         player.setShip(playerShip);
+        player.getLocation().addContainedRegion(playerShip);
         ShipAmelioration.ENGINE_AMELIORATION.addItemNeeded(Item.TOOLKIT);
         ShipAmelioration.REACTORS_AMELIORATION.addItemNeeded(Item.KNIFE);
         ShipAmelioration.RADAR_AMELIORATION.addItemNeeded(Item.FLASHLIGHT);
@@ -191,6 +192,7 @@ public class Main extends Application {
                 .registerTypeAdapter(Quest.class, new QuestSerializer())
                 .registerTypeAdapter(Teleporter.class, new TeleporterSerializer())
                 .registerTypeAdapter(Region.class, new RegionSerializer())
+                .registerTypeHierarchyAdapter(Ship.class, new ShipSerializer())
                 .registerTypeAdapter(MainMap.class, new MapSerializer())
                 .create();
 

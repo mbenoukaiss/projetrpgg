@@ -13,35 +13,30 @@ import java.util.Set;
  */
 public class Ship extends Region implements Describable{
 
-    private int TRAVEL_COST;
+    private static final int TRAVEL_COST = 10;
 
     /**
      * The base fuel of the ship
      */
-    private int baseFuel;
+    protected int baseFuel;
 
     /**
      * The actuel fuel of the ship
      */
     @Expose("fuel")
-    private int actualFuel;
+    protected int actualFuel;
 
     /**
      * The level of the ship
      */
     @Expose("ship level")
-    private int level;
+    protected int level;
 
     /**
      * Possible ameliorations of the ship;
      */
     @Expose("ship improvements")
-    private Set<ShipAmelioration> ameliorations;
-
-    /**
-     * The last region the player was on before entering his ship
-     */
-    private Region lastRegion;
+    protected Set<ShipAmelioration> ameliorations;
 
     public Ship(int id, String name, Region parent, int baseFuel) {
         super(id, name, parent, 0);
@@ -52,8 +47,22 @@ public class Ship extends Region implements Describable{
         this.ameliorations.add(ShipAmelioration.ENGINE_AMELIORATION);
         this.ameliorations.add(ShipAmelioration.RADAR_AMELIORATION);
         this.ameliorations.add(ShipAmelioration.REACTORS_AMELIORATION);
-        lastRegion = null;
-        this.TRAVEL_COST = 10;
+    }
+
+    /**
+     * Create a ship out of a region.
+     * @param base The region
+     * @param baseFuel The base fuel of the ship
+     */
+    public Ship(Region base, int baseFuel) {
+        super(base);
+        this.baseFuel = baseFuel;
+        this.actualFuel = this.baseFuel;
+        this.level = 1;
+        this.ameliorations = new HashSet<>();
+        this.ameliorations.add(ShipAmelioration.ENGINE_AMELIORATION);
+        this.ameliorations.add(ShipAmelioration.RADAR_AMELIORATION);
+        this.ameliorations.add(ShipAmelioration.REACTORS_AMELIORATION);
     }
 
     /**
@@ -99,14 +108,6 @@ public class Ship extends Region implements Describable{
 
     private void finishAmelioration(ShipAmelioration a) {
         this.ameliorations.remove(a);
-    }
-
-    public void setLastRegion(Region lastRegion) {
-        this.lastRegion = lastRegion;
-    }
-
-    public Region getLastRegion() {
-        return lastRegion;
     }
 
     @Override

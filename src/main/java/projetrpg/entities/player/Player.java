@@ -79,6 +79,7 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     /**
      * The ship of the player.
      */
+    @SerializationIgnore
     private Ship ship;
 
     /**

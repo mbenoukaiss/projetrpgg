@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import projetrpg.entities.Entity;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
+import projetrpg.entities.player.Ship;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -73,7 +74,14 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         }
 
         for(JsonElement element : jsonRegion.get("childregions").getAsJsonArray()) {
-            Region r = deserializationContext.deserialize(element, Region.class);
+            Region r;
+
+            if(element.getAsJsonObject().has("type")) {
+                r = deserializationContext.deserialize(element, Ship.class);
+            } else {
+                r = deserializationContext.deserialize(element, Region.class);
+            }
+
             region.addContainedRegion(r);
         }
 

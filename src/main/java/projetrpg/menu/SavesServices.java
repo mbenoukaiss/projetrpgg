@@ -2,6 +2,8 @@ package projetrpg.menu;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import projetrpg.entities.player.Ship;
+import projetrpg.entities.player.ShipSerializer;
 import projetrpg.map.*;
 import projetrpg.quest.Objective;
 import projetrpg.quest.ObjectiveSerializer;
@@ -24,10 +26,12 @@ public class SavesServices {
                 .setPrettyPrinting()
                 .enableComplexMapKeySerialization()
                 .setExclusionStrategies(new AnnotationExclusionStrategy())
+                .setExclusionStrategies(new AnnotationExclusionStrategy())
                 .registerTypeAdapter(Objective.class, new ObjectiveSerializer())
                 .registerTypeAdapter(Quest.class, new QuestSerializer())
                 .registerTypeAdapter(Teleporter.class, new TeleporterSerializer())
                 .registerTypeAdapter(Region.class, new RegionSerializer())
+                .registerTypeHierarchyAdapter(Ship.class, new ShipSerializer())
                 .registerTypeAdapter(MainMap.class, new MapSerializer())
                 .create();
     }
@@ -95,7 +99,8 @@ public class SavesServices {
 
     public Save create() {
         //TODO: Charger depuis le jar
-        return new Save(gson.fromJson("{\n" +
+        return new Save(gson.fromJson(
+                "{" +
                 "  \"name\": \"FacticeMap\",\n" +
                 "  \"spawnpoint\": 1,\n" +
                 "  \"humancount\": 100,\n" +
@@ -131,35 +136,12 @@ public class SavesServices {
                 "    ],\n" +
                 "    \"baseDamage\": 10,\n" +
                 "    \"observers\": [],\n" +
-                "    \"ship\": {\n" +
-                "      \"TRAVEL_COST\": 10,\n" +
-                "      \"baseFuel\": 50,\n" +
-                "      \"actualFuel\": 50,\n" +
-                "      \"level\": 1,\n" +
-                "      \"ameliorations\": [\n" +
-                "        \"RADAR_AMELIORATION\",\n" +
-                "        \"ENGINE_AMELIORATION\",\n" +
-                "        \"REACTORS_AMELIORATION\"\n" +
-                "      ],\n" +
-                "      \"id\": 11,\n" +
-                "      \"name\": \"Hervé\\u0027s Ship\",\n" +
-                "      \"regionOnDirection\": {},\n" +
-                "      \"containedRegions\": [],\n" +
-                "      \"entities\": [],\n" +
-                "      \"teleporters\": [],\n" +
-                "      \"inventory\": {\n" +
-                "        \"maxCapacity\": 10,\n" +
-                "        \"items\": []\n" +
-                "      },\n" +
-                "      \"itemsNeeded\": [],\n" +
-                "      \"shipLevelRequired\": 0\n" +
-                "    },\n" +
                 "    \"name\": \"Hervé\",\n" +
                 "    \"type\": \"PLAYER\",\n" +
                 "    \"hps\": 100,\n" +
                 "    \"baseHps\": 100,\n" +
                 "    \"isHostile\": false,\n" +
-                "    \"location\": 9\n" +
+                "    \"location\": 6\n" +
                 "  },\n" +
                 "  \"quests\": [\n" +
                 "    {\n" +
@@ -167,6 +149,15 @@ public class SavesServices {
                 "      \"ereward\": 10,\n" +
                 "      \"description\": \"Start your beautiful journey towards saving the universe\",\n" +
                 "      \"objectives\": [\n" +
+                "        {\n" +
+                "          \"finished\": false,\n" +
+                "          \"description\": \"Pickup the Apple\",\n" +
+                "          \"type\": \"PICKUP\",\n" +
+                "          \"concerned\": {\n" +
+                "            \"class\": \"projetrpg.entities.items.Item\",\n" +
+                "            \"object\": \"APPLE\"\n" +
+                "          }\n" +
+                "        },\n" +
                 "        {\n" +
                 "          \"finished\": false,\n" +
                 "          \"description\": \"Kill Zorg\",\n" +
@@ -180,15 +171,6 @@ public class SavesServices {
                 "          \"finished\": false,\n" +
                 "          \"description\": \"Use the Apple\",\n" +
                 "          \"type\": \"USE\",\n" +
-                "          \"concerned\": {\n" +
-                "            \"class\": \"projetrpg.entities.items.Item\",\n" +
-                "            \"object\": \"APPLE\"\n" +
-                "          }\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"finished\": false,\n" +
-                "          \"description\": \"Pickup the Apple\",\n" +
-                "          \"type\": \"PICKUP\",\n" +
                 "          \"concerned\": {\n" +
                 "            \"class\": \"projetrpg.entities.items.Item\",\n" +
                 "            \"object\": \"APPLE\"\n" +
@@ -230,6 +212,27 @@ public class SavesServices {
                 "          },\n" +
                 "          \"childregions\": [\n" +
                 "            {\n" +
+                "              \"id\": 11,\n" +
+                "              \"name\": \"Hervé\\u0027s Ship\",\n" +
+                "              \"directions\": {},\n" +
+                "              \"childregions\": [],\n" +
+                "              \"entities\": [],\n" +
+                "              \"teleporters\": [],\n" +
+                "              \"inventory\": {\n" +
+                "                \"maxCapacity\": 10,\n" +
+                "                \"items\": []\n" +
+                "              },\n" +
+                "              \"type\": \"ship\",\n" +
+                "              \"basefuel\": 50,\n" +
+                "              \"actualfuel\": 50,\n" +
+                "              \"level\": 1,\n" +
+                "              \"ameliorations\": [\n" +
+                "                \"REACTORS_AMELIORATION\",\n" +
+                "                \"ENGINE_AMELIORATION\",\n" +
+                "                \"RADAR_AMELIORATION\"\n" +
+                "              ]\n" +
+                "            },\n" +
+                "            {\n" +
                 "              \"id\": 7,\n" +
                 "              \"name\": \"Cave\",\n" +
                 "              \"directions\": {},\n" +
@@ -248,10 +251,10 @@ public class SavesServices {
                 "              ],\n" +
                 "              \"teleporters\": [\n" +
                 "                {\n" +
-                "                  \"id\": 0,\n" +
+                "                  \"id\": 2,\n" +
                 "                  \"name\": \"CtoVtp\",\n" +
                 "                  \"repaired\": false,\n" +
-                "                  \"link\": 1,\n" +
+                "                  \"link\": 3,\n" +
                 "                  \"requirements\": []\n" +
                 "                }\n" +
                 "              ],\n" +
@@ -328,10 +331,10 @@ public class SavesServices {
                 "          ],\n" +
                 "          \"teleporters\": [\n" +
                 "            {\n" +
-                "              \"id\": 1,\n" +
+                "              \"id\": 3,\n" +
                 "              \"name\": \"CtoVtp\",\n" +
                 "              \"repaired\": false,\n" +
-                "              \"link\": 0,\n" +
+                "              \"link\": 2,\n" +
                 "              \"requirements\": []\n" +
                 "            }\n" +
                 "          ],\n" +

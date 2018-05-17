@@ -1,6 +1,5 @@
 package projetrpg.game;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import projetrpg.Describable;
 import projetrpg.commands.Listener;
 import projetrpg.entities.player.Ability;
@@ -525,10 +524,10 @@ public class CommandListener {
         if (!this.player.isInFight()) { // If the player is not engaged in a fight
             if (r != null) { // If the region exists and is connected to the player's location
                 if (r.getName().equalsIgnoreCase(this.player.getShip().getName())) {
-                    this.player.getShip().setLastRegion(this.player.getLocation());
+                    this.player.getLocation().addContainedRegion(player.getShip());
                     this.player.move(r);
                     return "You moved to your ship. You can now go to : " +
-                            this.player.getShip().getLastRegion().getName();
+                            this.player.getShip().getParent().getName();
                 }
                 ArrayList<Item> regionItems = new ArrayList<>(r.getItemsNeeded());
                 for (Item i : this.player.getInventory().getAll()) {

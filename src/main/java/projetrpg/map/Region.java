@@ -7,7 +7,6 @@ import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ship;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.util.*;
 
 /**
@@ -103,6 +102,21 @@ public class Region implements Describable {
             parent.addContainedRegion(this);
     }
 
+    public Region(Region other) {
+        System.out.println(other.containedRegions);
+        this.id = other.id;
+        this.name = other.name;
+        this.parent = other.parent;
+        this.regionOnDirection = other.regionOnDirection;
+        this.containedRegions = other.containedRegions;
+        this.entities = other.entities;
+        this.teleporters = other.teleporters;
+        this.inventory = other.inventory;
+        this.itemsNeeded = other.itemsNeeded;
+        this.shipLevelRequired = other.shipLevelRequired;
+        this.landingRegion = other.landingRegion;
+    }
+
     /**
      * Accessor for the id of the region.
      * @return the id
@@ -128,14 +142,6 @@ public class Region implements Describable {
     }
 
     /**
-     * Setter for the parent
-     * @param parent the parent
-     */
-    public void setParent(Region parent) {
-        this.parent = parent;
-    }
-
-    /**
      * Accessor for the contained teleporters.
      * @return the teleporters
      */
@@ -149,9 +155,6 @@ public class Region implements Describable {
      */
     @Override
     public String describe() {
-        if (this instanceof Ship) {
-            return "You are in your ship, you can now move to " + ((Ship) this).getLastRegion().getName() + ".";
-        }
         String d = "Region : " + this.name;
         if (!this.inventory.getAll().isEmpty()) {
             d+=", contains those items : ";

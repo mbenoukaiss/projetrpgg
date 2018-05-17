@@ -1,19 +1,13 @@
 package projetrpg.map;
 
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.SwipeEvent;
 import javafx.scene.paint.Color;
 import projetrpg.entities.player.Player;
-import projetrpg.entities.player.Ship;
-import projetrpg.game.Game;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -94,54 +88,58 @@ public class MapDisplay {
         int i = 0;
         Region playerRegion = null;
         HashMap<Region, Point> regionsCoordinates = new HashMap<>();
-        for (Region region : this.map.getRegions()) {
-            if (this.map.getMainCharacter().getLocation().getPlanet() == region ||
-                    (this.map.getMainCharacter().getShip().getLastRegion() != null &&
-                    this.map.getMainCharacter().getShip().getLastRegion().getPlanet() == region)) {
+        for(Region region : this.map.getRegions()) {
+            //Si il est sur la même planète ou son vaisseau est sur la même planète
+            if(this.map.getMainCharacter().getLocation().getPlanet() == region ||
+                    (this.map.getMainCharacter().getShip().getParent() != null &&
+                            this.map.getMainCharacter().getShip().getParent().getPlanet() == region)) {
                 playerRegion = region;
             }
             regionsCoordinates.put(region, new Point(x, y));
             x += 200;
-            if (i % 2 != 0) {
+            if(i % 2 != 0) {
                 y += 50;
                 x = 100;
             }
             i++;
         }
+
         g.setStroke(Color.GRAY);
         g.setLineWidth(4);
-        for (Region region : this.map.getRegions()) {
+
+        for(Region region : this.map.getRegions()) {
             Player player = this.map.getMainCharacter();
-            if (region == playerRegion) {
+            if(region == playerRegion) {
                 g.setFill(Color.SANDYBROWN);
                 g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
             } else {
-                if (player.canTravelTo(region)) {
+                if(player.canTravelTo(region)) {
                     g.strokeLine(regionsCoordinates.get(playerRegion).x + 15, regionsCoordinates.get(playerRegion).y + 15,
                             regionsCoordinates.get(region).x + 15, regionsCoordinates.get(region).y + 15);
                     g.setFill(Color.BROWN);
                     g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
                     g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y + 45);
-
-                    } else {
-                        g.setFill(Color.BROWN);
-                        g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
-                        g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y + 45);
-                    }
-                }
-            }
-            for (Region region : this.map.getRegions()) {
-                Player player = this.map.getMainCharacter();
-                if (region == playerRegion) {
-                    g.setFill(Color.SANDYBROWN);
+                } else {
+                    g.setFill(Color.BROWN);
                     g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
+                    g.fillText(region.getName(), regionsCoordinates.get(region).x, regionsCoordinates.get(region).y + 45);
                 }
             }
-            g.fillOval(50, 50, 10, 10);
-            g.fillText("YOU", 20, 60);
-            g.setFill(Color.BROWN);
-            g.fillText("Planetary map : ", 20, 20);
+
         }
+
+        for(Region region : this.map.getRegions()) {
+            if(region == playerRegion) {
+                g.setFill(Color.SANDYBROWN);
+                g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
+            }
+        }
+
+        g.fillOval(50, 50, 10, 10);
+        g.fillText("YOU", 20, 60);
+        g.setFill(Color.BROWN);
+        g.fillText("Planetary map : ", 20, 20);
+    }
 
     private void drawRegion(GraphicsContext g, Direction dir, int x, int y) {
         g.strokeLine(203, 132, x+12,y+20);

@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import projetrpg.entities.NPC;
 import projetrpg.entities.player.Player;
+import projetrpg.entities.player.Ship;
 import projetrpg.quest.Quest;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -16,6 +17,8 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
     private static Map<Integer, Map<Direction, Integer>> directions = new HashMap<>();
 
+    private static Ship ship;
+
     public static void addNPC(NPC npc) {
         idNPCMap.put(npc.getId(), npc);
     }
@@ -26,6 +29,10 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
     public static void addRegion(int source, Map<Direction, Integer> direction) {
         directions.put(source, direction);
+    }
+
+    public static void setShip(Ship ship) {
+        MapSerializer.ship = ship;
     }
 
     @Override
@@ -95,7 +102,7 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
                         .get("location").getAsInt()
         ));
 
-        System.out.println(map.getMainCharacter().getLocation());
+        map.getMainCharacter().setShip(ship);
 
         //Associate regions to regions using map directions
          directions.forEach((id, dirMap) -> {
@@ -130,7 +137,8 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
     private void findRegionParent(Region parent, Collection<Region> regions) {
         for(Region region : regions) {
-            region.setParent(parent);
+            if(parent != null)
+                parent.addContainedRegion(region);
             findRegionParent(region, region.getContainedRegions());
         }
     }

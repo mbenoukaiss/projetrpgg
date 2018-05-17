@@ -5,7 +5,6 @@ import projetrpg.entities.Entity;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ability;
-import projetrpg.entities.player.Ship;
 import projetrpg.entities.player.ShipAmelioration;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
@@ -114,8 +113,8 @@ public class Game {
             arg.equalsIgnoreCase("ship"))) {
                 return null;
             }
-            if (player.getLocation() == player.getShip() && arg.equalsIgnoreCase(player.getShip().getLastRegion().getName())) {
-                return player.getShip().getLastRegion();
+            if (player.getLocation() == player.getShip() && arg.equalsIgnoreCase(player.getShip().getParent().getName())) {
+                return player.getShip().getParent();
             }
             for (Region r : player.getLocation().getRegionOnDirection().values()) {
                 if (r.getName().toLowerCase().equals(arg.toLowerCase())) {
