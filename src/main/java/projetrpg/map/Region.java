@@ -354,7 +354,7 @@ public class Region implements Describable {
         this.landingRegion = landingRegion;
     }
 
-    public Region getPlanet() {
+    public Region getRoot() {
         Region reg = this;
         while(reg.getParent() != null) {
             reg = reg.getParent();

@@ -773,13 +773,13 @@ public class CommandListener {
                             this.player.move(r.getLandingRegion());
                             return ("You traveled to the region : " + r.getName() + ". You landed on : " + r.getLandingRegion().describe());
                         } else {
-                            ArrayList<Item> regionItems2 = new ArrayList<>(r.getPlanet().getItemsNeeded());
+                            ArrayList<Item> regionItems2 = new ArrayList<>(r.getRoot().getItemsNeeded());
                             for (Item i : this.player.getInventory().getAll()) {
                                 if (regionItems2.contains(i)) {
                                     regionItems2.remove(i);
                                 }
                             }
-                            if (regionItems2.isEmpty() && r.getPlanet().getShipLevelRequired() <= this.game.map.getMainCharacter().getShip().getLevel()) {
+                            if (regionItems2.isEmpty() && r.getRoot().getShipLevelRequired() <= this.game.map.getMainCharacter().getShip().getLevel()) {
                                 this.player.move(r);
                                 return ("You traveled to the region : " + r.getName() + ".");
                             } else {

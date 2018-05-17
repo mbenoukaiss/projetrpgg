@@ -69,8 +69,6 @@ public class Main extends Application {
         MainMap map = createTestMap();
         testSerialization(map);
 
-        //Party initialization.
-        System.out.println(save.getMap().getMainCharacter().describe());
         Game game = new Game(save.getMap());
 
         GameView vue = new GameView(game, this);

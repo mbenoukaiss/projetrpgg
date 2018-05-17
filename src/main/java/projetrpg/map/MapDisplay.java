@@ -63,6 +63,9 @@ public class MapDisplay {
                 this.map.getMainCharacter().getLocation().getParent())) {
             goingableRegion.add(this.map.getMainCharacter().getLocation().getParent());
         }
+        if (goingableRegion.contains(this.map.getMainCharacter().getShip())) {
+            goingableRegion.remove(this.map.getMainCharacter().getShip());
+        }
         for (Region region : goingableRegion) {
             if (i % 2 != 0) {
                 x=60;
@@ -90,9 +93,9 @@ public class MapDisplay {
         HashMap<Region, Point> regionsCoordinates = new HashMap<>();
         for(Region region : this.map.getRegions()) {
             //Si il est sur la même planète ou son vaisseau est sur la même planète
-            if(this.map.getMainCharacter().getLocation().getPlanet() == region ||
+            if(this.map.getMainCharacter().getLocation().getRoot() == region ||
                     (this.map.getMainCharacter().getShip().getParent() != null &&
-                            this.map.getMainCharacter().getShip().getParent().getPlanet() == region)) {
+                            this.map.getMainCharacter().getShip().getParent().getRoot() == region)) {
                 playerRegion = region;
             }
             regionsCoordinates.put(region, new Point(x, y));
