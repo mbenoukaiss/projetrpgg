@@ -100,314 +100,326 @@ public class SavesServices {
     public Save create() {
         //TODO: Charger depuis le jar
         return new Save(gson.fromJson(
-                "{" +
-                "  \"name\": \"FacticeMap\",\n" +
-                "  \"spawnpoint\": 1,\n" +
-                "  \"humancount\": 100,\n" +
-                "  \"maincharacter\": {\n" +
-                "    \"experience\": 0,\n" +
-                "    \"inventory\": {\n" +
-                "      \"maxCapacity\": 50,\n" +
-                "      \"items\": []\n" +
-                "    },\n" +
-                "    \"mana\": 50,\n" +
-                "    \"baseMana\": 50,\n" +
-                "    \"abilities\": [\n" +
-                "      [\n" +
-                "        {\n" +
-                "          \"name\": \"FireBall\",\n" +
-                "          \"minLevelRequired\": 1,\n" +
-                "          \"damage\": 30.0,\n" +
-                "          \"type\": \"LINE\",\n" +
-                "          \"cost\": 10\n" +
-                "        },\n" +
-                "        false\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        {\n" +
-                "          \"name\": \"WaterBeam\",\n" +
-                "          \"minLevelRequired\": 2,\n" +
-                "          \"damage\": 50.0,\n" +
-                "          \"type\": \"AOE\",\n" +
-                "          \"cost\": 20\n" +
-                "        },\n" +
-                "        false\n" +
-                "      ]\n" +
-                "    ],\n" +
-                "    \"baseDamage\": 10,\n" +
-                "    \"observers\": [],\n" +
-                "    \"name\": \"Hervé\",\n" +
-                "    \"type\": \"PLAYER\",\n" +
-                "    \"hps\": 100,\n" +
-                "    \"baseHps\": 100,\n" +
-                "    \"isHostile\": false,\n" +
-                "    \"location\": 6\n" +
-                "  },\n" +
-                "  \"quests\": [\n" +
-                "    {\n" +
-                "      \"lrequired\": 0,\n" +
-                "      \"ereward\": 10,\n" +
-                "      \"description\": \"Start your beautiful journey towards saving the universe\",\n" +
-                "      \"objectives\": [\n" +
-                "        {\n" +
-                "          \"finished\": false,\n" +
-                "          \"description\": \"Pickup the Apple\",\n" +
-                "          \"type\": \"PICKUP\",\n" +
-                "          \"concerned\": {\n" +
-                "            \"class\": \"projetrpg.entities.items.Item\",\n" +
-                "            \"object\": \"APPLE\"\n" +
-                "          }\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"finished\": false,\n" +
-                "          \"description\": \"Kill Zorg\",\n" +
-                "          \"type\": \"KILL\",\n" +
-                "          \"concerned\": {\n" +
-                "            \"class\": \"projetrpg.entities.NPC\",\n" +
-                "            \"object\": 0\n" +
-                "          }\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"finished\": false,\n" +
-                "          \"description\": \"Use the Apple\",\n" +
-                "          \"type\": \"USE\",\n" +
-                "          \"concerned\": {\n" +
-                "            \"class\": \"projetrpg.entities.items.Item\",\n" +
-                "            \"object\": \"APPLE\"\n" +
-                "          }\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"reward\": [\n" +
-                "        \"APPLE\",\n" +
-                "        \"FLASHLIGHT\"\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"regions\": [\n" +
-                "    {\n" +
-                "      \"id\": 1,\n" +
-                "      \"name\": \"Earth\",\n" +
-                "      \"directions\": {},\n" +
-                "      \"childregions\": [\n" +
-                "        {\n" +
-                "          \"id\": 9,\n" +
-                "          \"name\": \"Flower Hill\",\n" +
-                "          \"directions\": {\n" +
-                "            \"NORTH\": 6,\n" +
-                "            \"EST\": 8\n" +
-                "          },\n" +
-                "          \"childregions\": [],\n" +
-                "          \"entities\": [],\n" +
-                "          \"teleporters\": [],\n" +
-                "          \"inventory\": {\n" +
-                "            \"maxCapacity\": 10,\n" +
-                "            \"items\": []\n" +
-                "          }\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"id\": 6,\n" +
-                "          \"name\": \"Forest\",\n" +
-                "          \"directions\": {\n" +
-                "            \"SOUTH\": 9\n" +
-                "          },\n" +
-                "          \"childregions\": [\n" +
-                "            {\n" +
-                "              \"id\": 11,\n" +
-                "              \"name\": \"Hervé\\u0027s Ship\",\n" +
-                "              \"directions\": {},\n" +
-                "              \"childregions\": [],\n" +
-                "              \"entities\": [],\n" +
-                "              \"teleporters\": [],\n" +
-                "              \"inventory\": {\n" +
-                "                \"maxCapacity\": 10,\n" +
-                "                \"items\": []\n" +
-                "              },\n" +
-                "              \"type\": \"ship\",\n" +
-                "              \"basefuel\": 50,\n" +
-                "              \"actualfuel\": 50,\n" +
-                "              \"level\": 1,\n" +
-                "              \"ameliorations\": [\n" +
-                "                \"REACTORS_AMELIORATION\",\n" +
-                "                \"ENGINE_AMELIORATION\",\n" +
-                "                \"RADAR_AMELIORATION\"\n" +
-                "              ]\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"id\": 7,\n" +
-                "              \"name\": \"Cave\",\n" +
-                "              \"directions\": {},\n" +
-                "              \"childregions\": [],\n" +
-                "              \"entities\": [\n" +
-                "                {\n" +
-                "                  \"id\": 1,\n" +
-                "                  \"baseDamage\": 1,\n" +
-                "                  \"dialogue\": \"I\\u0027m weak\",\n" +
-                "                  \"name\": \"Bog\",\n" +
-                "                  \"type\": \"VAMPIRE\",\n" +
-                "                  \"hps\": 10,\n" +
-                "                  \"baseHps\": 10,\n" +
-                "                  \"isHostile\": true\n" +
-                "                }\n" +
-                "              ],\n" +
-                "              \"teleporters\": [\n" +
-                "                {\n" +
-                "                  \"id\": 2,\n" +
-                "                  \"name\": \"CtoVtp\",\n" +
-                "                  \"repaired\": false,\n" +
-                "                  \"link\": 3,\n" +
-                "                  \"requirements\": []\n" +
-                "                }\n" +
-                "              ],\n" +
-                "              \"inventory\": {\n" +
-                "                \"maxCapacity\": 10,\n" +
-                "                \"items\": []\n" +
-                "              }\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"entities\": [\n" +
-                "            {\n" +
-                "              \"id\": 2,\n" +
-                "              \"baseDamage\": 0,\n" +
-                "              \"dialogue\": \"Hey, you are our hero...blablabla....very important... save the universe ... blablabla... You may now start your first Quest : A new Dawn!\",\n" +
-                "              \"name\": \"Jean\",\n" +
-                "              \"type\": \"VILLAGER\",\n" +
-                "              \"hps\": 100,\n" +
-                "              \"baseHps\": 100,\n" +
-                "              \"isHostile\": false\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"teleporters\": [],\n" +
-                "          \"inventory\": {\n" +
-                "            \"maxCapacity\": 10,\n" +
-                "            \"items\": [\n" +
-                "              \"TOOLKIT\",\n" +
-                "              \"TOOLKIT\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"id\": 8,\n" +
-                "          \"name\": \"Flower\",\n" +
-                "          \"directions\": {\n" +
-                "            \"WEST\": 9\n" +
-                "          },\n" +
-                "          \"childregions\": [],\n" +
-                "          \"entities\": [],\n" +
-                "          \"teleporters\": [],\n" +
-                "          \"inventory\": {\n" +
-                "            \"maxCapacity\": 10,\n" +
-                "            \"items\": []\n" +
-                "          }\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"entities\": [],\n" +
-                "      \"teleporters\": [],\n" +
-                "      \"inventory\": {\n" +
-                "        \"maxCapacity\": 10,\n" +
-                "        \"items\": []\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": 2,\n" +
-                "      \"name\": \"Mars\",\n" +
-                "      \"directions\": {},\n" +
-                "      \"childregions\": [\n" +
-                "        {\n" +
-                "          \"id\": 10,\n" +
-                "          \"name\": \"Volcano\",\n" +
-                "          \"directions\": {},\n" +
-                "          \"childregions\": [],\n" +
-                "          \"entities\": [\n" +
-                "            {\n" +
-                "              \"id\": 0,\n" +
-                "              \"baseDamage\": 10,\n" +
-                "              \"dialogue\": \"Im gonna kill you !\",\n" +
-                "              \"name\": \"Zorg\",\n" +
-                "              \"type\": \"VAMPIRE\",\n" +
-                "              \"hps\": 300,\n" +
-                "              \"baseHps\": 300,\n" +
-                "              \"isHostile\": true\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"teleporters\": [\n" +
-                "            {\n" +
-                "              \"id\": 3,\n" +
-                "              \"name\": \"CtoVtp\",\n" +
-                "              \"repaired\": false,\n" +
-                "              \"link\": 2,\n" +
-                "              \"requirements\": []\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"inventory\": {\n" +
-                "            \"maxCapacity\": 10,\n" +
-                "            \"items\": []\n" +
-                "          }\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"entities\": [],\n" +
-                "      \"teleporters\": [],\n" +
-                "      \"inventory\": {\n" +
-                "        \"maxCapacity\": 10,\n" +
-                "        \"items\": [\n" +
-                "          \"HATCHET\"\n" +
-                "        ]\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": 3,\n" +
-                "      \"name\": \"Moon\",\n" +
-                "      \"directions\": {},\n" +
-                "      \"childregions\": [\n" +
-                "        {\n" +
-                "          \"id\": 12,\n" +
-                "          \"name\": \"Crater\",\n" +
-                "          \"directions\": {},\n" +
-                "          \"childregions\": [],\n" +
-                "          \"entities\": [],\n" +
-                "          \"teleporters\": [],\n" +
-                "          \"inventory\": {\n" +
-                "            \"maxCapacity\": 10,\n" +
-                "            \"items\": []\n" +
-                "          }\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"entities\": [],\n" +
-                "      \"teleporters\": [],\n" +
-                "      \"inventory\": {\n" +
-                "        \"maxCapacity\": 10,\n" +
-                "        \"items\": [\n" +
-                "          \"APPLE\"\n" +
-                "        ]\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": 4,\n" +
-                "      \"name\": \"Venus\",\n" +
-                "      \"directions\": {},\n" +
-                "      \"childregions\": [],\n" +
-                "      \"entities\": [],\n" +
-                "      \"teleporters\": [],\n" +
-                "      \"inventory\": {\n" +
-                "        \"maxCapacity\": 10,\n" +
-                "        \"items\": [\n" +
-                "          \"FLASHLIGHT\"\n" +
-                "        ]\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": 5,\n" +
-                "      \"name\": \"Saturne\",\n" +
-                "      \"directions\": {},\n" +
-                "      \"childregions\": [],\n" +
-                "      \"entities\": [],\n" +
-                "      \"teleporters\": [],\n" +
-                "      \"inventory\": {\n" +
-                "        \"maxCapacity\": 10,\n" +
-                "        \"items\": []\n" +
-                "      }\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}", MainMap.class), Calendar.getInstance(), Calendar.getInstance());
+                       "{\n" +
+                        "  \"name\": \"FacticeMap\",\n" +
+                        "  \"spawnpoint\": 1,\n" +
+                        "  \"humancount\": 100,\n" +
+                        "  \"maincharacter\": {\n" +
+                        "    \"experience\": 0,\n" +
+                        "    \"inventory\": {\n" +
+                        "      \"maxCapacity\": 50,\n" +
+                        "      \"items\": []\n" +
+                        "    },\n" +
+                        "    \"mana\": 50,\n" +
+                        "    \"baseMana\": 50,\n" +
+                        "    \"abilities\": [\n" +
+                        "      [\n" +
+                        "        {\n" +
+                        "          \"name\": \"FireBall\",\n" +
+                        "          \"minLevelRequired\": 1,\n" +
+                        "          \"damage\": 30.0,\n" +
+                        "          \"type\": \"LINE\",\n" +
+                        "          \"cost\": 10\n" +
+                        "        },\n" +
+                        "        false\n" +
+                        "      ],\n" +
+                        "      [\n" +
+                        "        {\n" +
+                        "          \"name\": \"WaterBeam\",\n" +
+                        "          \"minLevelRequired\": 2,\n" +
+                        "          \"damage\": 50.0,\n" +
+                        "          \"type\": \"AOE\",\n" +
+                        "          \"cost\": 20\n" +
+                        "        },\n" +
+                        "        false\n" +
+                        "      ]\n" +
+                        "    ],\n" +
+                        "    \"baseDamage\": 10,\n" +
+                        "    \"observers\": [],\n" +
+                        "    \"name\": \"Hervé\",\n" +
+                        "    \"type\": \"PLAYER\",\n" +
+                        "    \"hps\": 100,\n" +
+                        "    \"baseHps\": 100,\n" +
+                        "    \"isHostile\": false,\n" +
+                        "    \"location\": 6\n" +
+                        "  },\n" +
+                        "  \"quests\": [\n" +
+                        "    {\n" +
+                        "      \"lrequired\": 0,\n" +
+                        "      \"ereward\": 10,\n" +
+                        "      \"description\": \"Start your beautiful journey towards saving the universe\",\n" +
+                        "      \"objectives\": [\n" +
+                        "        {\n" +
+                        "          \"finished\": false,\n" +
+                        "          \"description\": \"Use the Apple\",\n" +
+                        "          \"type\": \"USE\",\n" +
+                        "          \"concerned\": {\n" +
+                        "            \"class\": \"projetrpg.entities.items.Item\",\n" +
+                        "            \"object\": \"APPLE\"\n" +
+                        "          }\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"finished\": false,\n" +
+                        "          \"description\": \"Kill Zorg\",\n" +
+                        "          \"type\": \"KILL\",\n" +
+                        "          \"concerned\": {\n" +
+                        "            \"class\": \"projetrpg.entities.NPC\",\n" +
+                        "            \"object\": 0\n" +
+                        "          }\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"finished\": false,\n" +
+                        "          \"description\": \"Pickup the Apple\",\n" +
+                        "          \"type\": \"PICKUP\",\n" +
+                        "          \"concerned\": {\n" +
+                        "            \"class\": \"projetrpg.entities.items.Item\",\n" +
+                        "            \"object\": \"APPLE\"\n" +
+                        "          }\n" +
+                        "        }\n" +
+                        "      ],\n" +
+                        "      \"reward\": [\n" +
+                        "        \"APPLE\",\n" +
+                        "        \"FLASHLIGHT\"\n" +
+                        "      ]\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"regions\": [\n" +
+                        "    {\n" +
+                        "      \"id\": 1,\n" +
+                        "      \"name\": \"Earth\",\n" +
+                        "      \"shipRequired\": 0,\n" +
+                        "      \"directions\": {},\n" +
+                        "      \"childregions\": [\n" +
+                        "        {\n" +
+                        "          \"id\": 6,\n" +
+                        "          \"name\": \"Forest\",\n" +
+                        "          \"shipRequired\": 0,\n" +
+                        "          \"directions\": {\n" +
+                        "            \"SOUTH\": 9\n" +
+                        "          },\n" +
+                        "          \"childregions\": [\n" +
+                        "            {\n" +
+                        "              \"id\": 7,\n" +
+                        "              \"name\": \"Cave\",\n" +
+                        "              \"shipRequired\": 0,\n" +
+                        "              \"directions\": {},\n" +
+                        "              \"childregions\": [],\n" +
+                        "              \"entities\": [\n" +
+                        "                {\n" +
+                        "                  \"id\": 1,\n" +
+                        "                  \"baseDamage\": 1,\n" +
+                        "                  \"dialogue\": \"I\\u0027m weak\",\n" +
+                        "                  \"name\": \"Bog\",\n" +
+                        "                  \"type\": \"VAMPIRE\",\n" +
+                        "                  \"hps\": 10,\n" +
+                        "                  \"baseHps\": 10,\n" +
+                        "                  \"isHostile\": true\n" +
+                        "                }\n" +
+                        "              ],\n" +
+                        "              \"teleporters\": [\n" +
+                        "                {\n" +
+                        "                  \"id\": 0,\n" +
+                        "                  \"name\": \"CtoVtp\",\n" +
+                        "                  \"repaired\": false,\n" +
+                        "                  \"link\": 1,\n" +
+                        "                  \"requirements\": []\n" +
+                        "                }\n" +
+                        "              ],\n" +
+                        "              \"inventory\": {\n" +
+                        "                \"maxCapacity\": 10,\n" +
+                        "                \"items\": []\n" +
+                        "              }\n" +
+                        "            },\n" +
+                        "            {\n" +
+                        "              \"id\": 11,\n" +
+                        "              \"name\": \"Hervé\\u0027s Ship\",\n" +
+                        "              \"shipRequired\": 0,\n" +
+                        "              \"directions\": {},\n" +
+                        "              \"childregions\": [],\n" +
+                        "              \"entities\": [],\n" +
+                        "              \"teleporters\": [],\n" +
+                        "              \"inventory\": {\n" +
+                        "                \"maxCapacity\": 10,\n" +
+                        "                \"items\": []\n" +
+                        "              },\n" +
+                        "              \"type\": \"ship\",\n" +
+                        "              \"basefuel\": 50,\n" +
+                        "              \"actualfuel\": 50,\n" +
+                        "              \"level\": 1,\n" +
+                        "              \"ameliorations\": [\n" +
+                        "                \"REACTORS_AMELIORATION\",\n" +
+                        "                \"RADAR_AMELIORATION\",\n" +
+                        "                \"ENGINE_AMELIORATION\"\n" +
+                        "              ]\n" +
+                        "            }\n" +
+                        "          ],\n" +
+                        "          \"entities\": [\n" +
+                        "            {\n" +
+                        "              \"id\": 2,\n" +
+                        "              \"baseDamage\": 0,\n" +
+                        "              \"dialogue\": \"Hey, you are our hero...blablabla....very important... save the universe ... blablabla... You may now start your first Quest : A new Dawn!\",\n" +
+                        "              \"name\": \"Jean\",\n" +
+                        "              \"type\": \"VILLAGER\",\n" +
+                        "              \"hps\": 100,\n" +
+                        "              \"baseHps\": 100,\n" +
+                        "              \"isHostile\": false\n" +
+                        "            }\n" +
+                        "          ],\n" +
+                        "          \"teleporters\": [],\n" +
+                        "          \"inventory\": {\n" +
+                        "            \"maxCapacity\": 10,\n" +
+                        "            \"items\": [\n" +
+                        "              \"TOOLKIT\",\n" +
+                        "              \"TOOLKIT\"\n" +
+                        "            ]\n" +
+                        "          }\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"id\": 8,\n" +
+                        "          \"name\": \"Flower\",\n" +
+                        "          \"shipRequired\": 0,\n" +
+                        "          \"directions\": {\n" +
+                        "            \"WEST\": 9\n" +
+                        "          },\n" +
+                        "          \"childregions\": [],\n" +
+                        "          \"entities\": [],\n" +
+                        "          \"teleporters\": [],\n" +
+                        "          \"inventory\": {\n" +
+                        "            \"maxCapacity\": 10,\n" +
+                        "            \"items\": []\n" +
+                        "          }\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"id\": 9,\n" +
+                        "          \"name\": \"Flower Hill\",\n" +
+                        "          \"shipRequired\": 0,\n" +
+                        "          \"directions\": {\n" +
+                        "            \"EST\": 8,\n" +
+                        "            \"NORTH\": 6\n" +
+                        "          },\n" +
+                        "          \"childregions\": [],\n" +
+                        "          \"entities\": [],\n" +
+                        "          \"teleporters\": [],\n" +
+                        "          \"inventory\": {\n" +
+                        "            \"maxCapacity\": 10,\n" +
+                        "            \"items\": []\n" +
+                        "          }\n" +
+                        "        }\n" +
+                        "      ],\n" +
+                        "      \"entities\": [],\n" +
+                        "      \"teleporters\": [],\n" +
+                        "      \"inventory\": {\n" +
+                        "        \"maxCapacity\": 10,\n" +
+                        "        \"items\": []\n" +
+                        "      }\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "      \"id\": 2,\n" +
+                        "      \"name\": \"Mars\",\n" +
+                        "      \"shipRequired\": 1,\n" +
+                        "      \"directions\": {},\n" +
+                        "      \"childregions\": [\n" +
+                        "        {\n" +
+                        "          \"id\": 10,\n" +
+                        "          \"name\": \"Volcano\",\n" +
+                        "          \"shipRequired\": 0,\n" +
+                        "          \"directions\": {},\n" +
+                        "          \"childregions\": [],\n" +
+                        "          \"entities\": [\n" +
+                        "            {\n" +
+                        "              \"id\": 0,\n" +
+                        "              \"baseDamage\": 10,\n" +
+                        "              \"dialogue\": \"Im gonna kill you !\",\n" +
+                        "              \"name\": \"Zorg\",\n" +
+                        "              \"type\": \"VAMPIRE\",\n" +
+                        "              \"hps\": 300,\n" +
+                        "              \"baseHps\": 300,\n" +
+                        "              \"isHostile\": true\n" +
+                        "            }\n" +
+                        "          ],\n" +
+                        "          \"teleporters\": [\n" +
+                        "            {\n" +
+                        "              \"id\": 1,\n" +
+                        "              \"name\": \"CtoVtp\",\n" +
+                        "              \"repaired\": false,\n" +
+                        "              \"link\": 0,\n" +
+                        "              \"requirements\": []\n" +
+                        "            }\n" +
+                        "          ],\n" +
+                        "          \"inventory\": {\n" +
+                        "            \"maxCapacity\": 10,\n" +
+                        "            \"items\": []\n" +
+                        "          }\n" +
+                        "        }\n" +
+                        "      ],\n" +
+                        "      \"entities\": [],\n" +
+                        "      \"teleporters\": [],\n" +
+                        "      \"inventory\": {\n" +
+                        "        \"maxCapacity\": 10,\n" +
+                        "        \"items\": [\n" +
+                        "          \"HATCHET\"\n" +
+                        "        ]\n" +
+                        "      }\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "      \"id\": 3,\n" +
+                        "      \"name\": \"Moon\",\n" +
+                        "      \"shipRequired\": 1,\n" +
+                        "      \"directions\": {},\n" +
+                        "      \"childregions\": [\n" +
+                        "        {\n" +
+                        "          \"id\": 12,\n" +
+                        "          \"name\": \"Crater\",\n" +
+                        "          \"shipRequired\": 0,\n" +
+                        "          \"directions\": {},\n" +
+                        "          \"childregions\": [],\n" +
+                        "          \"entities\": [],\n" +
+                        "          \"teleporters\": [],\n" +
+                        "          \"inventory\": {\n" +
+                        "            \"maxCapacity\": 10,\n" +
+                        "            \"items\": []\n" +
+                        "          }\n" +
+                        "        }\n" +
+                        "      ],\n" +
+                        "      \"entities\": [],\n" +
+                        "      \"teleporters\": [],\n" +
+                        "      \"inventory\": {\n" +
+                        "        \"maxCapacity\": 10,\n" +
+                        "        \"items\": [\n" +
+                        "          \"APPLE\"\n" +
+                        "        ]\n" +
+                        "      }\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "      \"id\": 4,\n" +
+                        "      \"name\": \"Venus\",\n" +
+                        "      \"shipRequired\": 2,\n" +
+                        "      \"directions\": {},\n" +
+                        "      \"childregions\": [],\n" +
+                        "      \"entities\": [],\n" +
+                        "      \"teleporters\": [],\n" +
+                        "      \"inventory\": {\n" +
+                        "        \"maxCapacity\": 10,\n" +
+                        "        \"items\": [\n" +
+                        "          \"FLASHLIGHT\"\n" +
+                        "        ]\n" +
+                        "      }\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "      \"id\": 5,\n" +
+                        "      \"name\": \"Saturne\",\n" +
+                        "      \"shipRequired\": 3,\n" +
+                        "      \"directions\": {},\n" +
+                        "      \"childregions\": [],\n" +
+                        "      \"entities\": [],\n" +
+                        "      \"teleporters\": [],\n" +
+                        "      \"inventory\": {\n" +
+                        "        \"maxCapacity\": 10,\n" +
+                        "        \"items\": []\n" +
+                        "      }\n" +
+                        "    }\n" +
+                        "  ]\n" +
+                        "}", MainMap.class), Calendar.getInstance(), Calendar.getInstance());
     }
 
     public void delete(String name) {
