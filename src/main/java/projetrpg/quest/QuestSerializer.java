@@ -14,9 +14,10 @@ public class QuestSerializer implements JsonSerializer<Quest>, JsonDeserializer<
     public JsonElement serialize(Quest quest, Type type, JsonSerializationContext jsonSerializationContext) {
         JsonObject jsonQuest = new JsonObject();
 
+        jsonQuest.addProperty("name", quest.name);
+        jsonQuest.addProperty("description", quest.description);
         jsonQuest.addProperty("lrequired", quest.levelRequired);
         jsonQuest.addProperty("ereward", quest.expRewarded);
-        jsonQuest.addProperty("description", quest.description);
 
         JsonArray objectives = jsonSerializationContext.serialize(quest.objectives).getAsJsonArray();
         jsonQuest.add("objectives", objectives);
