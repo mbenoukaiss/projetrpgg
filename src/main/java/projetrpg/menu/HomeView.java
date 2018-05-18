@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import projetrpg.Main;
+import projetrpg.menu.save.SaveManager;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -39,14 +40,20 @@ public class HomeView {
         newGame.relocate(175,250);
         quitGame.relocate(275,250);
 
-        quitGame.setOnAction(e -> Platform.exit());
+        loadGame.setOnAction(e -> {
+            Stage saves = new Stage();
+            SaveManager sm = new SaveManager(home.getSavesServices());
+            saves.setScene(sm.scene());
+            saves.show();
+        });
         newGame.setOnAction(e -> {
             try {
-                start.launchMainGame(home.getSavesServices().create());
+                start.launchMainGame(home.getSavesServices().create("WOWNONAME"));
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         });
+        quitGame.setOnAction(e -> Platform.exit());
 
         this.scene = new Scene(mainGroup, 400, 400);
     }

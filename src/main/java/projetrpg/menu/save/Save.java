@@ -1,4 +1,4 @@
-package projetrpg.menu;
+package projetrpg.menu.save;
 
 import projetrpg.map.MainMap;
 

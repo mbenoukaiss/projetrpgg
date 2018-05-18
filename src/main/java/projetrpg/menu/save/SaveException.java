@@ -1,4 +1,4 @@
-package projetrpg.menu;
+package projetrpg.menu.save;
 
 public class SaveException extends Exception {
 

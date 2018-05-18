@@ -2,14 +2,7 @@ package projetrpg;
 
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Item;
@@ -17,7 +10,7 @@ import projetrpg.entities.player.*;
 import projetrpg.map.Region;
 import projetrpg.menu.Home;
 import projetrpg.menu.HomeView;
-import projetrpg.menu.Save;
+import projetrpg.menu.save.Save;
 import projetrpg.utils.Pair;
 import projetrpg.map.*;
 

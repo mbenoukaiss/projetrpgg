@@ -1,4 +1,4 @@
-package projetrpg.menu;
+package projetrpg.menu.save;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,8 +16,8 @@ import java.util.*;
 
 public class SavesServices {
 
-    private static final String SEPARATOR = "\n>>>>>>>>>>";
-    private final File SAVE_FOLDER;
+    public static final String SEPARATOR = "\n>>>>>>>>>>";
+    final File SAVE_FOLDER;
     private final Gson gson;
 
     public SavesServices(String saveFolder) {
@@ -34,6 +34,8 @@ public class SavesServices {
                 .registerTypeHierarchyAdapter(Ship.class, new ShipSerializer())
                 .registerTypeAdapter(MainMap.class, new MapSerializer())
                 .create();
+
+        if(!SAVE_FOLDER.exists()) SAVE_FOLDER.mkdir();
     }
 
     public Save load(String name) throws SaveException {
@@ -48,11 +50,11 @@ public class SavesServices {
             Scanner scanner = new Scanner(save);
             scanner.useDelimiter(SEPARATOR);
 
-            String fileAsString = scanner.nextLine();
+            String fileAsString = scanner.next();
             Calendar created = Calendar.getInstance();
-            created.setTimeInMillis(Integer.valueOf(scanner.nextLine()));
+            created.setTimeInMillis(Integer.valueOf(scanner.next()));
             Calendar lastSaved = Calendar.getInstance();
-            lastSaved.setTimeInMillis(Integer.valueOf(scanner.nextLine()));
+            lastSaved.setTimeInMillis(Integer.valueOf(scanner.next()));
 
             s = new Save(gson.fromJson(fileAsString, MainMap.class), created, lastSaved);
         } catch(FileNotFoundException e) {
@@ -97,15 +99,14 @@ public class SavesServices {
         }
     }
 
-    public Save create() {
-        //TODO: Charger depuis le jar
-        File saveFile = new File(SAVE_FOLDER, "save0.json");
+    public Save create(String name) {
+        File saveFile = new File(SAVE_FOLDER, name + "0.json");
 
         if(saveFile.exists()) {
             List<String> files = Arrays.asList(SAVE_FOLDER.list());
             int offset = 1;
-            while(files.contains("save" + offset + ".json")) ++offset;
-            saveFile = new File(SAVE_FOLDER, "save" + offset + ".json");
+            while(files.contains(name + offset + ".json")) ++offset;
+            saveFile = new File(SAVE_FOLDER, name + offset + ".json");
         }
 
         Scanner scanner = new Scanner(SavesServices.class.getResourceAsStream("/partie.json"));
