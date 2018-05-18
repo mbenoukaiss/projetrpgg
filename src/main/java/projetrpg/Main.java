@@ -67,8 +67,6 @@ public class Main extends Application {
         this.primaryStage.getIcons().add(new Image("icon.png"));
 
         MainMap map = createTestMap();
-        testSerialization(map);
-
         Game game = new Game(save.getMap());
 
         GameView vue = new GameView(game, this);
