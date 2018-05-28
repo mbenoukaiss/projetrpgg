@@ -173,5 +173,9 @@ public class MainMap {
         this.spawnPoint = spawnPoint;
     }
 
+    public void lowerHumanCount() {
+        this.humanCount-=10;
+    }
+
 
 }

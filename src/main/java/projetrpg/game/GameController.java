@@ -96,6 +96,9 @@ public class GameController implements Initializable {
     @FXML
     private Canvas planetsDisplay = new Canvas();
 
+    @FXML
+    private Label humanDisplay = new Label("");
+
     GameController(Game game, GameView gameView, Main main) {
         this.main = main;
         this.gameView = gameView;
@@ -114,6 +117,7 @@ public class GameController implements Initializable {
         spellsDisplay();
         localMapDisplay();
         planetMapDisplay();
+        humanDisplay();
     }
 
     /**
@@ -175,6 +179,7 @@ public class GameController implements Initializable {
                 spellsDisplay();
                 localMapDisplay();
                 planetMapDisplay();
+                humanDisplay();
             }
         }
     }
@@ -252,6 +257,10 @@ public class GameController implements Initializable {
         SnapshotParameters params = new SnapshotParameters();
         WritableImage img = gameView.generatePlanetsMap().snapshot(params, null);
         this.planetsDisplay.getGraphicsContext2D().drawImage(img, 0, 0);
+    }
+
+    public void humanDisplay() {
+        this.humanDisplay.setText(String.valueOf(this.game.map.getHumanCount()));
     }
 
 }

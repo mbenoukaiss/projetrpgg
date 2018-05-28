@@ -772,6 +772,7 @@ public class CommandListener {
                             && this.player.getShip().getActualFuel() >= this.player.getShip().getTravelCost()) {
                         if (this.game.map.getRegions().contains(r)) {
                             this.player.move(((Planet) r).getLandingRegion());
+                            this.game.map.lowerHumanCount();
                             return ("You traveled to the region : " + r.getName() + ". You landed on : " + ((Planet) r).getLandingRegion().describe());
                         } else {
                             ArrayList<Item> regionItems2 = new ArrayList<>(r.getRoot().getItemsNeeded());
@@ -782,6 +783,7 @@ public class CommandListener {
                             }
                             if (regionItems2.isEmpty() && r.getRoot().getShipLevelRequired() <= this.game.map.getMainCharacter().getShip().getLevel()) {
                                 this.player.move(r);
+                                this.game.map.lowerHumanCount();
                                 return ("You traveled to the region : " + r.getName() + ".");
                             } else {
                                 return "You dont have the planet's required items or ship level.";
