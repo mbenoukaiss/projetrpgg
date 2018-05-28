@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="661.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="162.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -23,9 +23,9 @@
    <children>
       <ButtonBar prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
         <buttons>
-            <Button fx:id="rename" mnemonicParsing="false" text="Rename" />
-          <Button fx:id="delete" mnemonicParsing="false" text="Delete" />
-            <Button fx:id="load" mnemonicParsing="false" text="Load" />
+            <Button mnemonicParsing="false" onAction="#rename" text="Rename" />
+          <Button mnemonicParsing="false" onAction="#delete" text="Delete" />
+            <Button mnemonicParsing="false" onAction="#load" text="Load" />
         </buttons>
          <GridPane.margin>
             <Insets right="40.0" />

@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import projetrpg.Main;
 import projetrpg.map.MainMap;
 import projetrpg.map.MapDisplay;
+import projetrpg.menu.save.SavesServices;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -39,25 +40,25 @@ public class GameView {
      */
     private Scene scene;
 
-    public GameView(Game game, Main main) throws IOException {
+    public GameView(Game game, Main main, SavesServices savesServices) throws IOException {
         this.game = game;
         this.main = main;
         this.languageBundle = ResourceBundle.getBundle("bundles/game", Locale.ENGLISH);
 
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui.fxml"));
-        loader.setController(new GameController(game, this, main));
+        loader.setController(new GameController(game, this, main, savesServices));
         loader.setResources(languageBundle);
 
         this.scene = new Scene(loader.load(), 1200, 600);
     }
 
     public Canvas generateLocalMap() {
-        MapDisplay display = new MapDisplay(game.map);
+        MapDisplay display = new MapDisplay(game.save.getMap());
         return display.drawLocal();
     }
 
     public Canvas generatePlanetsMap() {
-        MapDisplay display = new MapDisplay(game.map);
+        MapDisplay display = new MapDisplay(game.save.getMap());
         return display.drawPlanets();
     }
 

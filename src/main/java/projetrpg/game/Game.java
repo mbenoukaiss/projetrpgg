@@ -9,6 +9,7 @@ import projetrpg.entities.player.ShipAmelioration;
 import projetrpg.map.MainMap;
 import projetrpg.map.Region;
 import projetrpg.map.Teleporter;
+import projetrpg.menu.save.Save;
 import projetrpg.quest.Quest;
 
 import java.lang.reflect.Field;
@@ -25,7 +26,7 @@ public class Game {
     /**
      * The map.
      */
-    MainMap map;
+    Save save;
 
     /**
      * The list with a description of
@@ -38,8 +39,8 @@ public class Game {
      */
     CommandParser parser = new CommandParser();
 
-    public Game(MainMap m) {
-        this.map = m;
+    public Game(Save save) {
+        this.save = save;
         manual = "User guide : \n" +
                 "-attack : on an entity \n" +
                 "-talk : on an non hostile entity \n" +
@@ -136,7 +137,7 @@ public class Game {
         });
 
         parser.registerCommand("take", Teleporter.class, (player, arg) -> {
-            for (Teleporter teleporter : this.map.getMainCharacter().getLocation().getTeleporters()) {
+            for (Teleporter teleporter : save.getMap().getMainCharacter().getLocation().getTeleporters()) {
                 if (teleporter.getName().equalsIgnoreCase(arg)) {
                     return teleporter;
                 }
@@ -255,7 +256,7 @@ public class Game {
         });
 
         parser.registerCommand("travel", Region.class, ((player, s) -> {
-            for (Region region : this.map.getRegions()) {
+            for (Region region : save.getMap().getRegions()) {
                 if (findRegion(region, s) != null) {
                     return findRegion(region, s);
                 }
@@ -291,7 +292,7 @@ public class Game {
         });
 
         parser.registerCommand("start", Quest.class, (player, arg) -> {
-            for (Quest quest : this.map.getQuests()) {
+            for (Quest quest : save.getMap().getQuests()) {
                 if (quest.getName().equalsIgnoreCase(arg)) {
                     return quest;
                 }
@@ -304,10 +305,14 @@ public class Game {
         parser.registerCommand("help", String.class);
 
         try {
-            parser.registerListener(new CommandListener(map.getMainCharacter(), this), CommandListener.class);
+            parser.registerListener(new CommandListener(save.getMap().getMainCharacter(), this), CommandListener.class);
         } catch (InvalidAnnotationException e) {
             e.printStackTrace();
         }
+    }
+
+    public MainMap getMap() {
+        return save.getMap();
     }
 
     public Region findRegion(Region region, String regionName) {

@@ -197,9 +197,9 @@ public class CommandListener {
                 }
             } else if (((NPC) e).attack(this.player, 0)) { // If the target kills the player
                 ((NPC) e).setHps(((NPC) e).getBaseHps());
-                message += ("You died, you have been redirected to the spawn point : " + game.map.getSpawnPoint()
+                message += ("You died, you have been redirected to the spawn point : " + game.getMap().getSpawnPoint()
                         .getName()+ ".");
-                this.player.setLocation(game.map.getSpawnPoint());
+                this.player.setLocation(game.getMap().getSpawnPoint());
                 message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                 ((NPC) e).setInFight(false);
                 this.player.setEnemy(null);
@@ -407,9 +407,9 @@ public class CommandListener {
                     }
                 } else if (((NPC) e).attack(this.player, 0)) { // If the target kills the player
                     ((NPC) e).setHps(((NPC) e).getBaseHps());
-                    message += ("You died, you have been redirected to the spawn point : " + game.map.getSpawnPoint()
+                    message += ("You died, you have been redirected to the spawn point : " + game.getMap().getSpawnPoint()
                             .getName()+ ".");
-                    this.player.setLocation(game.map.getSpawnPoint());
+                    this.player.setLocation(game.getMap().getSpawnPoint());
                     message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                     ((NPC) e).setInFight(false);
                     this.player.setEnemy(null);
@@ -484,9 +484,9 @@ public class CommandListener {
                     }
                 } else if (((NPC) e).attack(this.player, 0)) { // If the target kills the player
                     ((NPC) e).setHps(((NPC) e).getBaseHps());
-                    message += ("You died, you have been redirected to the spawn point : " + game.map.getSpawnPoint()
+                    message += ("You died, you have been redirected to the spawn point : " + game.getMap().getSpawnPoint()
                             .getName() + ".");
-                    this.player.setLocation(game.map.getSpawnPoint());
+                    this.player.setLocation(game.getMap().getSpawnPoint());
                     message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                     ((NPC) e).setInFight(false);
                     this.player.setEnemy(null);
@@ -770,9 +770,10 @@ public class CommandListener {
                     }
                     if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()
                             && this.player.getShip().getActualFuel() >= this.player.getShip().getTravelCost()) {
-                        if (this.game.map.getRegions().contains(r)) {
+
+                        if (this.game.getMap().getRegions().contains(r)) {
                             this.player.move(((Planet) r).getLandingRegion());
-                            this.game.map.lowerHumanCount();
+                            this.game.getMap().lowerHumanCount();
                             return ("You traveled to the region : " + r.getName() + ". You landed on : " + ((Planet) r).getLandingRegion().describe());
                         } else {
                             ArrayList<Item> regionItems2 = new ArrayList<>(r.getRoot().getItemsNeeded());
@@ -781,9 +782,9 @@ public class CommandListener {
                                     regionItems2.remove(i);
                                 }
                             }
-                            if (regionItems2.isEmpty() && r.getRoot().getShipLevelRequired() <= this.game.map.getMainCharacter().getShip().getLevel()) {
+                            if (regionItems2.isEmpty() && r.getRoot().getShipLevelRequired() <= this.game.getMap().getMainCharacter().getShip().getLevel()) {
                                 this.player.move(r);
-                                this.game.map.lowerHumanCount();
+                                this.game.getMap().lowerHumanCount();
                                 return ("You traveled to the region : " + r.getName() + ".");
                             } else {
                                 return "You dont have the planet's required items or ship level.";

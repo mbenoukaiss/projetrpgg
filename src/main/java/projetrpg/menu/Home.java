@@ -6,8 +6,8 @@ public class Home {
 
     private final SavesServices savesServices;
 
-    public Home(String savePath) {
-        this.savesServices = new SavesServices(savePath);
+    public Home(SavesServices savesServices) {
+        this.savesServices = savesServices;
     }
 
     public SavesServices getSavesServices() {

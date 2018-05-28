@@ -2,6 +2,8 @@ package projetrpg;
 
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import projetrpg.entities.*;
@@ -11,6 +13,8 @@ import projetrpg.map.Region;
 import projetrpg.menu.Home;
 import projetrpg.menu.HomeView;
 import projetrpg.menu.save.Save;
+import projetrpg.menu.save.SaveManager;
+import projetrpg.menu.save.SavesServices;
 import projetrpg.utils.Pair;
 import projetrpg.map.*;
 
@@ -32,11 +36,15 @@ import projetrpg.utils.AnnotationExclusionStrategy;
  */
 public class Main extends Application {
 
+    private SavesServices savesServices;
+
     private Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        this.savesServices = new SavesServices("./saves/");
+
         launchMenu();
     }
 
@@ -44,25 +52,39 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void launchMenu() throws IOException {
-
+    public void launchMenu() {
         this.primaryStage.setTitle("Galaxy Explorer Menu");
         this.primaryStage.getIcons().add(new Image("icon.png"));
-        HomeView homeView = new HomeView(this, new Home("/mnt/ramdisk/wow/"));
+        HomeView homeView = new HomeView(this, new Home(savesServices));
         primaryStage.setScene(homeView.getScene());
         primaryStage.show();
 
         primaryStage.centerOnScreen();
     }
 
-    public void launchMainGame(Save save) throws IOException {
+    public void launchSavesMenu(SaveManager sm) {
+        this.primaryStage.setTitle("Saves manager");
+        primaryStage.setScene(sm.scene());
+        primaryStage.show();
+
+        primaryStage.centerOnScreen();
+    }
+
+    public void launchMainGame(Save save) {
         this.primaryStage.setTitle("Galaxy Explorer");
-        this.primaryStage.getIcons().add(new Image("icon.png"));
 
-        MainMap map = createTestMap();
-        Game game = new Game(map);
+        Game game = new Game(save);
 
-        GameView vue = new GameView(game, this);
+        GameView vue = null;
+        try {
+            vue = new GameView(game, this, savesServices);
+        } catch(IOException e) {
+            e.printStackTrace();
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText("Could not load resources required to start the game.");
+            a.show();
+            Platform.exit();
+        }
         primaryStage.setScene(vue.getScene());
         primaryStage.show();
         primaryStage.centerOnScreen();
@@ -190,4 +212,5 @@ public class Main extends Application {
         System.out.println("--- MAP SERIALIZEE DESERIALIZEE RESERIALIZEE -----------------");
         System.out.println(gson.toJson(gson.fromJson(gson.toJson(map), MainMap.class)));
     }
+
 }

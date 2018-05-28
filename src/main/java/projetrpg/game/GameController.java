@@ -19,11 +19,14 @@ import projetrpg.Main;
 import projetrpg.commands.InvalidCommandException;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ability;
+import projetrpg.menu.save.SaveException;
+import projetrpg.menu.save.SavesServices;
 import projetrpg.observer.Observable;
 import projetrpg.quest.Objective;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Optional;
@@ -48,6 +51,11 @@ public class GameController implements Initializable {
      * The game view.
      */
     private GameView gameView;
+
+    /**
+     * The save services object..
+     */
+    private SavesServices savesServices;
 
     /**
      * The text field in which the player
@@ -99,10 +107,14 @@ public class GameController implements Initializable {
     @FXML
     private Label humanDisplay = new Label("");
 
-    GameController(Game game, GameView gameView, Main main) {
+    @FXML
+    private Label lastSaveTime;
+
+    GameController(Game game, GameView gameView, Main main, SavesServices savesServices) {
         this.main = main;
         this.gameView = gameView;
         this.game = game;
+        this.savesServices = savesServices;
     }
 
     @Override
@@ -118,6 +130,12 @@ public class GameController implements Initializable {
         localMapDisplay();
         planetMapDisplay();
         humanDisplay();
+        updateSaveTime();   
+    }
+
+    private void updateSaveTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy 'at' HH:mm");
+        lastSaveTime.setText("Last saved : " + sdf.format(game.save.getLastSaved().getTime()));
     }
 
     /**
@@ -133,6 +151,19 @@ public class GameController implements Initializable {
      * button is clicked.
      */
     public void buttonHome() throws IOException { main.launchMenu(); }
+
+    /**
+     * Method called when the save
+     * button is clicked.
+     */
+    public void buttonSave() {
+        try {
+            savesServices.save(game.save);
+            updateSaveTime();
+        } catch(SaveException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Method called when the user
@@ -163,7 +194,7 @@ public class GameController implements Initializable {
                 String logs;
                 try {
                     logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
-                            game.parser.parse(game.map.getMainCharacter(), commandField.getText()).send() + "\n\n";
+                            game.parser.parse(game.save.getMap().getMainCharacter(), commandField.getText()).send() + "\n\n";
                 } catch(InvalidCommandException e1) {
                     logs = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + "> " +
                             e1.getMessage() + "\n\n";
@@ -190,14 +221,14 @@ public class GameController implements Initializable {
     public void inventoryDisplay() {
         ObservableList<String> items =FXCollections.observableArrayList();
         items.add("Items : ");
-        for(Item i : game.map.getMainCharacter().getInventory().getAll()) {
+        for(Item i : game.save.getMap().getMainCharacter().getInventory().getAll()) {
             items.add(i.getName());
         }
         inventoryDisplay.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         inventoryDisplay.setItems(items);
         inventoryDisplay.getSelectionModel().selectFirst();
-        if (game.map.getMainCharacter().getItemInHand() != null) {
-            inventoryDisplay.getSelectionModel().select(game.map.getMainCharacter().getItemInHand().getName());
+        if (game.save.getMap().getMainCharacter().getItemInHand() != null) {
+            inventoryDisplay.getSelectionModel().select(game.save.getMap().getMainCharacter().getItemInHand().getName());
         } else {
             inventoryDisplay.getSelectionModel().select("");
         }
@@ -210,10 +241,10 @@ public class GameController implements Initializable {
     public void  objectivesDisplay() {
         ObservableList<String> objectivs =FXCollections.observableArrayList();
         objectivs.add("Quest : ");
-        if (game.map.getMainCharacter().getCurrentQuest() != null) {
-            objectivs.add(this.game.map.getMainCharacter().getCurrentQuest().getName() + ":");
+        if (game.save.getMap().getMainCharacter().getCurrentQuest() != null) {
+            objectivs.add(this.game.save.getMap().getMainCharacter().getCurrentQuest().getName() + ":");
             objectivs.add("Objectivs : ");
-            for (Objective o : game.map.getMainCharacter().getCurrentQuest().getObjectives()) {
+            for (Objective o : game.save.getMap().getMainCharacter().getCurrentQuest().getObjectives()) {
                 if (!o.isFinished()) {
                     objectivs.add("-" + o.getDescription());
                 }
@@ -228,7 +259,7 @@ public class GameController implements Initializable {
      */
     public void locationDisplay() {
         locationField.setWrapText(true);
-        locationField.setText("Location : " + game.map.getMainCharacter().getLocation().describe());
+        locationField.setText("Location : " + game.save.getMap().getMainCharacter().getLocation().describe());
     }
 
 
@@ -238,8 +269,8 @@ public class GameController implements Initializable {
     public void spellsDisplay() {
         ObservableList<String> spells = FXCollections.observableArrayList();
         spells.add("Spells : ");
-        if (game.map.getMainCharacter().getAbilities() != null) {
-            for (Ability a : game.map.getMainCharacter().getAbilities()) {
+        if (game.save.getMap().getMainCharacter().getAbilities() != null) {
+            for (Ability a : game.save.getMap().getMainCharacter().getAbilities()) {
                 spells.add(a.getName());
             }
         }
@@ -260,7 +291,7 @@ public class GameController implements Initializable {
     }
 
     public void humanDisplay() {
-        this.humanDisplay.setText(String.valueOf(this.game.map.getHumanCount()));
+        this.humanDisplay.setText(String.valueOf(this.game.getMap().getHumanCount()));
     }
 
 }

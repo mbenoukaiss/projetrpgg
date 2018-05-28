@@ -1,10 +1,12 @@
 package projetrpg.menu.save;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import projetrpg.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +15,9 @@ import java.util.HashSet;
 
 public class SaveManager {
 
-    private final SavesServices saveServices;
+    private Main main;
+
+    final SavesServices saveServices;
     
     @FXML
     private VBox saveItemsList;
@@ -22,7 +26,8 @@ public class SaveManager {
 
     private Scene scene;
 
-    public SaveManager(SavesServices ss) {
+    public SaveManager(Main main, SavesServices ss) {
+        this.main = main;
         this.saveServices = ss;
         saveItems = new HashSet<>();
 
@@ -43,7 +48,7 @@ public class SaveManager {
 
         for(File file : saveServices.SAVE_FOLDER.listFiles()) {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("saveItem.fxml"));
-            loader.setController(new SaveItemController(file));
+            loader.setController(new SaveItemController(main, this, file));
 
             try {
                 Node item = loader.load();
@@ -56,11 +61,11 @@ public class SaveManager {
     }
 
     public void menu() {
-
+        main.launchMenu();
     }
 
     public void quit() {
-
+        Platform.exit();
     }
 
     public Scene scene() {

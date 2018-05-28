@@ -39,24 +39,30 @@ public class SavesServices {
     }
 
     public Save load(String name) throws SaveException {
-        Save s = null;
         File save = new File(SAVE_FOLDER, name + ".json");
 
         if(!save.exists()) {
             throw new SaveException("Save " + name + " does not exist.");
         }
 
+        return load(save);
+    }
+
+    public Save load(File file) throws SaveException {
+        Save s = null;
         try {
-            Scanner scanner = new Scanner(save);
+            Scanner scanner = new Scanner(file);
             scanner.useDelimiter(SEPARATOR);
 
             String fileAsString = scanner.next();
             Calendar created = Calendar.getInstance();
-            created.setTimeInMillis(Integer.valueOf(scanner.next()));
+            created.setTimeInMillis(Long.valueOf(scanner.next()));
             Calendar lastSaved = Calendar.getInstance();
-            lastSaved.setTimeInMillis(Integer.valueOf(scanner.next()));
+            lastSaved.setTimeInMillis(Long.valueOf(scanner.next()));
 
-            s = new Save(gson.fromJson(fileAsString, MainMap.class), created, lastSaved);
+            scanner.close();
+
+            s = new Save(file, gson.fromJson(fileAsString, MainMap.class), created, lastSaved);
         } catch(FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -65,35 +71,16 @@ public class SavesServices {
     }
 
     public void save(Save save) throws SaveException {
-        File saveFile = new File(SAVE_FOLDER, save.getMap().getName() + ".json");
-
-        if(saveFile.exists())  {
-            if(!saveFile.delete()) {
-                throw new SaveException("Could not override previous save.");
-            }
-        }
-
-        //Si la création du nouveau fichier rate mais qu'il est
-        //quand même supprimé alors la sauvegarde vas échouer
-        //et tout sera perdu.
-        //TODO
-
         try {
-            if(!saveFile.createNewFile()) {
-                throw new SaveException("Could not create new save file.");
-            }
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(saveFile));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(save.getFile()));
             bw.write(gson.toJson(save.getMap()));
             bw.write(SEPARATOR);
             bw.write(String.valueOf(save.getCreated().getTimeInMillis()));
             bw.write(SEPARATOR);
             bw.write(String.valueOf(Calendar.getInstance().getTimeInMillis()));
             bw.close();
+
+            save.updateLastSaved();
         } catch(IOException e) {
             throw new SaveException("Could not open new save file.", e);
         }
@@ -109,11 +96,20 @@ public class SavesServices {
             saveFile = new File(SAVE_FOLDER, name + offset + ".json");
         }
 
+        try {
+            saveFile.createNewFile();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
         Scanner scanner = new Scanner(SavesServices.class.getResourceAsStream("/partie.json"));
         String save = scanner.useDelimiter("\\A").next();
 
+        MainMap map = gson.fromJson(save, MainMap.class);
+        map.setName(name);
+
         StringBuilder saveFileContent = new StringBuilder();
-        saveFileContent.append(save).append(SEPARATOR);
+        saveFileContent.append(gson.toJson(map)).append(SEPARATOR);
         saveFileContent.append(String.valueOf(Calendar.getInstance().getTimeInMillis())).append(SEPARATOR);
         saveFileContent.append(String.valueOf(Calendar.getInstance().getTimeInMillis()));
 
@@ -126,22 +122,22 @@ public class SavesServices {
         }
 
         return new Save(
-                gson.fromJson(save, MainMap.class),
+                saveFile,
+                map,
                 Calendar.getInstance(),
                 Calendar.getInstance()
         );
     }
 
-    public void delete(String name) {
-        File save = new File(SAVE_FOLDER, name);
-        if(save.exists()) save.delete();
+    public void delete(Save save) {
+        if(save.getFile().exists()) save.getFile().delete();
     }
 
     public Collection<Save> listSaves() throws SaveException {
         Collection<Save> saves = new HashSet<>();
 
-        for(String s : SAVE_FOLDER.list()) {
-            saves.add(load(s.replaceAll(".json", "")));
+        for(File file : SAVE_FOLDER.listFiles()) {
+            saves.add(load(file));
         }
 
         return saves;
