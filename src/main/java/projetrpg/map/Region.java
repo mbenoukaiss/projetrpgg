@@ -75,8 +75,6 @@ public class Region implements Describable {
      */
     protected int shipLevelRequired;
 
-    protected Region landingRegion;
-
     Region() {
         this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
@@ -114,7 +112,6 @@ public class Region implements Describable {
         this.inventory = other.inventory;
         this.itemsNeeded = other.itemsNeeded;
         this.shipLevelRequired = other.shipLevelRequired;
-        this.landingRegion = other.landingRegion;
     }
 
     /**
@@ -174,7 +171,7 @@ public class Region implements Describable {
             d += ". From there you can go to : " + (this.getRegionNamesOnDirection())
                     + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
                     + " And your ship aswell.";
-        } else if (this.parent != null && this.parent.getLandingRegion() != this){
+        } else if (this.parent != null && (this.parent instanceof Planet && ((Planet) this.parent).getLandingRegion() != this)){
             d += ". From there you can go to : "
                     + this.parent.getName()
                     + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
@@ -346,13 +343,6 @@ public class Region implements Describable {
         return shipLevelRequired;
     }
 
-    public Region getLandingRegion() {
-        return landingRegion;
-    }
-
-    public void setLandingRegion(Region landingRegion) {
-        this.landingRegion = landingRegion;
-    }
 
     public Region getRoot() {
         Region reg = this;

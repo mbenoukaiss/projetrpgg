@@ -60,7 +60,7 @@ public class Main extends Application {
         this.primaryStage.getIcons().add(new Image("icon.png"));
 
         MainMap map = createTestMap();
-        Game game = new Game(save.getMap());
+        Game game = new Game(map);
 
         GameView vue = new GameView(game, this);
         primaryStage.setScene(vue.getScene());
@@ -72,16 +72,16 @@ public class Main extends Application {
     private MainMap createTestMap() {
         MainMap mainMap = new MainMap("FacticeMap");
 
-        ArrayList<Region> regions = new ArrayList<>();
-        Region earth = new Region(1, "Earth", null, 0);
+        ArrayList<Planet> regions = new ArrayList<>();
+        Planet earth = new Planet(1, "Earth", null, 0);
         regions.add(earth);
-        Region mars = new Region(2, "Mars", null, 1);
+        Planet mars = new Planet(2, "Mars", null, 1);
         regions.add(mars);
-        Region moon = new Region(3, "Moon", null, 1);
+        Planet moon = new Planet(3, "Moon", null, 1);
         regions.add(moon);
-        Region venus = new Region(4, "Venus", null, 2);
+        Planet venus = new Planet(4, "Venus", null, 2);
         regions.add(venus);
-        Region saturne = new Region(5, "Saturne", null, 3);
+        Planet saturne = new Planet(5, "Saturne", null, 3);
         regions.add(saturne);
         saturne.addItemNeeded(Item.KNIFE);
 
@@ -155,8 +155,8 @@ public class Main extends Application {
         mainMap.setMainCharacter(player);
         mainMap.setSpawnPoint(earth);
         mainMap.setHumanCount(100);
-        for (Region r : regions) {
-            mainMap.addRegion(r);
+        for (Planet p : regions) {
+            mainMap.addRegion(p);
         }
         quests.forEach(mainMap::addQuest);
 

@@ -11,6 +11,7 @@ import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
 import projetrpg.entities.player.Ship;
 import projetrpg.entities.player.ShipAmelioration;
+import projetrpg.map.Planet;
 import projetrpg.map.Region;
 import projetrpg.map.Teleporter;
 import projetrpg.quest.Objective;
@@ -770,8 +771,8 @@ public class CommandListener {
                     if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()
                             && this.player.getShip().getActualFuel() >= this.player.getShip().getTravelCost()) {
                         if (this.game.map.getRegions().contains(r)) {
-                            this.player.move(r.getLandingRegion());
-                            return ("You traveled to the region : " + r.getName() + ". You landed on : " + r.getLandingRegion().describe());
+                            this.player.move(((Planet) r).getLandingRegion());
+                            return ("You traveled to the region : " + r.getName() + ". You landed on : " + ((Planet) r).getLandingRegion().describe());
                         } else {
                             ArrayList<Item> regionItems2 = new ArrayList<>(r.getRoot().getItemsNeeded());
                             for (Item i : this.player.getInventory().getAll()) {

@@ -39,7 +39,7 @@ public class MainMap {
      * All the regions at the top of the tree.
      * In our case, solar systems.
      */
-    private List<Region> regions;
+    private List<Region> planets;
 
     /**
      * All the quests available on this map.
@@ -53,7 +53,7 @@ public class MainMap {
 
     public MainMap(String name) {
         this.name = name;
-        this.regions = new ArrayList<>();
+        this.planets = new ArrayList<>();
         this.quests = new TreeSet<>();
     }
 
@@ -64,7 +64,7 @@ public class MainMap {
      * @return The region
      */
     public void addRegion(Region r) {
-        regions.add(r);
+        planets.add(r);
     }
 
     /**
@@ -138,7 +138,7 @@ public class MainMap {
      * @return the regions
      */
     public Collection<Region> getRegions() {
-        return new ArrayList<>(regions);
+        return new ArrayList<>(planets);
     }
 
     /**
