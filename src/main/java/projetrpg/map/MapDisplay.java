@@ -92,12 +92,6 @@ public class MapDisplay {
         Region playerRegion = null;
         HashMap<Region, Point> regionsCoordinates = new HashMap<>();
         for(Region region : this.map.getRegions()) {
-            //Si il est sur la même planète ou son vaisseau est sur la même planète
-            if(this.map.getMainCharacter().getLocation().getRoot() == region ||
-                    (this.map.getMainCharacter().getShip().getParent() != null &&
-                            this.map.getMainCharacter().getShip().getParent().getRoot() == region)) {
-                playerRegion = region;
-            }
             regionsCoordinates.put(region, new Point(x, y));
             x += 200;
             if(i % 2 != 0) {
@@ -112,6 +106,11 @@ public class MapDisplay {
 
         for(Region region : this.map.getRegions()) {
             Player player = this.map.getMainCharacter();
+            if (player.getLocation() == player.getShip()) {
+                playerRegion = player.getShip().getParent().getRoot();
+            } else {
+                playerRegion = player.getLocation().getRoot();
+            }
             if(region == playerRegion) {
                 g.setFill(Color.SANDYBROWN);
                 g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
