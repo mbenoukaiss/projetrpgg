@@ -212,7 +212,7 @@ public class GameController implements Initializable {
                 Timeline timeline = new Timeline();
                 String finalLogs = logs;
                 KeyFrame keyFrame = new KeyFrame(
-                        Duration.seconds(0.01),
+                        Duration.seconds(0.02),
                         event -> {
                             if (i.get() > finalLogs.length()) {
                                 timeline.stop();
