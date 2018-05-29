@@ -39,7 +39,7 @@ public class Ship extends Region implements Describable{
     protected Set<ShipAmelioration> ameliorations;
 
     public Ship(int id, String name, Region parent, int baseFuel) {
-        super(id, name, parent, 0);
+        super(id, name, "", parent, 0);
         this.baseFuel = baseFuel;
         this.actualFuel = this.baseFuel;
         this.level = 1;

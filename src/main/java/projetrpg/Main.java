@@ -19,6 +19,7 @@ import projetrpg.utils.Pair;
 import projetrpg.map.*;
 
 import java.io.IOException;
+import java.nio.channels.NonWritableChannelException;
 import java.util.*;
 
 import com.google.gson.Gson;
@@ -73,7 +74,9 @@ public class Main extends Application {
     public void launchMainGame(Save save) {
         this.primaryStage.setTitle("Galaxy Explorer");
 
-        Game game = new Game(save);
+        Save testSave = new Save(null, createTestMap(), Calendar.getInstance(), Calendar.getInstance());
+
+        Game game = new Game(testSave);
 
         GameView vue = null;
         try {
@@ -104,79 +107,52 @@ public class Main extends Application {
         regions.add(moon);
         Planet venus = new Planet(4, "Venus", null, 2);
         regions.add(venus);
-        Planet saturne = new Planet(5, "Saturne", null, 3);
-        regions.add(saturne);
-        saturne.addItemNeeded(Item.KNIFE);
+        Planet saturn = new Planet(5, "Saturn", null, 3);
+        regions.add(saturn);
+        Planet jupiter = new Planet(6, "Jupiter", null, 2);
+        regions.add(jupiter);
 
-        Region forest = new Region(6, "Forest", earth, 0);
-        Region cave = new Region(7, "Cave", forest, 0);
-        Region flowerPlains = new Region(8, "Flower", earth, 0);
-        Region flowerHill = new Region(9, "Flower Hill", earth, 0);
-        Region volcano = new Region(10, "Volcano", mars, 0);
-        Region crater = new Region(12, "Crater",moon, 0);
-        Region gas = new Region(13, "Lot of gas where you can't land",saturne, 9999);
-        Region hotrock = new Region(13, "Hot rock",venus, 1);
-        mars.setLandingRegion(volcano);
-        earth.setLandingRegion(forest);
-        moon.setLandingRegion(crater);
-        saturne.setLandingRegion(gas);
-        venus.setLandingRegion(hotrock);
+        Region America = new Region(7, "America", "This is the America continent.", earth, 0);
+        Region Europe = new Region(8, "Europe", "This is the Europe continent.", earth, 0);
+        Region Asia = new Region(9, "Asia", "This is the Asia continent.", earth, 0);
+        Region Oceania = new Region(10, "Oceania", "This is the Oceania continent.", earth, 0);
+        Region Africa = new Region(11, "Africa", "This is the Africa continent.", earth, 0);
+        Region Antarctica = new Region(19, "Antarctica", "This is the Antarctica continent", earth, 0);
+        earth.setLandingRegion(Europe);
+        America.linkToDirection(Europe, Direction.EST);
+        Europe.linkToDirection(Asia, Direction.EST);
+        Asia.linkToDirection(Oceania, Direction.SOUTH);
+        Europe.linkToDirection(Africa, Direction.SOUTH);
+        Antarctica.linkToDirection(Asia, Direction.SOUTH);
 
-        forest.linkToDirection(flowerHill, Direction.SOUTH);
-        flowerHill.linkToDirection(flowerPlains, Direction.EST);
+        Region NewYork = new Region(12, "New-York", "The city of New York", America, 0);
+        Region Cleveland = new Region(13, "Cleveland", "The city of Cleveland", America, 0);
+        Region SanAntonio = new Region(14, "San Antonio", "The city of San Antonio", America, 0);
+        Region Boston = new Region(15, "Boston", "The city of Boston", America, 0);
+        NewYork.linkToDirection(Boston, Direction.NORTH);
+        NewYork.linkToDirection(Cleveland, Direction.WEST);
+        Cleveland.linkToDirection(SanAntonio, Direction.SOUTH);
 
-        Pair<Teleporter, Teleporter> ctovtp = mainMap.createTeleporters("CtoVtp", cave, volcano);
+        Region Paris = new Region(16, "Paris", "The city of Paris", Europe, 0);
+        Region London = new Region(17, "London", "The city of London", Europe, 0);
+        Region Berlin = new Region(18, "Berlin", "The city of Berlin", Europe, 0);
+        Paris.linkToDirection(London, Direction.NORTH);
+        Paris.linkToDirection(Berlin, Direction.EST);
 
-        // Items linking to regions.
-        mars.addItemToInventory(Item.HATCHET);
-        moon.addItemToInventory(Item.APPLE);
-        venus.addItemToInventory(Item.FLASHLIGHT);
-        forest.addItemToInventory(Item.TOOLKIT);
-        forest.addItemToInventory(Item.TOOLKIT);
+        Region Bombai = new Region(19, "Bombai", "The city of Bombai", Asia, 0);
 
-        //NPC's initialization.
-        NPC zorg = new NPC("Zorg", volcano, EntityType.VAMPIRE, true, 300,
-                10, "Im gonna kill you !");
-        NPC bog = new NPC("Bog", cave, EntityType.VAMPIRE, true, 10, 1,
-                "I'm weak");
-        NPC jean = new NPC("Jean", forest, EntityType.VILLAGER, false, 100,
-                0, "Hey, you are our hero...blablabla....very important... save the universe ... " +
-                "blablabla... You may now start your first Quest : A new Dawn!");
+        Region StPetesburg = new Region(20, "St-Petersburg", "The city of St-Petersburg", Africa, 0);
+
+
         //Player initialization.
         Ship playerShip = new Ship(11, "Hervé's Ship", null, 50);
-        Player player = new Player("Hervé", 0, forest, null, 100,
+        Player player = new Player("Hervé", 0, Paris, null, 100,
                 10, EntityType.PLAYER, 50, 50);
         player.setShip(playerShip);
         player.getLocation().addContainedRegion(playerShip);
         ShipAmelioration.ENGINE_AMELIORATION.addItemNeeded(Item.TOOLKIT);
         ShipAmelioration.REACTORS_AMELIORATION.addItemNeeded(Item.KNIFE);
         ShipAmelioration.RADAR_AMELIORATION.addItemNeeded(Item.FLASHLIGHT);
-
-        Collection<Quest> quests = new HashSet<>();
-        Objective<NPC> firstObjective = new Objective<>("Kill Zorg", ObjectiveType.KILL);
-        Objective<Item> secondObjective = new Objective<>("Pickup the Apple", ObjectiveType.PICKUP);
-        Objective<Item> thirdObjective = new Objective<>("Use the Apple", ObjectiveType.USE);
-        Quest firstQuest = new Quest(10, "A new Dawn", "Start your beautiful journey " +
-                "towards saving the universe", 0);
-        quests.add(firstQuest);
-
-        firstQuest.linkObjective(firstObjective);
-        firstQuest.linkObjective(secondObjective);
-        firstQuest.linkObjective(thirdObjective);
-        firstQuest.addObserver(player);
-        firstQuest.linkRewardedItem(Item.APPLE);
-        firstQuest.linkRewardedItem(Item.FLASHLIGHT);
-        firstObjective.setConcernedObject(zorg);
-        firstObjective.addObserver(firstQuest);
-        secondObjective.setConcernedObject(Item.APPLE);
-        secondObjective.addObserver(firstQuest);
-        thirdObjective.addObserver(firstQuest);
-        thirdObjective.setConcernedObject(Item.APPLE);
-
-        Ability fireBall = new Ability("FireBall", 1, 30, AttackType.LINE, 10);
-        Ability waterBeam = new Ability("WaterBeam", 2, 50, AttackType.AOE, 20);
-        player.addAbbility(fireBall);
-        player.addAbbility(waterBeam);
 
         //MainMap initialization.
         mainMap.setMainCharacter(player);
@@ -185,8 +161,6 @@ public class Main extends Application {
         for (Planet p : regions) {
             mainMap.addRegion(p);
         }
-        quests.forEach(mainMap::addQuest);
-
         return mainMap;
     }
 

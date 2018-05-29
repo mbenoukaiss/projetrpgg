@@ -201,7 +201,7 @@ public class Region implements Describable {
             }
             d = d.substring(0, d.length()-1);
         }
-        return d;
+        return d + "\n" + this.description;
     }
 
     /**

@@ -127,9 +127,9 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         textLogs.setWrapText(true);
-        textLogs.appendText(game.manual +
+        textLogs.appendText(
                 "\n\nYour name is Hervé ! Talk to jean in order to start your journey towards " +
-                "saving the universe!\n\n");
+                "saving the universe!\nType help in order to see the user guide.\n");
         inventoryDisplay();
         locationDisplay();
         objectivesDisplay();

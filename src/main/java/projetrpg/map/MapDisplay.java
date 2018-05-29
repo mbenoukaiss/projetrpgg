@@ -76,7 +76,7 @@ public class MapDisplay {
             g.setFill(Color.BLUEVIOLET);
             g.fillOval(x, y, 30, 30);
             g.fillText(region.getName(), x-25, y+40);
-            x+=140;
+            x+=200;
         }
         g.setFill(Color.MEDIUMVIOLETRED);
         g.fillOval(188, 117, 30, 30);

@@ -12,7 +12,7 @@ public class Save {
     private final Calendar created;
     private Calendar lastSaved;
 
-    Save(File file, MainMap map, Calendar created, Calendar lastSaved) {
+    public Save(File file, MainMap map, Calendar created, Calendar lastSaved) {
         this.file = file;
         this.map = map;
         this.created = created;
