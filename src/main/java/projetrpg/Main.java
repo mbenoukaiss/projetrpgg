@@ -119,6 +119,7 @@ public class Main extends Application {
         Region Africa = new Region(11, "Africa", "This is the Africa continent.", earth, 0);
         Region Antarctica = new Region(19, "Antarctica", "This is the Antarctica continent", earth, 0);
         earth.setLandingRegion(Europe);
+        mainMap.setSpawnPoint(Europe);
         America.linkToDirection(Europe, Direction.EST);
         Europe.linkToDirection(Asia, Direction.EST);
         Asia.linkToDirection(Oceania, Direction.SOUTH);
@@ -143,11 +144,26 @@ public class Main extends Application {
 
         Region StPetesburg = new Region(20, "St-Petersburg", "The city of St-Petersburg", Africa, 0);
 
+        Player player = new Player("Hervé", 0, Europe, null, 100, 10, EntityType.PLAYER, 50, 100);
+
+        NPC HervéBrother = new NPC("Robert", Paris, EntityType.VILLAGER, false, 100, 10, "Hey brother, " +
+                "Humanity is dying and only you can save us. Go to Berlin and talk to Paul, the space agency's headquarters's master.\n You may now start your first quest : " +
+                "Briefing.");
+        NPC master = new NPC("Paul", Berlin, EntityType.VILLAGER, false, 100, 10, "Hello Hervé, as you may already know, " +
+                "the earth can no longer welcome the human race, we are being too numerous. Nature is taking over our planet, and everyone will die if you do not " +
+                "find another planet where we can live peacefully and start over humanity. I'm no expert but i know who is. You must head to London and talk to Saul" +
+                ", he'll tell you more about this.");
+        Quest briefing = new Quest(10, "Briefing", "You must be notified about whats going on!", 0);
+        Objective<NPC> talkToMaster = new Objective<>("Talk to the space agency's headquarters's master", ObjectiveType.TALK);
+        briefing.linkObjective(talkToMaster);
+        briefing.addObserver(player);
+        talkToMaster.setConcernedObject(master);
+        talkToMaster.addObserver(briefing);
+        mainMap.addQuest(briefing);
+
 
         //Player initialization.
         Ship playerShip = new Ship(11, "Hervé's Ship", null, 50);
-        Player player = new Player("Hervé", 0, Paris, null, 100,
-                10, EntityType.PLAYER, 50, 50);
         player.setShip(playerShip);
         player.getLocation().addContainedRegion(playerShip);
         ShipAmelioration.ENGINE_AMELIORATION.addItemNeeded(Item.TOOLKIT);

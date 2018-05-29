@@ -20,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import projetrpg.Main;
@@ -127,9 +128,24 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         textLogs.setWrapText(true);
-        textLogs.appendText(
-                "\n\nYour name is Hervé ! Talk to jean in order to start your journey towards " +
-                "saving the universe!\nType help in order to see the user guide.\n");
+        final IntegerProperty i = new SimpleIntegerProperty(0);
+        Timeline timeline = new Timeline();
+        String finalLogs = "You hear an astonishing sound, almost as if an earthquake was ongoing, you start panicking " +
+                "but you quickly take over your mind and think : WHATS GOING ON IM GONNA DIE AAAAAAAAAAAH.. Okay what should i do" +
+                "? Let's try and talk to my brother, he must be in Paris.\nType help in order to see the user's guide.";
+        KeyFrame keyFrame = new KeyFrame(
+                Duration.seconds(0.02),
+                event -> {
+                    if (i.get() > finalLogs.length()) {
+                        timeline.stop();
+                    } else {
+                        textLogs.setText(finalLogs.substring(0, i.get()));
+                        i.set(i.get() + 1);
+                    }
+                });
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
         inventoryDisplay();
         locationDisplay();
         objectivesDisplay();
@@ -273,6 +289,26 @@ public class GameController implements Initializable {
             }
         }
         objectivesDisplay.setItems(objectivs);
+        objectivesDisplay.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+            @Override
+            public ListCell<String> call(ListView<String> list) {
+                final ListCell cell = new ListCell() {
+                    private Text text;
+
+                    @Override
+                    public void updateItem(Object item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            text = new Text(item.toString());
+                            text.setWrappingWidth(objectivesDisplay.getPrefWidth());
+                            setGraphic(text);
+                        }
+                    }
+                };
+
+                return cell;
+            }
+        });
         objectivesDisplay.getSelectionModel().selectFirst();
     }
 

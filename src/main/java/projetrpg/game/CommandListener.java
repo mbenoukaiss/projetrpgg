@@ -261,11 +261,11 @@ public class CommandListener {
                     objectiveFound.finish();
                     if (this.player.getCurrentQuest() == null) {
                         String message = "";
+                        message += e.getDialogue() + " You finished this objective : " + objectiveFound.getDescription() +
+                                ". You have now finished this quest : " + savedQuest.getDescription() + "!";
                         if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
                             message+=this.canLevelUp();
                         }
-                        message += e.getDialogue() + " You finished this objective : " + objectiveFound.getDescription() +
-                                ". You have now finished this quest : " + savedQuest.getDescription() + "!";
                         return message;
                     }
                     return e.getDialogue() + " You finished this objective : " + objectiveFound.getDescription() + ".";
