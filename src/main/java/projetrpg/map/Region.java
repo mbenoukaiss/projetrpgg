@@ -33,6 +33,11 @@ public class Region implements Describable {
      * Name of the region
      */
     protected String name;
+
+    /**
+     * The description of the region
+     */
+    protected String description;
     
     /**
      * The parent region, containing this region.
@@ -84,9 +89,10 @@ public class Region implements Describable {
         this.itemsNeeded = new ArrayList<>();
     }
 
-    public Region(int id, String name, Region parent, int shipLevelRequired) {
+    public Region(int id, String name, String description, Region parent, int shipLevelRequired) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.parent = parent;
         this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
@@ -101,9 +107,9 @@ public class Region implements Describable {
     }
 
     public Region(Region other) {
-        System.out.println(other.containedRegions);
         this.id = other.id;
         this.name = other.name;
+        this.description = other.description;
         this.parent = other.parent;
         this.regionOnDirection = other.regionOnDirection;
         this.containedRegions = other.containedRegions;
@@ -120,6 +126,10 @@ public class Region implements Describable {
      */
     public int getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     /**

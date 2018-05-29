@@ -17,6 +17,7 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         JsonObject reg = new JsonObject();
         reg.addProperty("id", region.getId());
         reg.addProperty("name", region.getName());
+        reg.addProperty("description", region.description);
         reg.addProperty("shipRequired", region.shipLevelRequired);
 
         JsonObject directions = new JsonObject();
@@ -47,6 +48,7 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
 
         region.id = jsonRegion.get("id").getAsInt();
         region.name = jsonRegion.get("name").getAsString();
+        region.description = jsonRegion.get("description").getAsString();
         region.shipLevelRequired = jsonRegion.get("shipRequired").getAsInt();
 
         Type directionsMapType = new TypeToken<Map<Direction, Integer>>(){}.getType();
