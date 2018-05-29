@@ -1,6 +1,12 @@
 package projetrpg.game;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.Transition;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +21,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import projetrpg.Main;
 import projetrpg.commands.InvalidCommandException;
 import projetrpg.entities.items.Item;
@@ -201,7 +208,22 @@ public class GameController implements Initializable {
                 }
 
                 textLogs.setWrapText(true);
-                textLogs.appendText(logs);
+                final IntegerProperty i = new SimpleIntegerProperty(0);
+                Timeline timeline = new Timeline();
+                String finalLogs = logs;
+                KeyFrame keyFrame = new KeyFrame(
+                        Duration.seconds(0.01),
+                        event -> {
+                            if (i.get() > finalLogs.length()) {
+                                timeline.stop();
+                            } else {
+                                textLogs.setText(finalLogs.substring(0, i.get()));
+                                i.set(i.get() + 1);
+                            }
+                        });
+                timeline.getKeyFrames().add(keyFrame);
+                timeline.setCycleCount(Animation.INDEFINITE);
+                timeline.play();
                 commandField.clear();
                 inventoryDisplay();
                 inventoryDisplay();
