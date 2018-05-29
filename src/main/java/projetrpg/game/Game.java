@@ -69,6 +69,7 @@ public class Game {
                 "-learn : on an ability\n" +
                 "-travel : on a region\n" +
                 "-improve : on a possible amelioration of your ship (radar, engine, reactors)\n" +
+                "-rest : in order to regain your hps and mana\n" +
                 "-help : to see the user guide.\n\n";
         commandRegisterer();
     }
@@ -303,6 +304,8 @@ public class Game {
         parser.registerCommand("giveup", String.class);
 
         parser.registerCommand("help", String.class);
+
+        parser.registerCommand("rest", String.class);
 
         try {
             parser.registerListener(new CommandListener(save.getMap().getMainCharacter(), this), CommandListener.class);

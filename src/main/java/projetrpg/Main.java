@@ -88,6 +88,7 @@ public class Main extends Application {
         primaryStage.setScene(vue.getScene());
         primaryStage.show();
         primaryStage.centerOnScreen();
+        primaryStage.setResizable(false);
 
     }
 

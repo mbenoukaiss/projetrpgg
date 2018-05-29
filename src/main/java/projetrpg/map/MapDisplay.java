@@ -106,12 +106,14 @@ public class MapDisplay {
 
         for(Region region : this.map.getRegions()) {
             Player player = this.map.getMainCharacter();
+            System.out.println("REGION : " + region.getName());
             if (player.getLocation() == player.getShip()) {
                 playerRegion = player.getShip().getParent().getRoot();
             } else {
                 playerRegion = player.getLocation().getRoot();
+                System.out.println("PLAYER : " + playerRegion.getName());
             }
-            if(region == playerRegion) {
+            if(region.getName().equalsIgnoreCase(playerRegion.getName())) {
                 g.setFill(Color.SANDYBROWN);
                 g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
             } else {
@@ -131,7 +133,7 @@ public class MapDisplay {
         }
 
         for(Region region : this.map.getRegions()) {
-            if(region == playerRegion) {
+            if(region.getName().equalsIgnoreCase(playerRegion.getName())) {
                 g.setFill(Color.SANDYBROWN);
                 g.fillOval(regionsCoordinates.get(region).x, regionsCoordinates.get(region).y, 30, 30);
             }

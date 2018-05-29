@@ -424,4 +424,8 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         }
         return false;
     }
+
+    public int getBaseMana() {
+        return baseMana;
+    }
 }

@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox prefHeight="594.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="594.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar styleClass="darker" VBox.vgrow="NEVER" />
       <GridPane hgap="30.0" prefHeight="559.0" prefWidth="900.0" vgap="30.0" VBox.vgrow="ALWAYS">
@@ -53,7 +53,7 @@
                 <Button id="saveFile" mnemonicParsing="false" onAction="#buttonSave" text="Save" />
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="humanDisplay" layoutX="138.0" layoutY="7.0" onTouchPressed="#humanDisplay" prefHeight="16.0" prefWidth="46.0" text="Text" />
+                        <Label fx:id="humanDisplay" layoutX="138.0" layoutY="7.0" onTouchPressed="#humanDisplay" prefHeight="16.0" prefWidth="46.0" text="Text" textFill="#ebe3e3" />
                      </children>
                   </Pane>
                   <Button id="titleScreen" mnemonicParsing="false" onAction="#buttonHome" text="Home" />

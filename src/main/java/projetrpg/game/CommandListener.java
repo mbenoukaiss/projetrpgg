@@ -203,6 +203,7 @@ public class CommandListener {
                 message += ("You can now go to :" + this.player.getLocation().getRegionNamesOnDirection());
                 ((NPC) e).setInFight(false);
                 this.player.setEnemy(null);
+                this.player.setMana(this.player.getBaseMana());
                 this.player.setHps(this.player.getBaseHps());
                 return message;
             } else { // The fight is still going on
@@ -414,6 +415,7 @@ public class CommandListener {
                     ((NPC) e).setInFight(false);
                     this.player.setEnemy(null);
                     this.player.setHps(this.player.getBaseHps());
+                    this.player.setMana(this.player.getBaseMana());
                 } else { // The fight is still going on
                     message += ("Hps of the ennemy after the assault : " + e.getHp())
                             + ("\nYour Hps after the attack : " + player.getHp())
@@ -491,6 +493,7 @@ public class CommandListener {
                     ((NPC) e).setInFight(false);
                     this.player.setEnemy(null);
                     this.player.setHps(this.player.getBaseHps());
+                    this.player.setMana(this.player.getBaseMana());
                 } else { // The fight is still going on
                     message += ("Hps of the ennemy after the assault : " + e.getHp())
                             + ("\nYour Hps after the attack : " + player.getHp())
@@ -811,6 +814,17 @@ public class CommandListener {
             }
         } else {
             return "You can only fight or flee";
+        }
+    }
+
+    @Listener({"rest"})
+    public String rest(String ignored) {
+        if (player.getEnemy() == null) {
+            player.setMana(player.getBaseMana());
+            player.setHps(player.getBaseHps());
+            return "You rested and recovered from your painful journey";
+        } else {
+            return "Finish your fight first ! ";
         }
     }
 
