@@ -32,6 +32,7 @@ public class SavesServices {
                 .registerTypeAdapter(Teleporter.class, new TeleporterSerializer())
                 .registerTypeAdapter(Region.class, new RegionSerializer())
                 .registerTypeHierarchyAdapter(Ship.class, new ShipSerializer())
+                .registerTypeHierarchyAdapter(Planet.class, new PlanetSerializer())
                 .registerTypeAdapter(MainMap.class, new MapSerializer())
                 .create();
 

@@ -17,6 +17,8 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
     private static Map<Integer, Map<Direction, Integer>> directions = new HashMap<>();
 
+    private static Map<Planet, Integer> planets = new HashMap<>();
+
     private static Ship ship;
 
     public static void addNPC(NPC npc) {
@@ -29,6 +31,10 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
     public static void addRegion(int source, Map<Direction, Integer> direction) {
         directions.put(source, direction);
+    }
+
+    public static void addPlanet(Planet p, int landingRegionId) {
+        planets.put(p, landingRegionId);
     }
 
     public static void setShip(Ship ship) {
@@ -67,7 +73,7 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         //Deserialize the regions
         JsonArray regions = jsonMap.get("regions").getAsJsonArray();
         for(JsonElement region : regions) {
-            map.addRegion(deserializationContext.deserialize(region, Region.class));
+            map.addRegion(deserializeRegion(deserializationContext, region.getAsJsonObject()));
 
             Type directionsMapType = new TypeToken<Map<Direction, Integer>>(){}.getType();
             addRegion(region.getAsJsonObject().get("id").getAsInt(),
@@ -105,11 +111,16 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         map.getMainCharacter().setShip(ship);
 
         //Associate regions to regions using map directions
-         directions.forEach((id, dirMap) -> {
-             dirMap.forEach((dir, otherId) -> {
-                 regionWithId.get(id).addRegionTowards(dir, regionWithId.get(otherId));
-             });
-         });
+        directions.forEach((id, dirMap) -> {
+            dirMap.forEach((dir, otherId) -> {
+                regionWithId.get(id).addRegionTowards(dir, regionWithId.get(otherId));
+            });
+        });
+
+        //Associate planets with landing regions
+        planets.forEach((p, landingId) -> {
+            p.setLandingRegion(regionWithId.get(landingId));
+        });
 
         //Let children know who is their parent
         map.getRegions().forEach(r -> findRegionParent(null, r.getContainedRegions()));
@@ -124,12 +135,13 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
         //Avoid memory leaks
         idNPCMap = new HashMap<>();
+        planets = new HashMap<>();
 
         return map;
     }
 
     private void associateIDwRegions(Map<Integer, Region> regionWithId, Region region) {
-        for(Region sr : region.getContainedRegions()) {
+        for(Region sr : region.containedRegions) {
             regionWithId.put(sr.getId(), sr);
             associateIDwRegions(regionWithId, sr);
         }
@@ -139,7 +151,21 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         for(Region region : regions) {
             if(parent != null)
                 parent.addContainedRegion(region);
-            findRegionParent(region, region.getContainedRegions());
+
+            if(region.containedRegions != null)
+            findRegionParent(region, region.containedRegions);
+        }
+    }
+
+    public static Region deserializeRegion(JsonDeserializationContext jdc, JsonObject o) {
+        if(o.has("type")) {
+            if(o.get("type").getAsString().equals("ship")) {
+                return jdc.deserialize(o, Ship.class);
+            } else {
+                return jdc.deserialize(o, Planet.class);
+            }
+        } else {
+            return jdc.deserialize(o, Region.class);
         }
     }
 

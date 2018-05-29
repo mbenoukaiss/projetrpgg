@@ -13,21 +13,21 @@
     "abilities": [
       [
         {
-          "name": "FireBall",
-          "minLevelRequired": 1,
-          "damage": 30.0,
-          "type": "LINE",
-          "cost": 10
-        },
-        false
-      ],
-      [
-        {
           "name": "WaterBeam",
           "minLevelRequired": 2,
           "damage": 50.0,
           "type": "AOE",
           "cost": 20
+        },
+        false
+      ],
+      [
+        {
+          "name": "FireBall",
+          "minLevelRequired": 1,
+          "damage": 30.0,
+          "type": "LINE",
+          "cost": 10
         },
         false
       ]
@@ -50,15 +50,6 @@
       "objectives": [
         {
           "finished": false,
-          "description": "Use the Apple",
-          "type": "USE",
-          "concerned": {
-            "class": "projetrpg.entities.items.Item",
-            "object": "APPLE"
-          }
-        },
-        {
-          "finished": false,
           "description": "Pickup the Apple",
           "type": "PICKUP",
           "concerned": {
@@ -73,6 +64,15 @@
           "concerned": {
             "class": "projetrpg.entities.NPC",
             "object": 0
+          }
+        },
+        {
+          "finished": false,
+          "description": "Use the Apple",
+          "type": "USE",
+          "concerned": {
+            "class": "projetrpg.entities.items.Item",
+            "object": "APPLE"
           }
         }
       ],
@@ -98,6 +98,28 @@
           },
           "childregions": [
             {
+              "id": 11,
+              "name": "Hervé\u0027s Ship",
+              "shipRequired": 0,
+              "directions": {},
+              "childregions": [],
+              "entities": [],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              },
+              "type": "ship",
+              "basefuel": 50,
+              "actualfuel": 50,
+              "level": 1,
+              "ameliorations": [
+                "ENGINE_AMELIORATION",
+                "REACTORS_AMELIORATION",
+                "RADAR_AMELIORATION"
+              ]
+            },
+            {
               "id": 7,
               "name": "Cave",
               "shipRequired": 0,
@@ -117,10 +139,10 @@
               ],
               "teleporters": [
                 {
-                  "id": 4,
+                  "id": 0,
                   "name": "CtoVtp",
                   "repaired": false,
-                  "link": 5,
+                  "link": 1,
                   "requirements": []
                 }
               ],
@@ -128,28 +150,6 @@
                 "maxCapacity": 10,
                 "items": []
               }
-            },
-            {
-              "id": 11,
-              "name": "Hervé\u0027s Ship",
-              "shipRequired": 0,
-              "directions": {},
-              "childregions": [],
-              "entities": [],
-              "teleporters": [],
-              "inventory": {
-                "maxCapacity": 10,
-                "items": []
-              },
-              "type": "ship",
-              "basefuel": 50,
-              "actualfuel": 50,
-              "level": 1,
-              "ameliorations": [
-                "REACTORS_AMELIORATION",
-                "ENGINE_AMELIORATION",
-                "RADAR_AMELIORATION"
-              ]
             }
           ],
           "entities": [
@@ -174,12 +174,11 @@
           }
         },
         {
-          "id": 9,
-          "name": "Flower Hill",
+          "id": 8,
+          "name": "Flower",
           "shipRequired": 0,
           "directions": {
-            "EST": 8,
-            "NORTH": 6
+            "WEST": 9
           },
           "childregions": [],
           "entities": [],
@@ -190,11 +189,12 @@
           }
         },
         {
-          "id": 8,
-          "name": "Flower",
+          "id": 9,
+          "name": "Flower Hill",
           "shipRequired": 0,
           "directions": {
-            "WEST": 9
+            "NORTH": 6,
+            "EST": 8
           },
           "childregions": [],
           "entities": [],
@@ -210,7 +210,9 @@
       "inventory": {
         "maxCapacity": 10,
         "items": []
-      }
+      },
+      "type": "planet",
+      "landingRegion": 6
     },
     {
       "id": 2,
@@ -238,10 +240,10 @@
           ],
           "teleporters": [
             {
-              "id": 5,
+              "id": 1,
               "name": "CtoVtp",
               "repaired": false,
-              "link": 4,
+              "link": 0,
               "requirements": []
             }
           ],
@@ -258,7 +260,9 @@
         "items": [
           "HATCHET"
         ]
-      }
+      },
+      "type": "planet",
+      "landingRegion": 10
     },
     {
       "id": 3,
@@ -287,14 +291,30 @@
         "items": [
           "APPLE"
         ]
-      }
+      },
+      "type": "planet",
+      "landingRegion": 12
     },
     {
       "id": 4,
       "name": "Venus",
       "shipRequired": 2,
       "directions": {},
-      "childregions": [],
+      "childregions": [
+        {
+          "id": 13,
+          "name": "Hot rock",
+          "shipRequired": 1,
+          "directions": {},
+          "childregions": [],
+          "entities": [],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
+        }
+      ],
       "entities": [],
       "teleporters": [],
       "inventory": {
@@ -302,20 +322,38 @@
         "items": [
           "FLASHLIGHT"
         ]
-      }
+      },
+      "type": "planet",
+      "landingRegion": 13
     },
     {
       "id": 5,
       "name": "Saturne",
       "shipRequired": 3,
       "directions": {},
-      "childregions": [],
+      "childregions": [
+        {
+          "id": 13,
+          "name": "Lot of gas where you can\u0027t land",
+          "shipRequired": 9999,
+          "directions": {},
+          "childregions": [],
+          "entities": [],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
+        }
+      ],
       "entities": [],
       "teleporters": [],
       "inventory": {
         "maxCapacity": 10,
         "items": []
-      }
+      },
+      "type": "planet",
+      "landingRegion": 13
     }
   ]
 }

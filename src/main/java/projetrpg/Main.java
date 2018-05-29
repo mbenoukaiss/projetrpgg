@@ -113,9 +113,13 @@ public class Main extends Application {
         Region flowerHill = new Region(9, "Flower Hill", earth, 0);
         Region volcano = new Region(10, "Volcano", mars, 0);
         Region crater = new Region(12, "Crater",moon, 0);
+        Region gas = new Region(13, "Lot of gas where you can't land",saturne, 9999);
+        Region hotrock = new Region(13, "Hot rock",venus, 1);
         mars.setLandingRegion(volcano);
         earth.setLandingRegion(forest);
         moon.setLandingRegion(crater);
+        saturne.setLandingRegion(gas);
+        venus.setLandingRegion(hotrock);
 
         forest.linkToDirection(flowerHill, Direction.SOUTH);
         flowerHill.linkToDirection(flowerPlains, Direction.EST);
@@ -199,11 +203,13 @@ public class Main extends Application {
                 .setPrettyPrinting()
                 .enableComplexMapKeySerialization()
                 .setExclusionStrategies(new AnnotationExclusionStrategy())
+                .setExclusionStrategies(new AnnotationExclusionStrategy())
                 .registerTypeAdapter(Objective.class, new ObjectiveSerializer())
                 .registerTypeAdapter(Quest.class, new QuestSerializer())
                 .registerTypeAdapter(Teleporter.class, new TeleporterSerializer())
                 .registerTypeAdapter(Region.class, new RegionSerializer())
                 .registerTypeHierarchyAdapter(Ship.class, new ShipSerializer())
+                .registerTypeHierarchyAdapter(Planet.class, new PlanetSerializer())
                 .registerTypeAdapter(MainMap.class, new MapSerializer())
                 .create();
 

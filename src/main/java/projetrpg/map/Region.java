@@ -169,12 +169,12 @@ public class Region implements Describable {
         }
         if (!this.getRegionNamesOnDirection().isEmpty()) {
             d += ". From there you can go to : " + (this.getRegionNamesOnDirection())
-                    + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
+                    + ((containedRegions.isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
                     + " And your ship aswell.";
         } else if (this.parent != null && (this.parent instanceof Planet && ((Planet) this.parent).getLandingRegion() != this)){
             d += ". From there you can go to : "
                     + this.parent.getName()
-                    + ((this.getContainedRegions().isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
+                    + ((containedRegions.isEmpty()) ? "" : "," + this.getContainedRegionsNames()) + "."
                     + " And your ship aswell.";
         }
         if (!this.teleporters.isEmpty()) {
@@ -354,4 +354,15 @@ public class Region implements Describable {
         }
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Region && ((Region) o).name.equalsIgnoreCase(name) && ((Region) o).id == id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
 }

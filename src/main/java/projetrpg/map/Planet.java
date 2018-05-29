@@ -8,6 +8,10 @@ public class Planet extends Region {
         super(id, name, parent, shipLevelRequired);
     }
 
+    public Planet(Region r) {
+        super(r);
+    }
+
     public Region getLandingRegion() {
         return landingRegion;
     }

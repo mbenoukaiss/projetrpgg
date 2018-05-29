@@ -33,6 +33,7 @@ public class QuestSerializer implements JsonSerializer<Quest>, JsonDeserializer<
         Quest quest = new Quest();
         JsonObject jsonQuest = jsonElement.getAsJsonObject();
 
+        quest.name = jsonQuest.get("name").getAsString();
         quest.levelRequired = jsonQuest.get("lrequired").getAsInt();
         quest.expRewarded = jsonQuest.get("ereward").getAsInt();
         quest.description = jsonQuest.get("description").getAsString();

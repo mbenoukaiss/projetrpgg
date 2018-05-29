@@ -76,15 +76,7 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         }
 
         for(JsonElement element : jsonRegion.get("childregions").getAsJsonArray()) {
-            Region r;
-
-            if(element.getAsJsonObject().has("type")) {
-                r = deserializationContext.deserialize(element, Ship.class);
-            } else {
-                r = deserializationContext.deserialize(element, Region.class);
-            }
-
-            region.addContainedRegion(r);
+            region.addContainedRegion(MapSerializer.deserializeRegion(deserializationContext, element.getAsJsonObject()));
         }
 
         Inventory inv = deserializationContext.deserialize(jsonRegion.get("inventory"), Inventory.class);
