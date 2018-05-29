@@ -2,6 +2,7 @@ package projetrpg.game;
 
 import projetrpg.Describable;
 import projetrpg.commands.Listener;
+import projetrpg.entities.EntityType;
 import projetrpg.entities.player.Ability;
 import projetrpg.entities.Damageable;
 import projetrpg.entities.Entity;
@@ -149,7 +150,7 @@ public class CommandListener {
     @Listener({"attack"})
     public String combat(Damageable e) {
         String message = "";
-        if (e != null) { // If the damageable targeted can be attacked
+        if (e != null && ((NPC) e).getType() != EntityType.VILLAGER) { // If the damageable targeted can be attacked
             message += (((Entity) e).getName() + " : " + ((NPC) e).getDialogue())
             + ("\nHps of the ennemy before the assault : " + e.getHp())
             + ("\nYour Hps before the attack : " + player.getHp())
@@ -213,7 +214,7 @@ public class CommandListener {
                 return message;
             }
         } else { // If the damageable targeted cannot be attacked
-            return("Error : check if this entity is in your location.");
+            return("Error : check if this entity is in your location or maybe you cant fight this entity.");
         }
     }
 
@@ -667,10 +668,35 @@ public class CommandListener {
     @Listener({"equip"})
     public String equip(Item i) {
         if (i != null) { // If the item can be equipped
-            String message = ("Previously equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
+            Objective objectiveFound = null;
+            boolean isConcerned = false;
+            if (this.player.getCurrentQuest() != null) {
+                for (Objective o : this.player.getCurrentQuest().getObjectives()) {
+                    if (o.getType() == ObjectiveType.EQUIP && o.getConcernedObject() == i) {
+                        objectiveFound = o;
+                        isConcerned = true;
+                    }
+                }
+            }
+            if (isConcerned) {
+                Quest savedQuest = this.player.getCurrentQuest();
+                this.player.equip(i);
+                objectiveFound.finish();
+                if (this.player.getCurrentQuest() == null) {
+                    String message = "";
+                    message += ("You equipped " + i.getName() + ".") +
+                            ("You finished this objective : " + objectiveFound.getDescription() +
+                                    ". You have now finished this quest : " + savedQuest.getDescription() + "!");
+                    if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
+                        message+=this.canLevelUp();
+                    }
+                    return message;
+                }
+                return("You equipped up " + i.getName() + ".") +
+                        ("You finished this objective : " + objectiveFound.getDescription() + ".");
+            }
             this.player.equip(i);
-            message+= ("\nNow equipped item : " + ((this.player.getItemInHand() == null) ? "Nothing" : this.player.getItemInHand().getName()));
-            return message;
+            return("You equipped " + i.getName() + ".");
         } else { // If the item can not be equipped
             return("Error : check if you have this item in your inventory.");
         }
@@ -830,11 +856,14 @@ public class CommandListener {
 
     public String canLevelUp() {
         String message = "";
-        message += " Congrats, you leveled up ! You can now learn :";
-        for (Ability a : this.player.learnableAbilities()) {
-            message += a.getName() + ", ";
+        message += " Congrats, you leveled up !";
+        if (!this.player.learnableAbilities().isEmpty()) {
+            message += "You can now learn :";
+            for (Ability a : this.player.learnableAbilities()) {
+                message += a.getName() + ", ";
+            }
+            message = message.substring(0, message.length() - 2) + ". ";
         }
-        message = message.substring(0, message.length()-2) + ". ";
         return message;
     }
 }

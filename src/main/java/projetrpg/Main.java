@@ -161,6 +161,30 @@ public class Main extends Application {
         talkToMaster.addObserver(briefing);
         mainMap.addQuest(briefing);
 
+        NPC Saul  = new NPC("Saul", London, EntityType.VILLAGER, false, 100, 10, "Oh ! You must be Hervé " +
+                "! I'm Saul, you are about to begin your journey towards saving the universe. But first you gotta be ready : in my apartments you'll find" +
+                "a laser gun and a practise target. Gear up and show me whats you've got ! Then you'll talk to my brother, Zahir, located in my apartment.\n You may now start this new quest : Gear Up ! ");
+        Region saulapp = new Region(21, "Saul's appartments", "The appartment of Saul", London, 0);
+        //TODO
+        NPC Zahir = new NPC("Zahir", saulapp, EntityType.VILLAGER, false, 100, 10, "BLABLABLA");
+        saulapp.addItemToInventory(Item.LASERGUN);
+        NPC target = new NPC("Bob", saulapp, EntityType.UTILS, false, 100, 0, "Im weak.");
+        Quest gearUp = new Quest(10, "Gear Up", "Equip yourself and train a bit.", 1);
+        Objective<Item> pickupLaser = new Objective<>("Pickup saul's laser", ObjectiveType.PICKUP);
+        Objective<Item> equipLaser = new Objective<>("Equip Saul's laser", ObjectiveType.EQUIP);
+        Objective<NPC> killTarget = new Objective<>("Kill the practise target", ObjectiveType.KILL);
+        gearUp.linkObjective(pickupLaser);
+        gearUp.linkObjective(equipLaser);
+        gearUp.linkObjective(killTarget);
+        gearUp.addObserver(player);
+        pickupLaser.addObserver(gearUp);
+        pickupLaser.setConcernedObject(Item.LASERGUN);
+        equipLaser.addObserver(gearUp);
+        equipLaser.setConcernedObject(Item.LASERGUN);
+        killTarget.addObserver(gearUp);
+        killTarget.setConcernedObject(target);
+        mainMap.addQuest(gearUp);
+
 
         //Player initialization.
         Ship playerShip = new Ship(11, "Hervé's Ship", null, 50);

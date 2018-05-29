@@ -8,7 +8,8 @@ package projetrpg.entities;
  */
 public enum EntityType {
     PLAYER(0, true),
-    VILLAGER(1, true),
+    VILLAGER(1, false),
+    UTILS(0, true),
     VAMPIRE(5, true);
 
     /**
