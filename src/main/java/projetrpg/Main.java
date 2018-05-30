@@ -78,6 +78,7 @@ public class Main extends Application {
 
         Game game = new Game(testSave);
 
+
         GameView vue = null;
         try {
             vue = new GameView(game, this, savesServices);
@@ -105,6 +106,7 @@ public class Main extends Application {
         regions.add(mars);
         Planet moon = new Planet(3, "Moon", null, 1);
         regions.add(moon);
+        moon.addItemNeeded(Item.FLASHLIGHT);
         Planet venus = new Planet(4, "Venus", null, 2);
         regions.add(venus);
         Planet saturn = new Planet(5, "Saturn", null, 3);
@@ -129,8 +131,6 @@ public class Main extends Application {
         Region NewYork = new Region(12, "New-York", "The city of New York", America, 0);
         Region Cleveland = new Region(13, "Cleveland", "The city of Cleveland", America, 0);
         Region SanAntonio = new Region(14, "San Antonio", "The city of San Antonio", America, 0);
-        Region Boston = new Region(15, "Boston", "The city of Boston", America, 0);
-        NewYork.linkToDirection(Boston, Direction.NORTH);
         NewYork.linkToDirection(Cleveland, Direction.WEST);
         Cleveland.linkToDirection(SanAntonio, Direction.SOUTH);
 
@@ -159,7 +159,7 @@ public class Main extends Application {
         briefing.addObserver(player);
         talkToMaster.setConcernedObject(master);
         talkToMaster.addObserver(briefing);
-        mainMap.addQuest(briefing);
+
 
         NPC Saul  = new NPC("Saul", London, EntityType.VILLAGER, false, 100, 10, "Oh ! You must be Hervé " +
                 "! I'm Saul, you are about to begin your journey towards saving the universe. But first you gotta be ready : in my apartments you'll find" +
@@ -193,8 +193,25 @@ public class Main extends Application {
         equipLaser.setConcernedObject(Item.LASERGUN);
         killTarget.addObserver(gearUp);
         killTarget.setConcernedObject(target);
-        mainMap.addQuest(gearUp);
 
+
+        NPC Taliyah = new NPC("Taliyah", Asia, EntityType.VILLAGER, false, 100, 10, "You are now ready to improve your engine\nType \"improve engine\" " +
+                "in order to improve it.\nTaliyah has a new Quest for you : A bad guy is stealing stuff in bombai, stop him and you'll gain his hatchet! " +
+                "You may now start" +
+                ": first fight!");
+        NPC badGuy = new NPC("Bad Guy", Bombai, EntityType.VAMPIRE, true, 100, 20, "I'm going to kill you!");
+        NPC villagerBombai = new NPC("Bombai Villager", Bombai, EntityType.VILLAGER, false, 100, 10, ((badGuy.getHp() <= 0)? "You saved us, thank you!" +
+                "You can now travel to mars in order to continue your adventure!" : "Please save us!"));
+        Quest firstFight = new Quest(20, "first fight", "Stop the bad guy in Bombai", 1);
+        Objective<NPC> killBadGuy = new Objective<>("Stop the bad Guy", ObjectiveType.KILL);
+        firstFight.linkObjective(killBadGuy);
+        firstFight.addObserver(player);
+        killBadGuy.addObserver(firstFight);
+        killBadGuy.setConcernedObject(badGuy);
+        firstFight.linkRewardedItem(Item.HATCHET);
+        mainMap.addQuest(firstFight);
+        mainMap.addQuest(briefing);
+        mainMap.addQuest(gearUp);
 
         //Player initialization.
         Ship playerShip = new Ship(22, "Hervé's Ship", null, 50);

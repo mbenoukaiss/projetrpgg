@@ -54,7 +54,7 @@ public class MainMap {
     public MainMap(String name) {
         this.name = name;
         this.planets = new ArrayList<>();
-        this.quests = new TreeSet<>();
+        this.quests = new HashSet<>();
     }
 
 

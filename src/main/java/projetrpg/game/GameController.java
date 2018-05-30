@@ -132,7 +132,7 @@ public class GameController implements Initializable {
         Timeline timeline = new Timeline();
         String finalLogs = "You hear an astonishing sound, almost as if an earthquake was ongoing, you start panicking " +
                 "but you quickly take over your mind and think : WHATS GOING ON IM GONNA DIE AAAAAAAAAAAH.. Okay what should i do" +
-                "? Let's try and talk to my brother, he must be in Paris.\nType help in order to see the user's guide.";
+                "? Let's try and talk to my brother robert, he must be in Paris.\nType help in order to see the user's guide.";
         KeyFrame keyFrame = new KeyFrame(
                 Duration.seconds(0.02),
                 event -> {
