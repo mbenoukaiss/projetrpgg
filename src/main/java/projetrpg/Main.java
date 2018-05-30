@@ -165,9 +165,19 @@ public class Main extends Application {
                 "! I'm Saul, you are about to begin your journey towards saving the universe. But first you gotta be ready : in my apartments you'll find" +
                 "a laser gun and a practise target. Gear up and show me whats you've got ! Then you'll talk to my brother, Zahir, located in my apartment.\n You may now start this new quest : Gear Up ! ");
         Region saulapp = new Region(21, "Saul's appartments", "The appartment of Saul", London, 0);
-        //TODO
-        NPC Zahir = new NPC("Zahir", saulapp, EntityType.VILLAGER, false, 100, 10, "BLABLABLA");
+
+        NPC Zahir = new NPC("Zahir", saulapp, EntityType.VILLAGER, false, 100, 10, "I see you've trained a bit, Hervé, i can tell that you are ready now! " +
+                "There is a planet located far from here, you need to find a way to get there, and once you do, you'll be able to save humanity. But first, you need some ship improvement : find a toolkit, " +
+                "and improve your engine! In this very room you'll find a teleporter that will lead you to Asia, there you'll find the toolkit. But first, you'll need to repair it : find a screwdriver and repair" +
+                "the teleporter. (It is in America uhu)");
+        ArrayList<Item> tpAsiaRequired = new ArrayList<>();
+        tpAsiaRequired.add(Item.SCREWDRIVER);
+        Teleporter tpToAsia = new Teleporter(1, "Teleporter To Asia", saulapp, false, tpAsiaRequired);
+        Teleporter tpFromAsia = new Teleporter(2, "Teleporter to saul's apartment", Asia, true, new ArrayList<>());
+        tpToAsia.link(tpFromAsia);
         saulapp.addItemToInventory(Item.LASERGUN);
+        America.addItemToInventory(Item.SCREWDRIVER);
+        Asia.addItemToInventory(Item.TOOLKIT);
         NPC target = new NPC("Bob", saulapp, EntityType.UTILS, false, 100, 0, "Im weak.");
         Quest gearUp = new Quest(10, "Gear Up", "Equip yourself and train a bit.", 1);
         Objective<Item> pickupLaser = new Objective<>("Pickup saul's laser", ObjectiveType.PICKUP);
@@ -187,7 +197,7 @@ public class Main extends Application {
 
 
         //Player initialization.
-        Ship playerShip = new Ship(11, "Hervé's Ship", null, 50);
+        Ship playerShip = new Ship(22, "Hervé's Ship", null, 50);
         player.setShip(playerShip);
         player.getLocation().addContainedRegion(playerShip);
         ShipAmelioration.ENGINE_AMELIORATION.addItemNeeded(Item.TOOLKIT);

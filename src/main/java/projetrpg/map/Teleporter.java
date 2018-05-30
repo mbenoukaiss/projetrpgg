@@ -68,12 +68,13 @@ public class Teleporter implements Describable {
         id = currentId++;
     }
 
-    Teleporter(int id, String name, Region location, boolean repaired,
+    public Teleporter(int id, String name, Region location, boolean repaired,
                       ArrayList<Item> requiredItems) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.repaired = repaired;
+        this.location.addTeleporter(this);
         this.itemsNeededToRepair = requiredItems;
 
         if(id >= currentId) currentId = id+1;

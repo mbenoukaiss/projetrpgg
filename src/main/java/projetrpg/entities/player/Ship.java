@@ -42,7 +42,7 @@ public class Ship extends Region implements Describable{
         super(id, name, "", parent, 0);
         this.baseFuel = baseFuel;
         this.actualFuel = this.baseFuel;
-        this.level = 1;
+        this.level = 0;
         this.ameliorations = new HashSet<>();
         this.ameliorations.add(ShipAmelioration.ENGINE_AMELIORATION);
         this.ameliorations.add(ShipAmelioration.RADAR_AMELIORATION);

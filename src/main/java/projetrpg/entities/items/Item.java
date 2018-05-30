@@ -17,6 +17,7 @@ public enum Item implements Describable {
     KNIFE("Knife", 35, ItemType.UTILS),
     TOOLKIT("Toolkit", 1, ItemType.UTILS),
     LASERGUN("Laser Gun", 20, ItemType.DMG),
+    SCREWDRIVER("Screwdriver", 1, ItemType.UTILS),
     HATCHET("Hatchet", 40, ItemType.DMG);
 
     /**

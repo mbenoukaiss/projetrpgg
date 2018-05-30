@@ -7,9 +7,9 @@ import java.util.List;
 
 public enum ShipAmelioration {
 
-    ENGINE_AMELIORATION("Improve the engine", 2, 1),
-    RADAR_AMELIORATION("Improve the radar", 3, 2),
-    REACTORS_AMELIORATION("Improve the reactors", 4, 3);
+    ENGINE_AMELIORATION("Improve the engine", 2, 0),
+    RADAR_AMELIORATION("Improve the radar", 3, 1),
+    REACTORS_AMELIORATION("Improve the reactors", 4, 2);
 
     private String description;
     private int levelAssociated;
