@@ -98,7 +98,7 @@ public class Ship extends Region implements Describable{
     }
 
     public void improve(ShipAmelioration amelioration) {
-        this .level += 1;
+        this.level += 1;
         finishAmelioration(amelioration);
     }
 

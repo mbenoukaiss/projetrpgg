@@ -104,6 +104,7 @@ public class Main extends Application {
         regions.add(earth);
         Planet mars = new Planet(2, "Mars", null, 1);
         regions.add(mars);
+        mars.addItemNeeded(Item.HATCHET);
         Planet moon = new Planet(3, "Moon", null, 1);
         regions.add(moon);
         moon.addItemNeeded(Item.FLASHLIGHT);
@@ -200,8 +201,8 @@ public class Main extends Application {
                 "You may now start" +
                 ": first fight!");
         NPC badGuy = new NPC("Bad Guy", Bombai, EntityType.VAMPIRE, true, 100, 20, "I'm going to kill you!");
-        NPC villagerBombai = new NPC("Bombai Villager", Bombai, EntityType.VILLAGER, false, 100, 10, ((badGuy.getHp() <= 0)? "You saved us, thank you!" +
-                "You can now travel to mars in order to continue your adventure!" : "Please save us!"));
+        NPC villagerBombai = new NPC("Bombai Villager", Bombai, EntityType.VILLAGER, false, 100, 10, "Please save us!" +
+                " When you've done so you'll be able to travel to mars in order to continue your adventure!" );
         Quest firstFight = new Quest(20, "first fight", "Stop the bad guy in Bombai", 1);
         Objective<NPC> killBadGuy = new Objective<>("Stop the bad Guy", ObjectiveType.KILL);
         firstFight.linkObjective(killBadGuy);
