@@ -13,12 +13,19 @@ import projetrpg.map.Region;
  */
 public enum Item implements Describable {
     APPLE("Apple", 0, ItemType.FOOD),
+    GREEN_CARROT("Green carrot", 0, ItemType.MARTIAN_FOOD),
+    GREEN_POTATO("Green potato", 0, ItemType.MARTIAN_FOOD),
     FLASHLIGHT("Flashlight", 10, ItemType.UTILS),
     KNIFE("Knife", 35, ItemType.UTILS),
-    TOOLKIT("Toolkit", 1, ItemType.UTILS),
+    TOOLKIT("Toolkit", 3, ItemType.UTILS),
     LASERGUN("Laser Gun", 20, ItemType.DMG),
     SCREWDRIVER("Screwdriver", 1, ItemType.UTILS),
-    HATCHET("Hatchet", 40, ItemType.DMG);
+    HATCHET("Hatchet", 40, ItemType.DMG),
+    SCREW("Screw", 1, ItemType.UTILS),
+    METAL_SCRAP("Metal scrap", 4, ItemType.UTILS),
+    CLIMBING_SHOES("Climbind shoes", 1, ItemType.UTILS),
+    SHARP_SHIP_FRAGMENT("Sharp ship fragment", 50, ItemType.DMG),
+    MARTIAN_SWORD("לשון", 65, ItemType.DMG);
 
     /**
      * The amount of additional damage this

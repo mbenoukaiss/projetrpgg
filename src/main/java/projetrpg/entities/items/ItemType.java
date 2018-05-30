@@ -9,7 +9,9 @@ package projetrpg.entities.items;
 public enum ItemType {
     DMG(0),
     UTILS(0),
-    FOOD(10);
+    FOOD(10),
+    MARTIAN_FOOD(20),
+    HEAL(15);
 
     /**
      * The hp an item gives when eaten.

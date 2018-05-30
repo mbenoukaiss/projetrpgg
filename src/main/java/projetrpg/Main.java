@@ -214,6 +214,98 @@ public class Main extends Application {
         mainMap.addQuest(briefing);
         mainMap.addQuest(gearUp);
 
+        ////////////////////////////////////////////////////////////////
+        //MMMMAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRRRSSSSSSSSSSS
+        ////////////////////////////////////////////////////////////////
+        int marsHP = 50, marsDamage = 30;
+        Region landingPlatform = new Region(1000, "Landing platform", "You are on the landing platform of Mars, it seems really calm, do you see that cliff ?.", mars, 0);
+
+        Region terryposFarm = new Region(1010, "Terrypo's farm", "A few weird potatoes are growing here, someone is taking care of this farm.", mars, 0);
+        terryposFarm.addItemToInventory(Item.GREEN_POTATO);
+        terryposFarm.addItemToInventory(Item.GREEN_POTATO);
+
+        Region daglysvalCliff = new Region(1001, "Daglysval cliff", "This sharp cliff can't be climbed with your current gear, beware the monsters...", mars, 0);
+        NPC nfrey = new NPC("Nfrey", daglysvalCliff, EntityType.MARTIAN, true, marsHP+5, marsDamage+5, "ספר ההזמנות");
+        NPC nfray = new NPC("Nfray", daglysvalCliff, EntityType.MARTIAN, true, marsHP+5, marsDamage+5, "סהמנופר תהז");
+        daglysvalCliff.addEntity(nfrey);
+        daglysvalCliff.addEntity(nfray);
+        daglysvalCliff.addEntity(new NPC("Nfroy", daglysvalCliff, EntityType.MARTIAN, false, marsHP+5, marsDamage+5, "...my brothers became... crazy... run! You may now start your first quest on Mars : Kill the twins"));
+        daglysvalCliff.linkToDirection(landingPlatform, Direction.EST);
+
+        Quest killTheTwins = new Quest(120, "Kill the twins", "Nfroy needs you to kill the two twins right next to him", 3);
+        killTheTwins.addObserver(mainMap.getMainCharacter());
+        killTheTwins.linkRewardedItem(Item.CLIMBING_SHOES);
+        Objective<NPC> killNfrey = new Objective<>("Kill Nfrey", ObjectiveType.KILL);
+        killNfrey.setConcernedObject(nfrey);
+        killTheTwins.linkObjective(killNfrey);
+        Objective<NPC> killNfray = new Objective<>("Kill Nfray", ObjectiveType.KILL);
+        killNfray.setConcernedObject(nfray);
+        killTheTwins.linkObjective(killNfray);
+
+        Region daglysvalPlateau = new Region(1002, "Daglysval plateau", "It seems like a ship crashed on this planet a while ago, there are fragments everywhere, from here to the cave, around the landing platform...", mars, 0);
+        daglysvalPlateau.addEntity(new NPC("Matteo", daglysvalPlateau, EntityType.BOSS_PEACEFUL, false, 0, 0, "Looks like I got there before you WITH MY BRAND NEW CLIMBING BOOTS CHECK MY MERCH, I just need to find some stuff in the cave and I'll finally leave this planet (wow im an antagonist and im saying where u need to go to kill me!!"));
+        daglysvalPlateau.addItemToInventory(Item.SHARP_SHIP_FRAGMENT);
+        daglysvalPlateau.addItemToInventory(Item.SCREW);
+        daglysvalPlateau.addItemToInventory(Item.SCREW);
+        daglysvalPlateau.addItemNeeded(Item.CLIMBING_SHOES);
+        daglysvalCliff.linkToDirection(daglysvalPlateau, Direction.WEST);
+
+        Pair<Teleporter, Teleporter> dgtps = mainMap.createTeleporters("Daglysval", daglysvalPlateau, earth);
+        dgtps.first.addItemToRepair(Item.SCREW);
+        dgtps.first.addItemToRepair(Item.SCREW);
+        dgtps.first.addItemToRepair(Item.SCREWDRIVER);
+        dgtps.first.addItemToRepair(Item.METAL_SCRAP);
+        dgtps.second.addItemToRepair(Item.GREEN_POTATO);
+        dgtps.second.addItemToRepair(Item.GREEN_CARROT);
+
+        Region caveEntrance = new Region(1003, "Cave entrance", "???", mars, 0);
+        caveEntrance.addItemToInventory(Item.SCREW);
+        caveEntrance.addItemToInventory(Item.SCREW);
+        caveEntrance.addItemToInventory(Item.METAL_SCRAP);
+        caveEntrance.addItemToInventory(Item.METAL_SCRAP);
+        caveEntrance.addEntity(new NPC("Zahuit", caveEntrance, EntityType.MARTIAN, true, marsHP+25, marsDamage+25, "האקדמריאיה ללקדמין השועבת"));
+        caveEntrance.linkToDirection(landingPlatform, Direction.SOUTH);
+
+        Region caveInside = new Region(1004, "Cave inside", "???", caveEntrance, 0);
+
+        Region caveInsideWest = new Region(1005, "Cave inside west", "???", caveEntrance, 0);
+        caveInsideWest.linkToDirection(caveInside, Direction.EST);
+
+        Region terryposHole = new Region(1007, "Terrypo's hole", "???", caveInsideWest, 0);
+        terryposHole.addEntity(new NPC("Terrypo", terryposHole, EntityType.MARTIAN, false, marsHP+130, 0, "Hey, how did you get there ? Are you that same guy with the weird boots called MATTEO HEVIN?????"));
+        terryposHole.addItemToInventory(Item.GREEN_CARROT);
+        terryposHole.addItemToInventory(Item.GREEN_CARROT);
+        terryposHole.addItemToInventory(Item.GREEN_CARROT);
+        terryposHole.addItemToInventory(Item.GREEN_CARROT);
+        terryposHole.addItemToInventory(Item.GREEN_CARROT);
+        terryposHole.addItemToInventory(Item.GREEN_CARROT);
+        terryposHole.addItemToInventory(Item.GREEN_CARROT);
+        terryposHole.addItemToInventory(Item.GREEN_POTATO);
+        terryposHole.addItemToInventory(Item.GREEN_POTATO);
+        terryposHole.addItemToInventory(Item.GREEN_POTATO);
+        terryposHole.addItemToInventory(Item.APPLE);
+        terryposHole.linkToDirection(caveInside, Direction.SOUTH);
+
+        Region caveInsideEast = new Region(1006, "Cave inside east", "???", caveEntrance, 0);
+        caveInsideEast.addEntity(new NPC("Aizoaoi", caveInsideEast, EntityType.MARTIAN, true, marsHP*2, marsDamage+20, "האלקדמר להדמיןקדמריאי השועב"));
+        caveInsideEast.linkToDirection(caveInside, Direction.WEST);
+
+        Region frozenLake = new Region(1007, "Frozen lake", "It's cold here, there seems to be some frozen ice ! And.. OH!", caveInsideEast, 0);
+        NPC matteo = new NPC("Matteo", frozenLake, EntityType.BOSS_HOSTILE, true, marsHP*4, marsDamage*10, "Get out of here, you don't want to fight me !");
+        frozenLake.addEntity(matteo);
+        frozenLake.addEntity(new NPC("Evil climbing shoe", frozenLake, EntityType.RANDOM_THING, false, 10, 0, ""));
+        frozenLake.addEntity(new NPC("Evil climbing shoe", frozenLake, EntityType.RANDOM_THING, false, 10, 0, ""));
+
+        Quest betterShip = new Quest(150, "Better ship", "You need a few upgrades in order to go further", 4);
+        betterShip.addObserver(mainMap.getMainCharacter());
+        betterShip.linkRewardedItem(Item.MARTIAN_SWORD);
+        Objective<Item> somePotatoes = new Objective<>("Get some potatoes", ObjectiveType.PICKUP);
+        somePotatoes.setConcernedObject(Item.GREEN_POTATO);
+        betterShip.linkObjective(somePotatoes);
+        Objective<NPC> killMatteo = new Objective<>("Get rid of Matteo", ObjectiveType.KILL);
+        killMatteo.setConcernedObject(matteo);
+        betterShip.linkObjective(killMatteo);
+
         //Player initialization.
         Ship playerShip = new Ship(22, "Hervé's Ship", null, 50);
         player.setShip(playerShip);

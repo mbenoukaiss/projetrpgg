@@ -367,7 +367,8 @@ public class Region implements Describable {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Region && ((Region) o).name.equalsIgnoreCase(name) && ((Region) o).id == id;
+        return o instanceof Region && ((Region) o).name.equalsIgnoreCase(name) && ((Region) o).id == id
+                ;
     }
 
     @Override

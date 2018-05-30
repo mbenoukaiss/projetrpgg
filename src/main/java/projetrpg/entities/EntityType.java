@@ -10,7 +10,11 @@ public enum EntityType {
     PLAYER(0, true),
     VILLAGER(1, false),
     UTILS(0, true),
-    VAMPIRE(5, true);
+    VAMPIRE(5, true),
+    MARTIAN(10, true),
+    BOSS_PEACEFUL(10, false),
+    BOSS_HOSTILE(10, true),
+    RANDOM_THING(1, true);
 
     /**
      * The amount of experience given to the player
