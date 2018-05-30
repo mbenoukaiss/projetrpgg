@@ -199,7 +199,7 @@ public class Main extends Application {
         NPC Taliyah = new NPC("Taliyah", Asia, EntityType.VILLAGER, false, 100, 10, "You are now ready to improve your engine\nType \"improve engine\" " +
                 "in order to improve it.\nTaliyah has a new Quest for you : A bad guy is stealing stuff in bombai, stop him and you'll gain his hatchet! " +
                 "You may now start" +
-                ": first fight!");
+                ": first fight! Once you have finished this quest you may talk to the villager in Bombai.");
         NPC badGuy = new NPC("Bad Guy", Bombai, EntityType.VAMPIRE, true, 100, 20, "I'm going to kill you!");
         NPC villagerBombai = new NPC("Bombai Villager", Bombai, EntityType.VILLAGER, false, 100, 10, "Please save us!" +
                 " When you've done so you'll be able to travel to mars in order to continue your adventure!" );
