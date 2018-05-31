@@ -12,4 +12,26 @@ public enum Direction {
     NORTH,
     EST,
     WEST;
+
+    /**
+     * Getter for the opposite direction
+     * of this direction.
+     *
+     * @return The opposite direction
+     */
+    public Direction opposite() {
+        switch(this) {
+            case NORTH:
+                return SOUTH;
+            case EST:
+                return WEST;
+            case SOUTH:
+                return NORTH;
+            case WEST:
+                return EST;
+        }
+
+        return null;
+    }
+
 }

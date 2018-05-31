@@ -323,25 +323,8 @@ public class Region implements Describable {
      * @param direction the direction where the @param r is.
      */
     public void linkToDirection(Region r, Direction direction) {
-        switch (direction) {
-            case EST:
-                this.regionOnDirection.put(Direction.EST, r);
-                r.regionOnDirection.put(Direction.WEST, this);
-                break;
-            case WEST:
-                this.regionOnDirection.put(Direction.WEST, r);
-                r.regionOnDirection.put(Direction.EST, this);
-                break;
-            case NORTH:
-                this.regionOnDirection.put(Direction.NORTH, r);
-                r.regionOnDirection.put(Direction.SOUTH, this);
-                break;
-            case SOUTH:
-                this.regionOnDirection.put(Direction.SOUTH, r);
-                r.regionOnDirection.put(Direction.NORTH, this);
-                break;
-        }
-
+        this.regionOnDirection.put(direction, r);
+        r.regionOnDirection.put(direction.opposite(), this);
     }
 
     public List<Item> getItemsNeeded() {
