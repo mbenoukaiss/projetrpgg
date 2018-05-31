@@ -25,7 +25,8 @@ public enum Item implements Describable {
     METAL_SCRAP("Metal scrap", 4, ItemType.UTILS),
     CLIMBING_SHOES("Climbind shoes", 1, ItemType.UTILS),
     SHARP_SHIP_FRAGMENT("Sharp ship fragment", 50, ItemType.DMG),
-    MARTIAN_SWORD("לשון", 65, ItemType.DMG);
+    MARTIAN_SWORD("Martian Swordן", 65, ItemType.DMG),
+    LEGENDARY_BOOK("Legendary book", 0, ItemType.UTILS);
 
     /**
      * The amount of additional damage this

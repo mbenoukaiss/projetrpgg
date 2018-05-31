@@ -105,15 +105,14 @@ public class Main extends Application {
         Planet mars = new Planet(2, "Mars", null, 1);
         regions.add(mars);
         mars.addItemNeeded(Item.HATCHET);
-        Planet moon = new Planet(3, "Moon", null, 1);
+        Planet moon = new Planet(3, "Moon", null, 2);
         regions.add(moon);
-        moon.addItemNeeded(Item.FLASHLIGHT);
         Planet venus = new Planet(4, "Venus", null, 2);
         regions.add(venus);
-        Planet saturn = new Planet(5, "Saturn", null, 3);
+        Planet saturn = new Planet(5, "Saturn", null, 0);
+        saturn.setLandingRegion(new Region(54, "Heaven", "Heaven", saturn, saturn.getShipLevelRequired()));
         regions.add(saturn);
-        Planet jupiter = new Planet(6, "Jupiter", null, 2);
-        regions.add(jupiter);
+        saturn.addItemNeeded(Item.LEGENDARY_BOOK);
 
         Region America = new Region(7, "America", "This is the America continent.", earth, 0);
         Region Europe = new Region(8, "Europe", "This is the Europe continent.", earth, 0);
@@ -153,7 +152,7 @@ public class Main extends Application {
         NPC master = new NPC("Paul", Berlin, EntityType.VILLAGER, false, 100, 10, "Hello Hervé, as you may already know, " +
                 "the earth can no longer welcome the human race, we are being too numerous. Nature is taking over our planet, and everyone will die if you do not " +
                 "find another planet where we can live peacefully and start over humanity. I'm no expert but i know who is. You must head to London and talk to Saul" +
-                ", he'll tell you more about this.");
+                ", he'll tell you more about this.\n");
         Quest briefing = new Quest(10, "Briefing", "You must be notified about whats going on!", 0);
         Objective<NPC> talkToMaster = new Objective<>("Talk to the space agency's headquarters's master", ObjectiveType.TALK);
         briefing.linkObjective(talkToMaster);
@@ -170,7 +169,7 @@ public class Main extends Application {
         NPC Zahir = new NPC("Zahir", saulapp, EntityType.VILLAGER, false, 100, 10, "I see you've trained a bit, Hervé, i can tell that you are ready now! " +
                 "There is a planet located far from here, you need to find a way to get there, and once you do, you'll be able to save humanity. But first, you need some ship improvement : find a toolkit, " +
                 "and improve your engine! In this very room you'll find a teleporter that will lead you to Asia, there you'll find the toolkit. But first, you'll need to repair it : find a screwdriver and repair" +
-                "the teleporter. (It is in America uhu)");
+                " the teleporter. (It is in America uhu)");
         ArrayList<Item> tpAsiaRequired = new ArrayList<>();
         tpAsiaRequired.add(Item.SCREWDRIVER);
         Teleporter tpToAsia = new Teleporter(1, "Teleporter To Asia", saulapp, false, tpAsiaRequired);
@@ -199,9 +198,9 @@ public class Main extends Application {
         NPC Taliyah = new NPC("Taliyah", Asia, EntityType.VILLAGER, false, 100, 10, "You are now ready to improve your engine\nType \"improve engine\" " +
                 "in order to improve it.\nTaliyah has a new Quest for you : A bad guy is stealing stuff in bombai, stop him and you'll gain his hatchet! " +
                 "You may now start" +
-                ": first fight! Once you have finished this quest you may talk to the villager in Bombai.");
-        NPC badGuy = new NPC("Bad Guy", Bombai, EntityType.VAMPIRE, true, 100, 20, "I'm going to kill you!");
-        NPC villagerBombai = new NPC("Bombai Villager", Bombai, EntityType.VILLAGER, false, 100, 10, "Please save us!" +
+                ": first fight! Once you have finished this quest you may talk to my brother in Bombai, he'll tell you where to go.");
+        NPC badGuy = new NPC("Bad Guy", Bombai, EntityType.HOSTILE_VILLAGER, true, 100, 20, "I'm going to kill you!");
+        NPC taliyahBrother = new NPC("Taliyah's brother", Bombai, EntityType.VILLAGER, false, 100, 10, "Please save me!" +
                 " When you've done so you'll be able to travel to mars in order to continue your adventure!" );
         Quest firstFight = new Quest(20, "first fight", "Stop the bad guy in Bombai", 1);
         Objective<NPC> killBadGuy = new Objective<>("Stop the bad Guy", ObjectiveType.KILL);
@@ -218,7 +217,7 @@ public class Main extends Application {
         //MMMMAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRRRSSSSSSSSSSS
         ////////////////////////////////////////////////////////////////
         int marsHP = 50, marsDamage = 30;
-        Region landingPlatform = new Region(1000, "Landing platform", "You are on the landing platform of Mars, it seems really calm, do you see that cliff ?.", mars, 0);
+        Region landingPlatform = new Region(1000, "Landing platform", "You are on the landing platform of Mars, it seems really calm, do you see that cliff ?", mars, 0);
 
         Region terryposFarm = new Region(1010, "Terrypo's farm", "A few weird potatoes are growing here, someone is taking care of this farm.", mars, 0);
         terryposFarm.addItemToInventory(Item.GREEN_POTATO);
@@ -232,7 +231,7 @@ public class Main extends Application {
         daglysvalCliff.addEntity(new NPC("Nfroy", daglysvalCliff, EntityType.MARTIAN, false, marsHP+5, marsDamage+5, "...my brothers became... crazy... run! You may now start your first quest on Mars : Kill the twins"));
         daglysvalCliff.linkToDirection(landingPlatform, Direction.EST);
 
-        Quest killTheTwins = new Quest(120, "Kill the twins", "Nfroy needs you to kill the two twins right next to him", 3);
+        Quest killTheTwins = new Quest(120, "Kill the twins", "Nfroy needs you to kill the two twins right next to him", 2);
         killTheTwins.addObserver(mainMap.getMainCharacter());
         killTheTwins.linkRewardedItem(Item.CLIMBING_SHOES);
         Objective<NPC> killNfrey = new Objective<>("Kill Nfrey", ObjectiveType.KILL);
@@ -296,15 +295,69 @@ public class Main extends Application {
         frozenLake.addEntity(new NPC("Evil climbing shoe", frozenLake, EntityType.RANDOM_THING, false, 10, 0, ""));
         frozenLake.addEntity(new NPC("Evil climbing shoe", frozenLake, EntityType.RANDOM_THING, false, 10, 0, ""));
 
-        Quest betterShip = new Quest(150, "Better ship", "You need a few upgrades in order to go further", 4);
+        Quest betterShip = new Quest(150, "Better ship", "You needed a few upgrades in order to go further, matteo gave you the items you need" +
+                "ed to improve your radar and your reactors", 2);
         betterShip.addObserver(mainMap.getMainCharacter());
         betterShip.linkRewardedItem(Item.MARTIAN_SWORD);
         Objective<Item> somePotatoes = new Objective<>("Get some potatoes", ObjectiveType.PICKUP);
+        somePotatoes.addObserver(betterShip);
         somePotatoes.setConcernedObject(Item.GREEN_POTATO);
         betterShip.linkObjective(somePotatoes);
         Objective<NPC> killMatteo = new Objective<>("Get rid of Matteo", ObjectiveType.KILL);
+        killMatteo.addObserver(betterShip);
         killMatteo.setConcernedObject(matteo);
         betterShip.linkObjective(killMatteo);
+        betterShip.linkRewardedItem(Item.KNIFE);
+        betterShip.linkRewardedItem(Item.FLASHLIGHT);
+        mainMap.addQuest(betterShip);
+        mainMap.addQuest(killTheTwins);
+
+
+        ////////////////////////////////////////////////////////////////////////////////
+        //MMMMMMMMMMMMMMMMMMMMMMMMMMMOOOOOOOOOOOOOOOOOOOOOOOOONNNNNNNNNNNNNNNNNNNNNNNN//
+        ////////////////////////////////////////////////////////////////////////////////
+        Region moonLandingRegion = new Region(1501, "Moon's landing region", "This is the landing region of the planet moon, Everything" +
+                " seems calm, but you hear a roaring machine sound coming from the crater nearby", moon, moon.getShipLevelRequired());
+        Region crater = new Region(1640, "Crater", "A crater on the moon, you see a generator and you think to yourself what could it be ? " +
+                "Maybe you should try repairing it.\nYou may now start this quest : inspect.", moon, moon.getShipLevelRequired());
+        Teleporter generator = new Teleporter(122, "Generator", crater, false, new ArrayList<>());
+        Region venusLandingRegion = new Region(3565, "Venu's landing region", "You teleported to the region Venus, you dont know where" +
+                "to go or what to do, but it seems as an entity wants to communicate with you", venus, venus.getShipLevelRequired());
+        Teleporter generatorFromVenus = new Teleporter(445, "Teleporter to the moon", venusLandingRegion, true, new ArrayList<>());
+        generator.link(generatorFromVenus);
+        generator.addItemToRepair(Item.SCREWDRIVER);
+        generator.addItemToRepair(Item.TOOLKIT);
+        generator.addItemToRepair(Item.SCREW);
+        Region moonCave = new Region(54, "Cave", "A cave in the crater, maybe you should see what's inside", crater, crater.getShipLevelRequired());
+        moonCave.addItemToInventory(Item.SCREW);
+        moonCave.addItemToInventory(Item.TOOLKIT);
+        Region otherCave = new Region(454, "Cave connected to the other one", "Another cave, what could be inside", moonCave, moonCave.getShipLevelRequired());
+        Quest inspect = new Quest(56, "Inspect", "As you repair the generator, you realize its a teleporter ! What could be on the other side ??", 3);
+        Objective<Teleporter> takeGenerator = new Objective<>("Repair the generator", ObjectiveType.REPAIR);
+        takeGenerator.addObserver(inspect);
+        takeGenerator.setConcernedObject(generator);
+        inspect.addObserver(player);
+        inspect.linkObjective(takeGenerator);
+        mainMap.addQuest(inspect);
+
+        /////////////////////////////////////////////////////////////////////////////////
+        //VVVVVVVVVVVVVVVVVVVVVVEEEEEEEEEEEEEEEEEEENUUUUUUUUUUUUUUUUSSSSSSSSSSSSSSSSSSS//
+        /////////////////////////////////////////////////////////////////////////////////
+        venusLandingRegion.addEntity(new NPC("Mysterious being", venusLandingRegion, EntityType.VAMPIRE, true, 150, 20, "......." +
+                "I'm mysterious...Goo to the forest....You'll find something very interesting....."));
+        Region forest = new Region(455, "Magic Forest", "A magic forest, beautiful, but as you enter it : You see the same entity, and it does not look very happy." +
+                "\nYou may now start your last quest : Final Battle", venus, venus.getShipLevelRequired());
+        NPC finalEnnemy = new NPC("Evil being", forest, EntityType.BOSS_HOSTILE, true, 200, 30, "You'll never get out of this planet alive!!!!");
+        Quest finalBattle = new Quest(5000, "Final Battle", "You fight the evil entity, and are rewarded a book...." +
+                "You open your eyes wide open as you read the revelation of the book.... Saturne is a livable Planet, you need to go there as fast as possible", 3);
+        Objective<NPC> killBoss = new Objective("Kill the final boss", ObjectiveType.KILL);
+        killBoss.setConcernedObject(finalEnnemy);
+        killBoss.addObserver(finalBattle);
+        finalBattle.linkObjective(killBoss);
+        finalBattle.addObserver(player);
+        finalBattle.linkRewardedItem(Item.LEGENDARY_BOOK);
+        mainMap.addQuest(finalBattle);
+
 
         //Player initialization.
         Ship playerShip = new Ship(22, "Hervé's Ship", null, 50);

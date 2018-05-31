@@ -223,11 +223,18 @@ public class CommandListener {
         if (!this.player.isInFight()) {
             if (q != null) {
                 if (this.player.getCurrentQuest() == null) {
-                    if (this.player.getLevel() >= q.getLevelRequired()) {
+                    boolean isFinished = true;
+                    for(Objective o : q.getObjectives()) {
+                        if (!o.isFinished()) {
+                            isFinished = false;
+                        }
+                    }
+                    if (this.player.getLevel() >= q.getLevelRequired() && !isFinished) {
                         this.player.setCurrentQuest(q);
                         return "You started this quest :" + q.getName() + "!";
                     } else {
-                        return "You dont meet the required level in order to start this quest you need to be level " + q.getLevelRequired() +".";
+                        return "You dont meet the required level in order to start this quest you need to be level " + q.getLevelRequired() +"." +
+                                "Or maybe you already finished this quest.";
                     }
                 } else {
                     return "You may only start one quest at a time, finish the one you started.";
@@ -578,7 +585,7 @@ public class CommandListener {
                 return("You cant take to this teleporter" + "." + " Check if you have repaired it AND the linked teleporter" +
                 "Try repairing it with the repair command.");
             } else { // If the region doesnt exists and/or is not connected to the player's location
-                return("Error : check if this location exists.");
+                return("Error : check if this teleporter exists.");
             }
         } else { // If the player is engaged in a fight
             return("Error : You can only fight or flee.");
@@ -599,6 +606,35 @@ public class CommandListener {
                     }
                 }
                 if (itemsNeeded.isEmpty()) {
+                    Objective objectiveFound = null;
+                    boolean isConcerned = false;
+                    if (this.player.getCurrentQuest() != null) {
+                        for (Objective o : this.player.getCurrentQuest().getObjectives()) {
+                            if (o.getType() == ObjectiveType.REPAIR && o.getConcernedObject() == t) {
+                                objectiveFound = o;
+                                isConcerned = true;
+                            }
+                        }
+                    }
+                    if (isConcerned) {
+                        Quest savedQuest = this.player.getCurrentQuest();
+                        t.repair();
+                        objectiveFound.finish();
+                        if (this.player.getCurrentQuest() == null) {
+                            String message = "";
+                            if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
+                                message+=this.canLevelUp();
+                            }
+                            message += ("You repaired " + t.getName() + ".") +
+                                    ("You finished this objective : " + objectiveFound.getDescription() +
+                                            ". You have now finished this quest : " + savedQuest.getDescription() + "!");
+                            t.repair();
+                            return message;
+                        }
+                        t.repair();
+                        return("You repaired " + t.getName() + ".") +
+                                ("You finished this objective : " + objectiveFound.getDescription() + ".");
+                    }
                     t.repair();
                     return("You repaired this teleporter : " + t.getName());
                 } else {
@@ -803,6 +839,11 @@ public class CommandListener {
                         if (this.game.getMap().getRegions().contains(r)) {
                             this.player.move(((Planet) r).getLandingRegion());
                             this.game.getMap().lowerHumanCount();
+                            if (r.getName().equalsIgnoreCase("saturn")) {
+                                return "You enter Saturn's gas fog, and your ship starts to shake and......BIP BIP BIP..." +
+                                        "CRASH INCOMING... You close your eyes awaiting for the choc. WHen it finally comes you are lucky enough to survive" +
+                                        "....You oopen your eyes only to discover a green and livable ground. You made it.";
+                            }
                             return ("You traveled to the region : " + r.getName() + ". You landed on : " + ((Planet) r).getLandingRegion().describe());
                         } else {
                             ArrayList<Item> regionItems2 = new ArrayList<>(r.getRoot().getItemsNeeded());

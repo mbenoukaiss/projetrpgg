@@ -42,9 +42,9 @@
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                  <TextArea id="logs" fx:id="locationField" editable="false" prefHeight="72.0" />
+                  <TextArea id="logs" fx:id="locationField" editable="false" prefHeight="102.0" prefWidth="555.0" />
                   <TextFlow id="regionDescription" prefHeight="20.0" VBox.vgrow="NEVER" />
-                  <TextArea id="logs" fx:id="textLogs" editable="false" VBox.vgrow="ALWAYS" />
+                  <TextArea id="logs" fx:id="textLogs" editable="false" prefHeight="278.0" prefWidth="555.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             <TextField fx:id="commandField" onKeyReleased="#enterCommand" promptText="Command" GridPane.columnIndex="1" GridPane.rowIndex="1" />

@@ -9,5 +9,6 @@ public enum ObjectiveType {
     TALK,
     KILL,
     PICKUP,
-    EQUIP
+    EQUIP,
+    REPAIR
 }

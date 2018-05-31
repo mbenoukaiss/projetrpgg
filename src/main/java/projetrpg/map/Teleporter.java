@@ -146,16 +146,6 @@ public class Teleporter implements Describable {
     }
 
     /**
-     * Adds an item to the list of required items
-     * to repair this teleporter.
-     *
-     * @param item The item to add.
-     */
-    public void addRequiredItem(Item item) {
-        itemsNeededToRepair.add(item);
-    }
-
-    /**
      * Repairs the teleporter.
      */
     public void repair() {
