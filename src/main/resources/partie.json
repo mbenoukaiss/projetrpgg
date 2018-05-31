@@ -209,14 +209,14 @@
       "id": 1,
       "name": "Earth",
       "description": "",
-      "shipRequired": 0,
+      "shiprequired": 0,
       "directions": {},
       "childregions": [
         {
           "id": 7,
           "name": "America",
           "description": "This is the America continent.",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "EST": 8
           },
@@ -225,7 +225,7 @@
               "id": 13,
               "name": "Cleveland",
               "description": "The city of Cleveland",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {
                 "EST": 12,
                 "SOUTH": 14
@@ -236,13 +236,14 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             },
             {
               "id": 12,
               "name": "New-York",
               "description": "The city of New York",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {
                 "WEST": 13
               },
@@ -252,13 +253,14 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             },
             {
               "id": 14,
               "name": "San Antonio",
               "description": "The city of San Antonio",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {
                 "NORTH": 13
               },
@@ -268,7 +270,8 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             }
           ],
           "entities": [],
@@ -278,13 +281,14 @@
             "items": [
               "SCREWDRIVER"
             ]
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 10,
           "name": "Oceania",
           "description": "This is the Oceania continent.",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "NORTH": 9
           },
@@ -294,13 +298,14 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 19,
           "name": "Antarctica",
           "description": "This is the Antarctica continent",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "SOUTH": 9
           },
@@ -310,13 +315,14 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 9,
           "name": "Asia",
           "description": "This is the Asia continent.",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "SOUTH": 10,
             "NORTH": 19,
@@ -327,7 +333,7 @@
               "id": 19,
               "name": "Bombai",
               "description": "The city of Bombai",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {},
               "childregions": [],
               "entities": [
@@ -356,7 +362,8 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             }
           ],
           "entities": [
@@ -387,13 +394,14 @@
             "items": [
               "TOOLKIT"
             ]
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 11,
           "name": "Africa",
           "description": "This is the Africa continent.",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "NORTH": 8
           },
@@ -402,7 +410,7 @@
               "id": 20,
               "name": "St-Petersburg",
               "description": "The city of St-Petersburg",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {},
               "childregions": [],
               "entities": [],
@@ -410,7 +418,8 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             }
           ],
           "entities": [],
@@ -418,13 +427,14 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 8,
           "name": "Europe",
           "description": "This is the Europe continent.",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "EST": 9,
             "SOUTH": 11,
@@ -435,7 +445,7 @@
               "id": 18,
               "name": "Berlin",
               "description": "The city of Berlin",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {
                 "WEST": 16
               },
@@ -456,13 +466,14 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             },
             {
               "id": 17,
               "name": "London",
               "description": "The city of London",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {
                 "SOUTH": 16
               },
@@ -471,7 +482,7 @@
                   "id": 21,
                   "name": "Saul\u0027s appartments",
                   "description": "The appartment of Saul",
-                  "shipRequired": 0,
+                  "shiprequired": 0,
                   "directions": {},
                   "childregions": [],
                   "entities": [
@@ -510,7 +521,8 @@
                     "items": [
                       "LASERGUN"
                     ]
-                  }
+                  },
+                  "requireditems": []
                 }
               ],
               "entities": [
@@ -529,13 +541,14 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             },
             {
               "id": 16,
               "name": "Paris",
               "description": "The city of Paris",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {
                 "EST": 18,
                 "NORTH": 17
@@ -557,13 +570,14 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             },
             {
               "id": 22,
               "name": "Hervé\u0027s Ship",
               "description": "",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {},
               "childregions": [],
               "entities": [],
@@ -572,6 +586,7 @@
                 "maxCapacity": 10,
                 "items": []
               },
+              "requireditems": [],
               "type": "ship",
               "basefuel": 50,
               "actualfuel": 50,
@@ -588,7 +603,8 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         }
       ],
       "entities": [],
@@ -608,6 +624,7 @@
         "maxCapacity": 10,
         "items": []
       },
+      "requireditems": [],
       "type": "planet",
       "landingRegion": 8
     },
@@ -615,14 +632,14 @@
       "id": 2,
       "name": "Mars",
       "description": "",
-      "shipRequired": 1,
+      "shiprequired": 1,
       "directions": {},
       "childregions": [
         {
           "id": 1000,
           "name": "Landing platform",
           "description": "You are on the landing platform of Mars, it seems really calm, do you see that cliff ?.",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "NORTH": 1003,
             "WEST": 1001
@@ -633,13 +650,14 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 1003,
           "name": "Cave entrance",
           "description": "???",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "SOUTH": 1000
           },
@@ -648,7 +666,7 @@
               "id": 1006,
               "name": "Cave inside east",
               "description": "???",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {
                 "WEST": 1004
               },
@@ -657,7 +675,7 @@
                   "id": 1007,
                   "name": "Frozen lake",
                   "description": "It\u0027s cold here, there seems to be some frozen ice ! And.. OH!",
-                  "shipRequired": 0,
+                  "shiprequired": 0,
                   "directions": {},
                   "childregions": [],
                   "entities": [
@@ -696,7 +714,8 @@
                   "inventory": {
                     "maxCapacity": 10,
                     "items": []
-                  }
+                  },
+                  "requireditems": []
                 }
               ],
               "entities": [
@@ -715,13 +734,14 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             },
             {
               "id": 1004,
               "name": "Cave inside",
               "description": "???",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {
                 "EST": 1006,
                 "NORTH": 1007,
@@ -733,13 +753,14 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             },
             {
               "id": 1005,
               "name": "Cave inside west",
               "description": "???",
-              "shipRequired": 0,
+              "shiprequired": 0,
               "directions": {
                 "EST": 1004
               },
@@ -748,7 +769,7 @@
                   "id": 1007,
                   "name": "Terrypo\u0027s hole",
                   "description": "???",
-                  "shipRequired": 0,
+                  "shiprequired": 0,
                   "directions": {
                     "SOUTH": 1004
                   },
@@ -780,7 +801,8 @@
                       "GREEN_POTATO",
                       "GREEN_POTATO"
                     ]
-                  }
+                  },
+                  "requireditems": []
                 }
               ],
               "entities": [],
@@ -788,7 +810,8 @@
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
-              }
+              },
+              "requireditems": []
             }
           ],
           "entities": [
@@ -812,13 +835,14 @@
               "METAL_SCRAP",
               "METAL_SCRAP"
             ]
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 1010,
           "name": "Terrypo\u0027s farm",
           "description": "A few weird potatoes are growing here, someone is taking care of this farm.",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {},
           "childregions": [],
           "entities": [],
@@ -829,13 +853,14 @@
               "GREEN_POTATO",
               "GREEN_POTATO"
             ]
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 1002,
           "name": "Daglysval plateau",
           "description": "It seems like a ship crashed on this planet a while ago, there are fragments everywhere, from here to the cave, around the landing platform...",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "EST": 1001
           },
@@ -873,13 +898,16 @@
               "SCREW",
               "SCREW"
             ]
-          }
+          },
+          "requireditems": [
+            "CLIMBING_SHOES"
+          ]
         },
         {
           "id": 1001,
           "name": "Daglysval cliff",
           "description": "This sharp cliff can\u0027t be climbed with your current gear, beware the monsters...",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {
             "EST": 1000,
             "WEST": 1002
@@ -921,7 +949,8 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         }
       ],
       "entities": [],
@@ -930,6 +959,9 @@
         "maxCapacity": 10,
         "items": []
       },
+      "requireditems": [
+        "HATCHET"
+      ],
       "type": "planet",
       "landingRegion": 1000
     },
@@ -937,28 +969,28 @@
       "id": 3,
       "name": "Moon",
       "description": "",
-      "shipRequired": 3,
+      "shiprequired": 3,
       "directions": {},
       "childregions": [
         {
           "id": 1640,
           "name": "Crater",
           "description": "A crater on the moon, you see a generator and you think to yourself what could it be ? Maybe you should try repairing it.\nYou may now start this quest : inspect.",
-          "shipRequired": 3,
+          "shiprequired": 3,
           "directions": {},
           "childregions": [
             {
               "id": 54,
               "name": "Cave",
               "description": "A cave in the crater, maybe you should see what\u0027s inside",
-              "shipRequired": 3,
+              "shiprequired": 3,
               "directions": {},
               "childregions": [
                 {
                   "id": 454,
                   "name": "Cave connected to the other one",
                   "description": "Another cave, what could be inside",
-                  "shipRequired": 3,
+                  "shiprequired": 3,
                   "directions": {},
                   "childregions": [],
                   "entities": [],
@@ -966,7 +998,8 @@
                   "inventory": {
                     "maxCapacity": 10,
                     "items": []
-                  }
+                  },
+                  "requireditems": []
                 }
               ],
               "entities": [],
@@ -977,7 +1010,8 @@
                   "SCREW",
                   "TOOLKIT"
                 ]
-              }
+              },
+              "requireditems": []
             }
           ],
           "entities": [],
@@ -997,13 +1031,14 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 1501,
           "name": "Moon\u0027s landing region",
           "description": "This is the landing region of the planet moon, Everything seems calm, but you hear a roaring machine sound coming from the crater nearby",
-          "shipRequired": 3,
+          "shiprequired": 3,
           "directions": {},
           "childregions": [],
           "entities": [],
@@ -1011,7 +1046,8 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         }
       ],
       "entities": [],
@@ -1020,6 +1056,7 @@
         "maxCapacity": 10,
         "items": []
       },
+      "requireditems": [],
       "type": "planet",
       "landingRegion": 1501
     },
@@ -1027,14 +1064,14 @@
       "id": 4,
       "name": "Venus",
       "description": "",
-      "shipRequired": 2,
+      "shiprequired": 2,
       "directions": {},
       "childregions": [
         {
           "id": 3565,
           "name": "Venu\u0027s landing region",
           "description": "You teleported to the region Venus, you dont know whereto go or what to do, but it seems as an entity wants to communicate with you",
-          "shipRequired": 2,
+          "shiprequired": 2,
           "directions": {},
           "childregions": [],
           "entities": [
@@ -1061,13 +1098,14 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 4000,
           "name": "Hot rock",
           "description": "wow it\u0027s hot",
-          "shipRequired": 3,
+          "shiprequired": 3,
           "directions": {},
           "childregions": [],
           "entities": [],
@@ -1075,13 +1113,14 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         },
         {
           "id": 455,
           "name": "Magic Forest",
           "description": "A magic forest, beautiful, but as you enter it : You see the same entity, and it does not look very happy.\nYou may now start your last quest : Final Battle",
-          "shipRequired": 2,
+          "shiprequired": 2,
           "directions": {},
           "childregions": [],
           "entities": [
@@ -1100,7 +1139,8 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         }
       ],
       "entities": [],
@@ -1109,6 +1149,7 @@
         "maxCapacity": 10,
         "items": []
       },
+      "requireditems": [],
       "type": "planet",
       "landingRegion": 4000
     },
@@ -1116,14 +1157,14 @@
       "id": 5,
       "name": "Saturn",
       "description": "",
-      "shipRequired": 0,
+      "shiprequired": 0,
       "directions": {},
       "childregions": [
         {
           "id": 54,
           "name": "Heaven",
           "description": "Heaven",
-          "shipRequired": 0,
+          "shiprequired": 0,
           "directions": {},
           "childregions": [],
           "entities": [],
@@ -1131,7 +1172,8 @@
           "inventory": {
             "maxCapacity": 10,
             "items": []
-          }
+          },
+          "requireditems": []
         }
       ],
       "entities": [],
@@ -1140,6 +1182,9 @@
         "maxCapacity": 10,
         "items": []
       },
+      "requireditems": [
+        "LEGENDARY_BOOK"
+      ],
       "type": "planet",
       "landingRegion": 54
     }

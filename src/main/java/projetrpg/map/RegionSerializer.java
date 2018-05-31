@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import projetrpg.entities.Entity;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
+import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Ship;
 
 import java.lang.reflect.Type;
@@ -18,7 +19,7 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         reg.addProperty("id", region.getId());
         reg.addProperty("name", region.getName());
         reg.addProperty("description", region.description);
-        reg.addProperty("shipRequired", region.shipLevelRequired);
+        reg.addProperty("shiprequired", region.shipLevelRequired);
 
         JsonObject directions = new JsonObject();
         for(Map.Entry<Direction, Region> directionRegionEntry : region.getRegionOnDirection().entrySet()) {
@@ -38,6 +39,9 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         JsonElement inventory = jsonSerializationContext.serialize(region.getInventory());
         reg.add("inventory", inventory);
 
+        JsonArray requireditems = jsonSerializationContext.serialize(region.itemsNeeded).getAsJsonArray();
+        reg.add("requireditems", requireditems);
+
         return reg;
     }
 
@@ -49,7 +53,7 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
         region.id = jsonRegion.get("id").getAsInt();
         region.name = jsonRegion.get("name").getAsString();
         region.description = jsonRegion.get("description").getAsString();
-        region.shipLevelRequired = jsonRegion.get("shipRequired").getAsInt();
+        region.shipLevelRequired = jsonRegion.get("shiprequired").getAsInt();
 
         Type directionsMapType = new TypeToken<Map<Direction, Integer>>(){}.getType();
         MapSerializer.addRegion(jsonRegion.get("id").getAsInt(),
@@ -83,6 +87,11 @@ public class RegionSerializer implements JsonSerializer<Region>, JsonDeserialize
 
         Inventory inv = deserializationContext.deserialize(jsonRegion.get("inventory"), Inventory.class);
         inv.transferContent(region.getInventory());
+
+        region.itemsNeeded = new ArrayList<>();
+        for(JsonElement element : jsonRegion.get("requireditems").getAsJsonArray()) {
+            region.itemsNeeded.add(deserializationContext.deserialize(element, Item.class));
+        }
 
         return region;
     }
