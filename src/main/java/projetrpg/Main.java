@@ -72,10 +72,7 @@ public class Main extends Application {
     public void launchMainGame(Save save) {
         this.primaryStage.setTitle("Galaxy Explorer");
 
-        Save testSave = new Save(null, createTestMap(), Calendar.getInstance(), Calendar.getInstance());
-
-        Game game = new Game(testSave);
-
+        Game game = new Game(save);
 
         GameView vue = null;
         try {
@@ -163,8 +160,8 @@ public class Main extends Application {
 
 
         NPC Saul  = new NPC("Saul", London, EntityType.VILLAGER, false, 100, 10, "Oh ! You must be Hervé " +
-                "! I'm Saul, you are about to begin your journey towards saving the universe. But first you gotta be ready : in my apartments you'll find" +
-                "a laser gun and a practise target. Gear up and show me whats you've got ! Then you'll talk to my brother, Zahir, located in my apartment.\n You may now start this new quest : Gear Up ! ");
+                "! I'm Saul, you are about to begin your journey towards saving the universe. But first you got to be ready : in my apartments you'll find " +
+                "a laser gun and a target practice. Gear up and show me what you've got ! Then you'll talk to my brother, Zahir, located in my apartment.\n You may now start this new quest : Gear Up ! ");
         Region saulapp = new Region(21, "Saul's appartments", "The appartment of Saul", London, 0);
 
         NPC Zahir = new NPC("Zahir", saulapp, EntityType.VILLAGER, false, 100, 10, "I see you've trained a bit, Hervé, i can tell that you are ready now! " +

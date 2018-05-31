@@ -82,10 +82,23 @@ public class GameController implements Initializable {
     private TextArea textLogs;
 
     /**
+     * The list view showing the objectives
+     * the player has to complete.
+     */
+    @FXML
+    private ListView<Text> objectivesDisplay = new ListView<>();
+
+    /**
      * The list view showing the inventory.
      */
     @FXML
     private ListView<Text> inventoryDisplay = new ListView<>();
+
+    /**
+     * The list of the spells.
+     */
+    @FXML
+    private ListView<Text> spellsDisplay = new ListView<>();
 
     /**
      * The text area showing the location of
@@ -93,20 +106,6 @@ public class GameController implements Initializable {
      */
     @FXML
     private TextArea locationField = new TextArea("");
-
-    /**
-     * The list view showing the objectives
-     * the player has to complete.
-     */
-    @FXML
-    private ListView<Text> objectivesDisplay = new ListView<>();
-
-
-    /**
-     * The list of the spells.
-     */
-    @FXML
-    private ListView<Text> spellsDisplay = new ListView<>();
 
     @FXML
     private Canvas mapDisplayCanvas = new Canvas();
@@ -130,24 +129,11 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         textLogs.setWrapText(true);
-        final IntegerProperty i = new SimpleIntegerProperty(0);
-        Timeline timeline = new Timeline();
+
         String finalLogs = "You hear an astonishing sound, almost as if an earthquake was ongoing, you start panicking " +
                 "but you quickly take over your mind and think : WHATS GOING ON IM GONNA DIE AAAAAAAAAAAH.. Okay what should i do" +
                 "? Let's try and talk to my brother robert, he must be in Paris.\nType help in order to see the user's guide.";
-        KeyFrame keyFrame = new KeyFrame(
-                Duration.seconds(0.02),
-                event -> {
-                    if (i.get() > finalLogs.length()) {
-                        timeline.stop();
-                    } else {
-                        textLogs.setText(finalLogs.substring(0, i.get()));
-                        i.set(i.get() + 1);
-                    }
-                });
-        timeline.getKeyFrames().add(keyFrame);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        graduallyDisplayText(finalLogs);
         inventoryDisplay();
         locationDisplay();
         objectivesDisplay();
@@ -175,7 +161,7 @@ public class GameController implements Initializable {
      * Method called when the home
      * button is clicked.
      */
-    public void buttonHome() throws IOException { main.launchMenu(); }
+    public void buttonHome() { main.launchMenu(); }
 
     /**
      * Method called when the save
@@ -226,23 +212,9 @@ public class GameController implements Initializable {
                 }
 
                 textLogs.setWrapText(true);
-                final IntegerProperty i = new SimpleIntegerProperty(0);
-                Timeline timeline = new Timeline();
-                String finalLogs = logs;
-                KeyFrame keyFrame = new KeyFrame(
-                        Duration.seconds(0.02),
-                        event -> {
-                            if (i.get() > finalLogs.length()) {
-                                timeline.stop();
-                            } else {
-                                textLogs.setText(finalLogs.substring(0, i.get()));
-                                i.set(i.get() + 1);
-                            }
-                        });
-                timeline.getKeyFrames().add(keyFrame);
-                timeline.setCycleCount(Animation.INDEFINITE);
-                timeline.play();
                 commandField.clear();
+
+                graduallyDisplayText(logs);
                 inventoryDisplay();
                 inventoryDisplay();
                 locationDisplay();
@@ -278,12 +250,13 @@ public class GameController implements Initializable {
      */
     public void  objectivesDisplay() {
         objectivesDisplay.getItems().clear();
+
         if (game.save.getMap().getMainCharacter().getCurrentQuest() != null) {
-            insertListCell(objectivesDisplay, this.game.save.getMap().getMainCharacter().getCurrentQuest().getName() + ":");
+            insertListCell(objectivesDisplay, this.game.save.getMap().getMainCharacter().getCurrentQuest().getName());
             insertListCell(objectivesDisplay, "Objectives : ");
             for (Objective o : game.save.getMap().getMainCharacter().getCurrentQuest().getObjectives()) {
                 if (!o.isFinished()) {
-                    insertListCell(objectivesDisplay, "-" + o.getDescription());
+                    insertListCell(objectivesDisplay,  o.getDescription());
                 }
             }
         }
@@ -333,8 +306,29 @@ public class GameController implements Initializable {
     private void insertListCell(ListView<Text> l, String text) {
         Text t = new Text(text);
         t.setFill(Color.WHITE);
+        t.minHeight(40);
         t.wrappingWidthProperty().bind(l.widthProperty());
         l.getItems().add(t);
+    }
+
+    public void graduallyDisplayText(String finalLogs) {
+        final IntegerProperty i = new SimpleIntegerProperty(0);
+        Timeline timeline = new Timeline();
+
+        KeyFrame keyFrame = new KeyFrame(
+                Duration.seconds(0.02),
+                event -> {
+                    if (i.get() > finalLogs.length()) {
+                        timeline.stop();
+                    } else {
+                        textLogs.setText(finalLogs.substring(0, i.get()));
+                        i.set(i.get() + 1);
+                    }
+                });
+
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
 }

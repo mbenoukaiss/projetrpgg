@@ -66,7 +66,7 @@
                   <VBox>
                      <children>
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Quests" />
-                        <ListView id="mission" fx:id="objectivesDisplay" fixedCellSize="1.0" prefHeight="172.0" prefWidth="144.0" />
+                        <ListView id="mission" fx:id="objectivesDisplay" prefHeight="172.0" prefWidth="144.0" />
                      </children>
                   </VBox>
                   <VBox VBox.vgrow="ALWAYS">

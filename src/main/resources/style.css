@@ -141,10 +141,6 @@
     -fx-padding: 0;
 }
 
-.whitetext {
-    -fx-text-fill: white;
-}
-
 .list-cell {
     -fx-background-color: -grey-1;
     -fx-text-fill: white;
@@ -154,10 +150,6 @@
     -fx-background-color: -purple-4;
 }
 
-.list-cell:even { /* <=== changed to even */
+.list-cell:even {
     -fx-background-color: -grey-2;
-}
-
-.list-cell:filled:hover {
-    -fx-background-color: #0093ff;
 }
