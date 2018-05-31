@@ -4,12 +4,9 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import projetrpg.Describable;
 import projetrpg.entities.items.Item;
-import projetrpg.entities.player.Player;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -57,7 +54,14 @@ public class Teleporter implements Describable {
     /**
      * The items required to repair this teleporter.
      */
-    private ArrayList<Item> itemsNeededToRepair = new ArrayList<>();
+    private ArrayList<Item> repairRequirements = new ArrayList<>();
+
+    /**
+     * Constructor for the type adapter.
+     */
+    private Teleporter() {
+
+    }
 
     /**
      * The constructor for a teleporter.
@@ -73,21 +77,10 @@ public class Teleporter implements Describable {
         id = currentId++;
     }
 
-    public Teleporter(int id, String name, Region location, boolean repaired,
-                      ArrayList<Item> requiredItems) {
-        this.id = id;
-        this.name = name;
-        this.location = location;
-        this.repaired = repaired;
-        this.itemsNeededToRepair = requiredItems;
-
-        if(id >= currentId) currentId = id+1;
-    }
-
     @Override
     public String describe() {
         String items = "";
-        for(Item i : this.itemsNeededToRepair) {
+        for(Item i : this.repairRequirements) {
             items+=i.getName() + ", ";
         }
         if (items.length() > 0) items = items.substring(0, items.length()-2);
@@ -172,7 +165,7 @@ public class Teleporter implements Describable {
      * @param item The item.
      */
     public void addItemToRepair(Item item) {
-        this.itemsNeededToRepair.add(item);
+        this.repairRequirements.add(item);
     }
 
     /**
@@ -181,8 +174,8 @@ public class Teleporter implements Describable {
      *
      * @return List of items required.
      */
-    public ArrayList<Item> getItemsNeededToRepair() {
-        return (ArrayList<Item>) itemsNeededToRepair.clone();
+    public ArrayList<Item> getRepairRequirements() {
+        return (ArrayList<Item>) repairRequirements.clone();
     }
 
     @Override
@@ -193,7 +186,7 @@ public class Teleporter implements Describable {
                 ", linkedTeleporter=" + ((linkedTeleporter != null)? linkedTeleporter.getId() : -1) +
                 ", repaired=" + repaired +
                 ", location=" + location +
-                ", itemsNeededToRepair=" + itemsNeededToRepair +
+                ", repairRequirements=" + repairRequirements +
                 '}';
     }
 
@@ -209,12 +202,12 @@ public class Teleporter implements Describable {
                 (linkedTeleporter == null || that.linkedTeleporter == null ||
                         linkedTeleporter.getId() == that.linkedTeleporter.getId()) &&
                 Objects.equals(location, that.location) &&
-                Objects.equals(itemsNeededToRepair, that.itemsNeededToRepair);
+                Objects.equals(repairRequirements, that.repairRequirements);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, repaired, location, itemsNeededToRepair);
+        return Objects.hash(id, name, repaired, location, repairRequirements);
     }
 
 
@@ -228,17 +221,17 @@ public class Teleporter implements Describable {
         public JsonElement serialize(Teleporter teleporter, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject o = new JsonObject();
 
-            o.addProperty("id", teleporter.getId());
-            o.addProperty("name", teleporter.getName());
-            o.addProperty("repaired", teleporter.isRepaired());
+            o.addProperty("id", teleporter.id);
+            o.addProperty("name", teleporter.name);
+            o.addProperty("repaired", teleporter.repaired);
 
             if(teleporter.getLinkedTeleporter() != null) {
-                o.addProperty("link", teleporter.getLinkedTeleporter().getId());
+                o.addProperty("link", teleporter.linkedTeleporter.id);
             } else {
                 o.addProperty("link", -1);
             }
 
-            JsonElement requirements = jsonSerializationContext.serialize(teleporter.getItemsNeededToRepair());
+            JsonElement requirements = jsonSerializationContext.serialize(teleporter.repairRequirements);
             o.add("requirements", requirements);
 
             return o;
@@ -246,16 +239,19 @@ public class Teleporter implements Describable {
 
         @Override
         public Teleporter deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-            JsonObject teleporter = jsonElement.getAsJsonObject();
+            Teleporter teleporter = new Teleporter();
+            JsonObject jsonTeleporter = jsonElement.getAsJsonObject();
 
-            int id = teleporter.get("id").getAsInt();
-            String name = teleporter.get("name").getAsString();
-            boolean repaired = teleporter.get("repaired").getAsBoolean();
+            teleporter.id = jsonTeleporter.get("id").getAsInt();
+            if(teleporter.id >= currentId) currentId = teleporter.id+1;
+
+            teleporter.name = jsonTeleporter.get("name").getAsString();
+            teleporter.repaired = jsonTeleporter.get("repaired").getAsBoolean();
 
             Type requirementsType = new TypeToken<ArrayList<Item>>() {}.getType();
-            ArrayList<Item> requirements = context.deserialize(teleporter.get("requirements"), requirementsType);
+            teleporter.repairRequirements = context.deserialize(jsonTeleporter.get("requirements"), requirementsType);
 
-            return new Teleporter(id, name, null, repaired, requirements);
+            return teleporter;
         }
 
     }

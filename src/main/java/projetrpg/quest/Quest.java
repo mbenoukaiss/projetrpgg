@@ -17,34 +17,37 @@ public class Quest extends Observable implements IObserver, Comparable<Quest> {
     /**
      * The name of the quest.
      */
-    protected String name;
+    private String name;
 
     /**
      * The description of the quest.
      */
-    protected String description;
+    private String description;
 
     /**
      * The required level to start this quest.
      */
-    protected int levelRequired;
+    private int levelRequired;
 
     /**
      * The experience reward.
      */
-    protected int expRewarded;
+    private int expRewarded;
 
     /**
      * The items rewarded
      */
-    protected ArrayList<Item> reward;
+    private ArrayList<Item> reward;
 
     /**
      * The objectives.
      */
-    protected Set<Objective> objectives;
+    private Set<Objective> objectives;
 
-    Quest() {
+    /**
+     * Constructor for the type adapter.
+     */
+    private Quest() {
 
     }
 

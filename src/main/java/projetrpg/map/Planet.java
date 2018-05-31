@@ -36,7 +36,7 @@ public class Planet extends Region {
             JsonObject regionPart = jsonSerializationContext.serialize(planet, Region.class).getAsJsonObject();
 
             regionPart.addProperty("type", "planet");
-            regionPart.addProperty("landingRegion", planet.getLandingRegion().id);
+            regionPart.addProperty("landingRegion", planet.landingRegion.id);
 
             return regionPart;
         }

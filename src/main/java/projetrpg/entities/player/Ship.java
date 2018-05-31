@@ -22,25 +22,25 @@ public class Ship extends Region implements Describable{
     /**
      * The base fuel of the ship
      */
-    protected int baseFuel;
+    private int baseFuel;
 
     /**
      * The actuel fuel of the ship
      */
     @Expose("fuel")
-    protected int actualFuel;
+    private int actualFuel;
 
     /**
      * The level of the ship
      */
     @Expose("ship level")
-    protected int level;
+    private int level;
 
     /**
      * Possible ameliorations of the ship;
      */
     @Expose("ship improvements")
-    protected Set<ShipAmelioration> ameliorations;
+    private Set<ShipAmelioration> ameliorations;
 
     public Ship(int id, String name, Region parent, int baseFuel) {
         super(id, name, "", parent, 0);

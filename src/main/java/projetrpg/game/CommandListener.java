@@ -599,7 +599,7 @@ public class CommandListener {
     public String repair(Teleporter t) {
         if (!this.player.isInFight()) {
             if (t != null) {
-                ArrayList<Item> itemsNeeded = new ArrayList<>(t.getItemsNeededToRepair());
+                ArrayList<Item> itemsNeeded = new ArrayList<>(t.getRepairRequirements());
                 for (Item i : this.player.getInventory().getAll()) {
                     if (itemsNeeded.contains(i)) {
                         itemsNeeded.remove(i);
@@ -639,7 +639,7 @@ public class CommandListener {
                     return("You repaired this teleporter : " + t.getName());
                 } else {
                     String message = "";
-                    for (Item i : t.getItemsNeededToRepair()) {
+                    for (Item i : t.getRepairRequirements()) {
                         message+= i.getName() +",";
                     }
                     message = message.substring(0, message.length()-1);

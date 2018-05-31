@@ -18,19 +18,22 @@ public class Objective<T> extends Observable {
     /**
      * The description of this objective.
      */
-    protected String description;
+    private String description;
 
     /**
      * The type of the objective.
      */
-    protected ObjectiveType type;
+    private ObjectiveType type;
 
     /**
      * The concerned object.
      */
-    protected T concernedObject;
+    private T concernedObject;
 
-    Objective() {
+    /**
+     * Constructor for the type adapter.
+     */
+    private Objective() {
 
     }
 
@@ -128,7 +131,7 @@ public class Objective<T> extends Observable {
             concerned.addProperty("class", objective.concernedObject.getClass().getCanonicalName());
 
             if(objective.concernedObject.getClass() == NPC.class) {
-                concerned.addProperty("object", ((NPC) objective.getConcernedObject()).getId());
+                concerned.addProperty("object", ((NPC) objective.concernedObject).getId());
             } else {
                 concerned.add("object", jsonSerializationContext.serialize(objective.concernedObject));
             }

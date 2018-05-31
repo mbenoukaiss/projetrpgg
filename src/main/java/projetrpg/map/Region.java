@@ -82,7 +82,7 @@ public class Region implements Describable {
      */
     protected int shipLevelRequired;
 
-    Region() {
+    private Region() {
         this.regionOnDirection = new HashMap<>();
         this.containedRegions = new HashSet<>();
         this.entities = new HashSet<>();
@@ -372,27 +372,27 @@ public class Region implements Describable {
         @Override
         public JsonElement serialize(Region region, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject reg = new JsonObject();
-            reg.addProperty("id", region.getId());
-            reg.addProperty("name", region.getName());
+            reg.addProperty("id", region.id);
+            reg.addProperty("name", region.name);
             reg.addProperty("description", region.description);
             reg.addProperty("shiprequired", region.shipLevelRequired);
 
             JsonObject directions = new JsonObject();
-            for(Map.Entry<Direction, Region> directionRegionEntry : region.getRegionOnDirection().entrySet()) {
+            for(Map.Entry<Direction, Region> directionRegionEntry : region.regionOnDirection.entrySet()) {
                 directions.addProperty(directionRegionEntry.getKey().name(), directionRegionEntry.getValue().getId());
             }
             reg.add("directions", directions);
 
-            JsonArray childregions = jsonSerializationContext.serialize(region.getContainedRegions()).getAsJsonArray();
+            JsonArray childregions = jsonSerializationContext.serialize(region.containedRegions).getAsJsonArray();
             reg.add("childregions", childregions);
 
-            JsonArray entities = jsonSerializationContext.serialize(region.getEntities()).getAsJsonArray();
+            JsonArray entities = jsonSerializationContext.serialize(region.entities).getAsJsonArray();
             reg.add("entities", entities);
 
-            JsonArray teleporters = jsonSerializationContext.serialize(region.getTeleporters()).getAsJsonArray();
+            JsonArray teleporters = jsonSerializationContext.serialize(region.teleporters).getAsJsonArray();
             reg.add("teleporters", teleporters);
 
-            JsonElement inventory = jsonSerializationContext.serialize(region.getInventory());
+            JsonElement inventory = jsonSerializationContext.serialize(region.inventory);
             reg.add("inventory", inventory);
 
             JsonArray requireditems = jsonSerializationContext.serialize(region.itemsNeeded).getAsJsonArray();
@@ -403,8 +403,8 @@ public class Region implements Describable {
 
         @Override
         public Region deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext deserializationContext) throws JsonParseException {
-            JsonObject jsonRegion = jsonElement.getAsJsonObject();
             Region region = new Region();
+            JsonObject jsonRegion = jsonElement.getAsJsonObject();
 
             region.id = jsonRegion.get("id").getAsInt();
             region.name = jsonRegion.get("name").getAsString();
@@ -441,8 +441,7 @@ public class Region implements Describable {
                 region.addContainedRegion(MapSerializer.deserializeRegion(deserializationContext, element.getAsJsonObject()));
             }
 
-            Inventory inv = deserializationContext.deserialize(jsonRegion.get("inventory"), Inventory.class);
-            inv.transferContent(region.getInventory());
+            region.inventory = deserializationContext.deserialize(jsonRegion.get("inventory"), Inventory.class);
 
             region.itemsNeeded = new ArrayList<>();
             for(JsonElement element : jsonRegion.get("requireditems").getAsJsonArray()) {
