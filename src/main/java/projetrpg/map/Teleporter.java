@@ -1,10 +1,15 @@
 package projetrpg.map;
 
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import projetrpg.Describable;
 import projetrpg.entities.items.Item;
 import projetrpg.entities.player.Player;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -210,6 +215,49 @@ public class Teleporter implements Describable {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, repaired, location, itemsNeededToRepair);
+    }
+
+
+
+    /**
+     * Class permitting to serialize and deserialize Teleporter.
+     */
+    public static class TypeAdapter implements JsonSerializer<Teleporter>, JsonDeserializer<Teleporter> {
+
+        @Override
+        public JsonElement serialize(Teleporter teleporter, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject o = new JsonObject();
+
+            o.addProperty("id", teleporter.getId());
+            o.addProperty("name", teleporter.getName());
+            o.addProperty("repaired", teleporter.isRepaired());
+
+            if(teleporter.getLinkedTeleporter() != null) {
+                o.addProperty("link", teleporter.getLinkedTeleporter().getId());
+            } else {
+                o.addProperty("link", -1);
+            }
+
+            JsonElement requirements = jsonSerializationContext.serialize(teleporter.getItemsNeededToRepair());
+            o.add("requirements", requirements);
+
+            return o;
+        }
+
+        @Override
+        public Teleporter deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
+            JsonObject teleporter = jsonElement.getAsJsonObject();
+
+            int id = teleporter.get("id").getAsInt();
+            String name = teleporter.get("name").getAsString();
+            boolean repaired = teleporter.get("repaired").getAsBoolean();
+
+            Type requirementsType = new TypeToken<ArrayList<Item>>() {}.getType();
+            ArrayList<Item> requirements = context.deserialize(teleporter.get("requirements"), requirementsType);
+
+            return new Teleporter(id, name, null, repaired, requirements);
+        }
+
     }
 
 }

@@ -7,13 +7,13 @@ import projetrpg.utils.AnnotationExclusionStrategy;
 
 import static org.junit.Assert.*;
 
-public class TeleporterSerializerTest {
+public class TeleporterTypeAdapterTest {
 
     private Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .setExclusionStrategies(new AnnotationExclusionStrategy())
-            .registerTypeAdapter(Teleporter.class, new TeleporterSerializer())
-            .registerTypeAdapter(Region.class, new RegionSerializer())
+            .registerTypeAdapter(Teleporter.class, new Teleporter.TypeAdapter())
+            .registerTypeAdapter(Region.class, new Region.TypeAdapter())
             .create();
 
     private Teleporter t1 = new Teleporter("t1", null);
@@ -46,7 +46,7 @@ public class TeleporterSerializerTest {
             "  \"requirements\": []\n" +
             "}";
 
-    public TeleporterSerializerTest() {
+    public TeleporterTypeAdapterTest() {
         //Reset ID that may have changed because of previous tests
         Teleporter.currentId = 0;
     }
@@ -69,7 +69,7 @@ public class TeleporterSerializerTest {
         Teleporter t1deser = gson.fromJson(serializedT1, Teleporter.class);
         Teleporter t2deser = gson.fromJson(serializedT2, Teleporter.class);
         Teleporter t3deser = gson.fromJson(serializedT3, Teleporter.class);
-        TeleporterSerializer.linkTeleporters();
+        MapSerializer.linkTeleporters();
 
         assertEquals(t1, t1deser);
         assertEquals(t2, t2deser);

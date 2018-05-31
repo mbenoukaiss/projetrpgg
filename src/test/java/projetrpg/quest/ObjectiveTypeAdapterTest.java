@@ -5,20 +5,16 @@ import com.google.gson.GsonBuilder;
 import org.junit.Test;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Item;
-import projetrpg.map.Region;
-import projetrpg.map.RegionSerializer;
-import projetrpg.map.Teleporter;
-import projetrpg.map.TeleporterSerializer;
 import projetrpg.utils.AnnotationExclusionStrategy;
 
 import static org.junit.Assert.*;
 
-public class ObjectiveSerializerTest {
+public class ObjectiveTypeAdapterTest {
 
     private Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .setExclusionStrategies(new AnnotationExclusionStrategy())
-            .registerTypeAdapter(Objective.class, new ObjectiveSerializer())
+            .registerTypeAdapter(Objective.class, new Objective.TypeAdapter())
             .create();
 
     private Objective<NPC> o1 = new Objective<>("Premier objectif", ObjectiveType.KILL);

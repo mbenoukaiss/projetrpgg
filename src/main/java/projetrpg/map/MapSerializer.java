@@ -15,6 +15,8 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
     private static HashMap<Integer, NPC> idNPCMap = new HashMap<>();
 
+    private static Map<Integer, Teleporter> linkIdTeleporter = new HashMap<>();
+
     private static Map<Integer, Map<Direction, Integer>> directions = new HashMap<>();
 
     private static Map<Planet, Integer> planets = new HashMap<>();
@@ -27,6 +29,19 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
 
     public static NPC getNPC(int id) {
         return idNPCMap.get(id);
+    }
+
+    public static void addTeleporter(int linkId, Teleporter t) {
+        linkIdTeleporter.put(linkId, t);
+    }
+
+    public static void linkTeleporters() {
+        linkIdTeleporter.forEach((k, v) -> {
+            v.link(linkIdTeleporter.get(v.getId()));
+        });
+
+        //Avoid memory leaks
+        linkIdTeleporter = new HashMap<>();
     }
 
     public static void addRegion(int source, Map<Direction, Integer> direction) {
@@ -131,7 +146,7 @@ public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer
         ));
 
         //Link teleporters
-        TeleporterSerializer.linkTeleporters();
+        linkTeleporters();
 
         //Avoid memory leaks
         idNPCMap = new HashMap<>();

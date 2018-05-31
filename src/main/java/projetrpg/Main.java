@@ -19,12 +19,10 @@ import projetrpg.utils.Pair;
 import projetrpg.map.*;
 
 import java.io.IOException;
-import java.nio.channels.NonWritableChannelException;
 import java.util.*;
 
 import com.google.gson.Gson;
 import projetrpg.map.MapSerializer;
-import projetrpg.map.RegionSerializer;
 import projetrpg.game.Game;
 import projetrpg.game.GameView;
 import projetrpg.quest.*;
@@ -396,12 +394,12 @@ public class Main extends Application {
                 .enableComplexMapKeySerialization()
                 .setExclusionStrategies(new AnnotationExclusionStrategy())
                 .setExclusionStrategies(new AnnotationExclusionStrategy())
-                .registerTypeAdapter(Objective.class, new ObjectiveSerializer())
-                .registerTypeAdapter(Quest.class, new QuestSerializer())
-                .registerTypeAdapter(Teleporter.class, new TeleporterSerializer())
-                .registerTypeAdapter(Region.class, new RegionSerializer())
-                .registerTypeHierarchyAdapter(Ship.class, new ShipSerializer())
-                .registerTypeHierarchyAdapter(Planet.class, new PlanetSerializer())
+                .registerTypeAdapter(Objective.class, new Objective.TypeAdapter())
+                .registerTypeAdapter(Quest.class, new Quest.TypeAdapter())
+                .registerTypeAdapter(Teleporter.class, new Teleporter.TypeAdapter())
+                .registerTypeAdapter(Region.class, new Region.TypeAdapter())
+                .registerTypeHierarchyAdapter(Ship.class, new Ship.TypeAdapter())
+                .registerTypeHierarchyAdapter(Planet.class, new Planet.TypeAdapter())
                 .registerTypeAdapter(MainMap.class, new MapSerializer())
                 .create();
 
