@@ -74,7 +74,6 @@ public class Teleporter implements Describable {
         this.name = name;
         this.location = location;
         this.repaired = repaired;
-        this.location.addTeleporter(this);
         this.itemsNeededToRepair = requiredItems;
 
         if(id >= currentId) currentId = id+1;

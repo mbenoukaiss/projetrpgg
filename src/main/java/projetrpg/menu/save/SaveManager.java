@@ -35,6 +35,7 @@ public class SaveManager {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("saveManager.fxml"));
             loader.setController(this);
             scene = new Scene(loader.load(), 650, 600);
+            scene.getStylesheets().add("style.css");
         } catch(IOException e) {
             e.printStackTrace();
         }

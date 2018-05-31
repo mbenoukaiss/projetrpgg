@@ -8,30 +8,9 @@
       "maxCapacity": 50,
       "items": []
     },
-    "mana": 50,
-    "baseMana": 50,
-    "abilities": [
-      [
-        {
-          "name": "WaterBeam",
-          "minLevelRequired": 2,
-          "damage": 50.0,
-          "type": "AOE",
-          "cost": 20
-        },
-        false
-      ],
-      [
-        {
-          "name": "FireBall",
-          "minLevelRequired": 1,
-          "damage": 30.0,
-          "type": "LINE",
-          "cost": 10
-        },
-        false
-      ]
-    ],
+    "mana": 100,
+    "baseMana": 100,
+    "abilities": {},
     "baseDamage": 10,
     "observers": [],
     "name": "Hervé",
@@ -39,67 +18,551 @@
     "hps": 100,
     "baseHps": 100,
     "isHostile": false,
-    "location": 6
+    "location": 8
   },
   "quests": [
     {
-      "name": "A new Dawn",
-      "description": "Start your beautiful journey towards saving the universe",
+      "name": "Inspect",
+      "description": "As you repair the generator, you realize its a teleporter ! What could be on the other side ??",
+      "lrequired": 3,
+      "ereward": 56,
+      "objectives": [
+        {
+          "finished": false,
+          "description": "Repair the generator",
+          "type": "REPAIR",
+          "concerned": {
+            "class": "projetrpg.map.Teleporter",
+            "object": {
+              "id": 4,
+              "name": "Generator",
+              "repaired": false,
+              "link": 5,
+              "requirements": [
+                "SCREWDRIVER",
+                "TOOLKIT",
+                "SCREW"
+              ]
+            }
+          }
+        }
+      ],
+      "reward": []
+    },
+    {
+      "name": "Briefing",
+      "description": "You must be notified about whats going on!",
       "lrequired": 0,
       "ereward": 10,
       "objectives": [
         {
           "finished": false,
-          "description": "Pickup the Apple",
-          "type": "PICKUP",
+          "description": "Talk to the space agency\u0027s headquarters\u0027s master",
+          "type": "TALK",
           "concerned": {
-            "class": "projetrpg.entities.items.Item",
-            "object": "APPLE"
+            "class": "projetrpg.entities.NPC",
+            "object": 1
           }
-        },
+        }
+      ],
+      "reward": []
+    },
+    {
+      "name": "Final Battle",
+      "description": "You fight the evil entity, and are rewarded a book....You open your eyes wide open as you read the revelation of the book.... Saturne is a livable Planet, you need to go there as fast as possible",
+      "lrequired": 3,
+      "ereward": 5000,
+      "objectives": [
         {
           "finished": false,
-          "description": "Kill Zorg",
+          "description": "Kill the final boss",
           "type": "KILL",
           "concerned": {
             "class": "projetrpg.entities.NPC",
-            "object": 0
-          }
-        },
-        {
-          "finished": false,
-          "description": "Use the Apple",
-          "type": "USE",
-          "concerned": {
-            "class": "projetrpg.entities.items.Item",
-            "object": "APPLE"
+            "object": 19
           }
         }
       ],
       "reward": [
-        "APPLE",
+        "LEGENDARY_BOOK"
+      ]
+    },
+    {
+      "name": "Kill the twins",
+      "description": "Nfroy needs you to kill the two twins right next to him",
+      "lrequired": 2,
+      "ereward": 120,
+      "objectives": [
+        {
+          "finished": false,
+          "description": "Kill Nfrey",
+          "type": "KILL",
+          "concerned": {
+            "class": "projetrpg.entities.NPC",
+            "object": 8
+          }
+        },
+        {
+          "finished": false,
+          "description": "Kill Nfray",
+          "type": "KILL",
+          "concerned": {
+            "class": "projetrpg.entities.NPC",
+            "object": 9
+          }
+        }
+      ],
+      "reward": [
+        "CLIMBING_SHOES"
+      ]
+    },
+    {
+      "name": "first fight",
+      "description": "Stop the bad guy in Bombai",
+      "lrequired": 1,
+      "ereward": 20,
+      "objectives": [
+        {
+          "finished": false,
+          "description": "Stop the bad Guy",
+          "type": "KILL",
+          "concerned": {
+            "class": "projetrpg.entities.NPC",
+            "object": 6
+          }
+        }
+      ],
+      "reward": [
+        "HATCHET"
+      ]
+    },
+    {
+      "name": "Better ship",
+      "description": "You needed a few upgrades in order to go further, matteo gave you the items you needed to improve your radar and your reactors in order to go to the moon",
+      "lrequired": 2,
+      "ereward": 150,
+      "objectives": [
+        {
+          "finished": false,
+          "description": "Get some potatoes",
+          "type": "PICKUP",
+          "concerned": {
+            "class": "projetrpg.entities.items.Item",
+            "object": "GREEN_POTATO"
+          }
+        },
+        {
+          "finished": false,
+          "description": "Get rid of Matteo",
+          "type": "KILL",
+          "concerned": {
+            "class": "projetrpg.entities.NPC",
+            "object": 15
+          }
+        }
+      ],
+      "reward": [
+        "MARTIAN_SWORD",
+        "KNIFE",
         "FLASHLIGHT"
       ]
+    },
+    {
+      "name": "Gear Up",
+      "description": "Equip yourself and train a bit.",
+      "lrequired": 1,
+      "ereward": 10,
+      "objectives": [
+        {
+          "finished": false,
+          "description": "Kill the practise target",
+          "type": "KILL",
+          "concerned": {
+            "class": "projetrpg.entities.NPC",
+            "object": 4
+          }
+        },
+        {
+          "finished": false,
+          "description": "Equip Saul\u0027s laser",
+          "type": "EQUIP",
+          "concerned": {
+            "class": "projetrpg.entities.items.Item",
+            "object": "LASERGUN"
+          }
+        },
+        {
+          "finished": false,
+          "description": "Pickup saul\u0027s laser",
+          "type": "PICKUP",
+          "concerned": {
+            "class": "projetrpg.entities.items.Item",
+            "object": "LASERGUN"
+          }
+        }
+      ],
+      "reward": []
     }
   ],
   "regions": [
     {
       "id": 1,
       "name": "Earth",
+      "description": "",
       "shipRequired": 0,
       "directions": {},
       "childregions": [
         {
-          "id": 6,
-          "name": "Forest",
+          "id": 7,
+          "name": "America",
+          "description": "This is the America continent.",
+          "shipRequired": 0,
+          "directions": {
+            "EST": 8
+          },
+          "childregions": [
+            {
+              "id": 13,
+              "name": "Cleveland",
+              "description": "The city of Cleveland",
+              "shipRequired": 0,
+              "directions": {
+                "EST": 12,
+                "SOUTH": 14
+              },
+              "childregions": [],
+              "entities": [],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            },
+            {
+              "id": 12,
+              "name": "New-York",
+              "description": "The city of New York",
+              "shipRequired": 0,
+              "directions": {
+                "WEST": 13
+              },
+              "childregions": [],
+              "entities": [],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            },
+            {
+              "id": 14,
+              "name": "San Antonio",
+              "description": "The city of San Antonio",
+              "shipRequired": 0,
+              "directions": {
+                "NORTH": 13
+              },
+              "childregions": [],
+              "entities": [],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            }
+          ],
+          "entities": [],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": [
+              "SCREWDRIVER"
+            ]
+          }
+        },
+        {
+          "id": 10,
+          "name": "Oceania",
+          "description": "This is the Oceania continent.",
+          "shipRequired": 0,
+          "directions": {
+            "NORTH": 9
+          },
+          "childregions": [],
+          "entities": [],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
+        },
+        {
+          "id": 19,
+          "name": "Antarctica",
+          "description": "This is the Antarctica continent",
           "shipRequired": 0,
           "directions": {
             "SOUTH": 9
           },
+          "childregions": [],
+          "entities": [],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
+        },
+        {
+          "id": 9,
+          "name": "Asia",
+          "description": "This is the Asia continent.",
+          "shipRequired": 0,
+          "directions": {
+            "SOUTH": 10,
+            "NORTH": 19,
+            "WEST": 8
+          },
           "childregions": [
             {
-              "id": 11,
+              "id": 19,
+              "name": "Bombai",
+              "description": "The city of Bombai",
+              "shipRequired": 0,
+              "directions": {},
+              "childregions": [],
+              "entities": [
+                {
+                  "id": 7,
+                  "baseDamage": 10,
+                  "dialogue": "Please save me! When you\u0027ve done so you\u0027ll be able to travel to mars in order to continue your adventure!",
+                  "name": "Taliyah\u0027s brother",
+                  "type": "VILLAGER",
+                  "hps": 100,
+                  "baseHps": 100,
+                  "isHostile": false
+                },
+                {
+                  "id": 6,
+                  "baseDamage": 20,
+                  "dialogue": "I\u0027m going to kill you!",
+                  "name": "Bad Guy",
+                  "type": "HOSTILE_VILLAGER",
+                  "hps": 100,
+                  "baseHps": 100,
+                  "isHostile": true
+                }
+              ],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            }
+          ],
+          "entities": [
+            {
+              "id": 5,
+              "baseDamage": 10,
+              "dialogue": "You are now ready to improve your engine\nType \"improve engine\" in order to improve it.\nTaliyah has a new Quest for you : A bad guy is stealing stuff in bombai, stop him and you\u0027ll gain his hatchet! You may now start: first fight! Once you have finished this quest you may talk to my brother in Bombai, he\u0027ll tell you where to go.",
+              "name": "Taliyah",
+              "type": "VILLAGER",
+              "hps": 100,
+              "baseHps": 100,
+              "isHostile": false
+            }
+          ],
+          "teleporters": [
+            {
+              "id": 0,
+              "name": "Saul\u0027s appartment",
+              "repaired": false,
+              "link": 1,
+              "requirements": [
+                "SCREWDRIVER"
+              ]
+            }
+          ],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": [
+              "TOOLKIT"
+            ]
+          }
+        },
+        {
+          "id": 11,
+          "name": "Africa",
+          "description": "This is the Africa continent.",
+          "shipRequired": 0,
+          "directions": {
+            "NORTH": 8
+          },
+          "childregions": [
+            {
+              "id": 20,
+              "name": "St-Petersburg",
+              "description": "The city of St-Petersburg",
+              "shipRequired": 0,
+              "directions": {},
+              "childregions": [],
+              "entities": [],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            }
+          ],
+          "entities": [],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
+        },
+        {
+          "id": 8,
+          "name": "Europe",
+          "description": "This is the Europe continent.",
+          "shipRequired": 0,
+          "directions": {
+            "EST": 9,
+            "SOUTH": 11,
+            "WEST": 7
+          },
+          "childregions": [
+            {
+              "id": 18,
+              "name": "Berlin",
+              "description": "The city of Berlin",
+              "shipRequired": 0,
+              "directions": {
+                "WEST": 16
+              },
+              "childregions": [],
+              "entities": [
+                {
+                  "id": 1,
+                  "baseDamage": 10,
+                  "dialogue": "Hello Hervé, as you may already know, the earth can no longer welcome the human race, we are being too numerous. Nature is taking over our planet, and everyone will die if you do not find another planet where we can live peacefully and start over humanity. I\u0027m no expert but i know who is. You must head to London and talk to Saul, he\u0027ll tell you more about this.\n",
+                  "name": "Paul",
+                  "type": "VILLAGER",
+                  "hps": 100,
+                  "baseHps": 100,
+                  "isHostile": false
+                }
+              ],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            },
+            {
+              "id": 17,
+              "name": "London",
+              "description": "The city of London",
+              "shipRequired": 0,
+              "directions": {
+                "SOUTH": 16
+              },
+              "childregions": [
+                {
+                  "id": 21,
+                  "name": "Saul\u0027s appartments",
+                  "description": "The appartment of Saul",
+                  "shipRequired": 0,
+                  "directions": {},
+                  "childregions": [],
+                  "entities": [
+                    {
+                      "id": 3,
+                      "baseDamage": 10,
+                      "dialogue": "I see you\u0027ve trained a bit, Hervé, i can tell that you are ready now! There is a planet located far from here, you need to find a way to get there, and once you do, you\u0027ll be able to save humanity. But first, you need some ship improvement : find a toolkit, and improve your engine! In this very room you\u0027ll find a teleporter that will lead you to Asia, there you\u0027ll find the toolkit. But first, you\u0027ll need to repair it : find a screwdriver and repair the teleporter. (It is in America uhu)",
+                      "name": "Zahir",
+                      "type": "VILLAGER",
+                      "hps": 100,
+                      "baseHps": 100,
+                      "isHostile": false
+                    },
+                    {
+                      "id": 4,
+                      "baseDamage": 0,
+                      "dialogue": "Im weak.",
+                      "name": "Bob",
+                      "type": "UTILS",
+                      "hps": 100,
+                      "baseHps": 100,
+                      "isHostile": false
+                    }
+                  ],
+                  "teleporters": [
+                    {
+                      "id": 1,
+                      "name": "Saul\u0027s appartment",
+                      "repaired": true,
+                      "link": 0,
+                      "requirements": []
+                    }
+                  ],
+                  "inventory": {
+                    "maxCapacity": 10,
+                    "items": [
+                      "LASERGUN"
+                    ]
+                  }
+                }
+              ],
+              "entities": [
+                {
+                  "id": 2,
+                  "baseDamage": 10,
+                  "dialogue": "Oh ! You must be Hervé ! I\u0027m Saul, you are about to begin your journey towards saving the universe. But first you gotta be ready : in my apartments you\u0027ll finda laser gun and a practise target. Gear up and show me whats you\u0027ve got ! Then you\u0027ll talk to my brother, Zahir, located in my apartment.\n You may now start this new quest : Gear Up ! ",
+                  "name": "Saul",
+                  "type": "VILLAGER",
+                  "hps": 100,
+                  "baseHps": 100,
+                  "isHostile": false
+                }
+              ],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            },
+            {
+              "id": 16,
+              "name": "Paris",
+              "description": "The city of Paris",
+              "shipRequired": 0,
+              "directions": {
+                "EST": 18,
+                "NORTH": 17
+              },
+              "childregions": [],
+              "entities": [
+                {
+                  "id": 0,
+                  "baseDamage": 10,
+                  "dialogue": "Hey brother, Humanity is dying and only you can save us. Go to Berlin and talk to Paul, the space agency\u0027s headquarters\u0027s master.\n You may now start your first quest : Briefing.",
+                  "name": "Robert",
+                  "type": "VILLAGER",
+                  "hps": 100,
+                  "baseHps": 100,
+                  "isHostile": false
+                }
+              ],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            },
+            {
+              "id": 22,
               "name": "Hervé\u0027s Ship",
+              "description": "",
               "shipRequired": 0,
               "directions": {},
               "childregions": [],
@@ -112,40 +575,216 @@
               "type": "ship",
               "basefuel": 50,
               "actualfuel": 50,
-              "level": 1,
+              "level": 0,
               "ameliorations": [
-                "ENGINE_AMELIORATION",
                 "REACTORS_AMELIORATION",
-                "RADAR_AMELIORATION"
+                "RADAR_AMELIORATION",
+                "ENGINE_AMELIORATION"
               ]
-            },
+            }
+          ],
+          "entities": [],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
+        }
+      ],
+      "entities": [],
+      "teleporters": [
+        {
+          "id": 3,
+          "name": "Daglysval",
+          "repaired": false,
+          "link": 2,
+          "requirements": [
+            "GREEN_POTATO",
+            "GREEN_CARROT"
+          ]
+        }
+      ],
+      "inventory": {
+        "maxCapacity": 10,
+        "items": []
+      },
+      "type": "planet",
+      "landingRegion": 8
+    },
+    {
+      "id": 2,
+      "name": "Mars",
+      "description": "",
+      "shipRequired": 1,
+      "directions": {},
+      "childregions": [
+        {
+          "id": 1000,
+          "name": "Landing platform",
+          "description": "You are on the landing platform of Mars, it seems really calm, do you see that cliff ?.",
+          "shipRequired": 0,
+          "directions": {
+            "NORTH": 1003,
+            "WEST": 1001
+          },
+          "childregions": [],
+          "entities": [],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
+        },
+        {
+          "id": 1003,
+          "name": "Cave entrance",
+          "description": "???",
+          "shipRequired": 0,
+          "directions": {
+            "SOUTH": 1000
+          },
+          "childregions": [
             {
-              "id": 7,
-              "name": "Cave",
+              "id": 1006,
+              "name": "Cave inside east",
+              "description": "???",
               "shipRequired": 0,
-              "directions": {},
-              "childregions": [],
+              "directions": {
+                "WEST": 1004
+              },
+              "childregions": [
+                {
+                  "id": 1007,
+                  "name": "Frozen lake",
+                  "description": "It\u0027s cold here, there seems to be some frozen ice ! And.. OH!",
+                  "shipRequired": 0,
+                  "directions": {},
+                  "childregions": [],
+                  "entities": [
+                    {
+                      "id": 15,
+                      "baseDamage": 300,
+                      "dialogue": "Get out of here, you don\u0027t want to fight me !",
+                      "name": "Matteo",
+                      "type": "BOSS_HOSTILE",
+                      "hps": 200,
+                      "baseHps": 200,
+                      "isHostile": true
+                    },
+                    {
+                      "id": 16,
+                      "baseDamage": 0,
+                      "dialogue": "",
+                      "name": "Evil climbing shoe",
+                      "type": "RANDOM_THING",
+                      "hps": 10,
+                      "baseHps": 10,
+                      "isHostile": false
+                    },
+                    {
+                      "id": 17,
+                      "baseDamage": 0,
+                      "dialogue": "",
+                      "name": "Evil climbing shoe",
+                      "type": "RANDOM_THING",
+                      "hps": 10,
+                      "baseHps": 10,
+                      "isHostile": false
+                    }
+                  ],
+                  "teleporters": [],
+                  "inventory": {
+                    "maxCapacity": 10,
+                    "items": []
+                  }
+                }
+              ],
               "entities": [
                 {
-                  "id": 1,
-                  "baseDamage": 1,
-                  "dialogue": "I\u0027m weak",
-                  "name": "Bog",
-                  "type": "VAMPIRE",
-                  "hps": 10,
-                  "baseHps": 10,
+                  "id": 14,
+                  "baseDamage": 50,
+                  "dialogue": "האלקדמר להדמיןקדמריאי השועב",
+                  "name": "Aizoaoi",
+                  "type": "MARTIAN",
+                  "hps": 100,
+                  "baseHps": 100,
                   "isHostile": true
                 }
               ],
-              "teleporters": [
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            },
+            {
+              "id": 1004,
+              "name": "Cave inside",
+              "description": "???",
+              "shipRequired": 0,
+              "directions": {
+                "EST": 1006,
+                "NORTH": 1007,
+                "WEST": 1005
+              },
+              "childregions": [],
+              "entities": [],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": []
+              }
+            },
+            {
+              "id": 1005,
+              "name": "Cave inside west",
+              "description": "???",
+              "shipRequired": 0,
+              "directions": {
+                "EST": 1004
+              },
+              "childregions": [
                 {
-                  "id": 0,
-                  "name": "CtoVtp",
-                  "repaired": false,
-                  "link": 1,
-                  "requirements": []
+                  "id": 1007,
+                  "name": "Terrypo\u0027s hole",
+                  "description": "???",
+                  "shipRequired": 0,
+                  "directions": {
+                    "SOUTH": 1004
+                  },
+                  "childregions": [],
+                  "entities": [
+                    {
+                      "id": 13,
+                      "baseDamage": 0,
+                      "dialogue": "Hey, how did you get there ? Are you that same guy with the weird boots called MATTEO HEVIN?????",
+                      "name": "Terrypo",
+                      "type": "MARTIAN",
+                      "hps": 180,
+                      "baseHps": 180,
+                      "isHostile": false
+                    }
+                  ],
+                  "teleporters": [],
+                  "inventory": {
+                    "maxCapacity": 10,
+                    "items": [
+                      "GREEN_CARROT",
+                      "GREEN_CARROT",
+                      "GREEN_CARROT",
+                      "GREEN_CARROT",
+                      "GREEN_CARROT",
+                      "GREEN_CARROT",
+                      "GREEN_CARROT",
+                      "GREEN_POTATO",
+                      "GREEN_POTATO",
+                      "GREEN_POTATO"
+                    ]
+                  }
                 }
               ],
+              "entities": [],
+              "teleporters": [],
               "inventory": {
                 "maxCapacity": 10,
                 "items": []
@@ -154,48 +793,218 @@
           ],
           "entities": [
             {
-              "id": 2,
-              "baseDamage": 0,
-              "dialogue": "Hey, you are our hero...blablabla....very important... save the universe ... blablabla... You may now start your first Quest : A new Dawn!",
-              "name": "Jean",
-              "type": "VILLAGER",
-              "hps": 100,
-              "baseHps": 100,
-              "isHostile": false
+              "id": 12,
+              "baseDamage": 55,
+              "dialogue": "האקדמריאיה ללקדמין השועבת",
+              "name": "Zahuit",
+              "type": "MARTIAN",
+              "hps": 75,
+              "baseHps": 75,
+              "isHostile": true
             }
           ],
           "teleporters": [],
           "inventory": {
             "maxCapacity": 10,
             "items": [
-              "TOOLKIT",
-              "TOOLKIT"
+              "SCREW",
+              "SCREW",
+              "METAL_SCRAP",
+              "METAL_SCRAP"
             ]
           }
         },
         {
-          "id": 8,
-          "name": "Flower",
+          "id": 1010,
+          "name": "Terrypo\u0027s farm",
+          "description": "A few weird potatoes are growing here, someone is taking care of this farm.",
           "shipRequired": 0,
-          "directions": {
-            "WEST": 9
-          },
+          "directions": {},
           "childregions": [],
           "entities": [],
           "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": [
+              "GREEN_POTATO",
+              "GREEN_POTATO"
+            ]
+          }
+        },
+        {
+          "id": 1002,
+          "name": "Daglysval plateau",
+          "description": "It seems like a ship crashed on this planet a while ago, there are fragments everywhere, from here to the cave, around the landing platform...",
+          "shipRequired": 0,
+          "directions": {
+            "EST": 1001
+          },
+          "childregions": [],
+          "entities": [
+            {
+              "id": 11,
+              "baseDamage": 0,
+              "dialogue": "Looks like I got there before you WITH MY BRAND NEW CLIMBING BOOTS CHECK MY MERCH, I just need to find some stuff in the cave and I\u0027ll finally leave this planet (wow im an antagonist and im saying where u need to go to kill me!!",
+              "name": "Matteo",
+              "type": "BOSS_PEACEFUL",
+              "hps": 0,
+              "baseHps": 0,
+              "isHostile": false
+            }
+          ],
+          "teleporters": [
+            {
+              "id": 2,
+              "name": "Daglysval",
+              "repaired": false,
+              "link": 3,
+              "requirements": [
+                "SCREW",
+                "SCREW",
+                "SCREWDRIVER",
+                "METAL_SCRAP"
+              ]
+            }
+          ],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": [
+              "SHARP_SHIP_FRAGMENT",
+              "SCREW",
+              "SCREW"
+            ]
+          }
+        },
+        {
+          "id": 1001,
+          "name": "Daglysval cliff",
+          "description": "This sharp cliff can\u0027t be climbed with your current gear, beware the monsters...",
+          "shipRequired": 0,
+          "directions": {
+            "EST": 1000,
+            "WEST": 1002
+          },
+          "childregions": [],
+          "entities": [
+            {
+              "id": 10,
+              "baseDamage": 35,
+              "dialogue": "...my brothers became... crazy... run! You may now start your first quest on Mars : Kill the twins",
+              "name": "Nfroy",
+              "type": "MARTIAN",
+              "hps": 55,
+              "baseHps": 55,
+              "isHostile": false
+            },
+            {
+              "id": 9,
+              "baseDamage": 35,
+              "dialogue": "סהמנופר תהז",
+              "name": "Nfray",
+              "type": "MARTIAN",
+              "hps": 55,
+              "baseHps": 55,
+              "isHostile": true
+            },
+            {
+              "id": 8,
+              "baseDamage": 35,
+              "dialogue": "ספר ההזמנות",
+              "name": "Nfrey",
+              "type": "MARTIAN",
+              "hps": 55,
+              "baseHps": 55,
+              "isHostile": true
+            }
+          ],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
+        }
+      ],
+      "entities": [],
+      "teleporters": [],
+      "inventory": {
+        "maxCapacity": 10,
+        "items": []
+      },
+      "type": "planet",
+      "landingRegion": 1000
+    },
+    {
+      "id": 3,
+      "name": "Moon",
+      "description": "",
+      "shipRequired": 3,
+      "directions": {},
+      "childregions": [
+        {
+          "id": 1640,
+          "name": "Crater",
+          "description": "A crater on the moon, you see a generator and you think to yourself what could it be ? Maybe you should try repairing it.\nYou may now start this quest : inspect.",
+          "shipRequired": 3,
+          "directions": {},
+          "childregions": [
+            {
+              "id": 54,
+              "name": "Cave",
+              "description": "A cave in the crater, maybe you should see what\u0027s inside",
+              "shipRequired": 3,
+              "directions": {},
+              "childregions": [
+                {
+                  "id": 454,
+                  "name": "Cave connected to the other one",
+                  "description": "Another cave, what could be inside",
+                  "shipRequired": 3,
+                  "directions": {},
+                  "childregions": [],
+                  "entities": [],
+                  "teleporters": [],
+                  "inventory": {
+                    "maxCapacity": 10,
+                    "items": []
+                  }
+                }
+              ],
+              "entities": [],
+              "teleporters": [],
+              "inventory": {
+                "maxCapacity": 10,
+                "items": [
+                  "SCREW",
+                  "TOOLKIT"
+                ]
+              }
+            }
+          ],
+          "entities": [],
+          "teleporters": [
+            {
+              "id": 4,
+              "name": "Generator",
+              "repaired": false,
+              "link": 5,
+              "requirements": [
+                "SCREWDRIVER",
+                "TOOLKIT",
+                "SCREW"
+              ]
+            }
+          ],
           "inventory": {
             "maxCapacity": 10,
             "items": []
           }
         },
         {
-          "id": 9,
-          "name": "Flower Hill",
-          "shipRequired": 0,
-          "directions": {
-            "NORTH": 6,
-            "EST": 8
-          },
+          "id": 1501,
+          "name": "Moon\u0027s landing region",
+          "description": "This is the landing region of the planet moon, Everything seems calm, but you hear a roaring machine sound coming from the crater nearby",
+          "shipRequired": 3,
+          "directions": {},
           "childregions": [],
           "entities": [],
           "teleporters": [],
@@ -212,38 +1021,40 @@
         "items": []
       },
       "type": "planet",
-      "landingRegion": 6
+      "landingRegion": 1501
     },
     {
-      "id": 2,
-      "name": "Mars",
-      "shipRequired": 1,
+      "id": 4,
+      "name": "Venus",
+      "description": "",
+      "shipRequired": 2,
       "directions": {},
       "childregions": [
         {
-          "id": 10,
-          "name": "Volcano",
-          "shipRequired": 0,
+          "id": 3565,
+          "name": "Venu\u0027s landing region",
+          "description": "You teleported to the region Venus, you dont know whereto go or what to do, but it seems as an entity wants to communicate with you",
+          "shipRequired": 2,
           "directions": {},
           "childregions": [],
           "entities": [
             {
-              "id": 0,
-              "baseDamage": 10,
-              "dialogue": "Im gonna kill you !",
-              "name": "Zorg",
+              "id": 18,
+              "baseDamage": 20,
+              "dialogue": ".......I\u0027m mysterious...Goo to the forest....You\u0027ll find something very interesting.....",
+              "name": "Mysterious being",
               "type": "VAMPIRE",
-              "hps": 300,
-              "baseHps": 300,
+              "hps": 150,
+              "baseHps": 150,
               "isHostile": true
             }
           ],
           "teleporters": [
             {
-              "id": 1,
-              "name": "CtoVtp",
-              "repaired": false,
-              "link": 0,
+              "id": 5,
+              "name": "Generator",
+              "repaired": true,
+              "link": 4,
               "requirements": []
             }
           ],
@@ -251,28 +1062,67 @@
             "maxCapacity": 10,
             "items": []
           }
+        },
+        {
+          "id": 4000,
+          "name": "Hot rock",
+          "description": "wow it\u0027s hot",
+          "shipRequired": 3,
+          "directions": {},
+          "childregions": [],
+          "entities": [],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
+        },
+        {
+          "id": 455,
+          "name": "Magic Forest",
+          "description": "A magic forest, beautiful, but as you enter it : You see the same entity, and it does not look very happy.\nYou may now start your last quest : Final Battle",
+          "shipRequired": 2,
+          "directions": {},
+          "childregions": [],
+          "entities": [
+            {
+              "id": 19,
+              "baseDamage": 30,
+              "dialogue": "You\u0027ll never get out of this planet alive!!!!",
+              "name": "Evil being",
+              "type": "BOSS_HOSTILE",
+              "hps": 200,
+              "baseHps": 200,
+              "isHostile": true
+            }
+          ],
+          "teleporters": [],
+          "inventory": {
+            "maxCapacity": 10,
+            "items": []
+          }
         }
       ],
       "entities": [],
       "teleporters": [],
       "inventory": {
         "maxCapacity": 10,
-        "items": [
-          "HATCHET"
-        ]
+        "items": []
       },
       "type": "planet",
-      "landingRegion": 10
+      "landingRegion": 4000
     },
     {
-      "id": 3,
-      "name": "Moon",
-      "shipRequired": 1,
+      "id": 5,
+      "name": "Saturn",
+      "description": "",
+      "shipRequired": 0,
       "directions": {},
       "childregions": [
         {
-          "id": 12,
-          "name": "Crater",
+          "id": 54,
+          "name": "Heaven",
+          "description": "Heaven",
           "shipRequired": 0,
           "directions": {},
           "childregions": [],
@@ -280,68 +1130,6 @@
           "teleporters": [],
           "inventory": {
             "maxCapacity": 10,
-            "items": [
-              "APPLE"
-            ]
-          }
-        }
-      ],
-      "entities": [],
-      "teleporters": [],
-      "inventory": {
-        "maxCapacity": 10,
-        "items": []
-      },
-      "type": "planet",
-      "landingRegion": 12
-    },
-    {
-      "id": 4,
-      "name": "Venus",
-      "shipRequired": 2,
-      "directions": {},
-      "childregions": [
-        {
-          "id": 13,
-          "name": "Hot rock",
-          "shipRequired": 1,
-          "directions": {},
-          "childregions": [],
-          "entities": [],
-          "teleporters": [],
-          "inventory": {
-            "maxCapacity": 10,
-            "items": []
-          }
-        }
-      ],
-      "entities": [],
-      "teleporters": [],
-      "inventory": {
-        "maxCapacity": 10,
-        "items": [
-          "FLASHLIGHT"
-        ]
-      },
-      "type": "planet",
-      "landingRegion": 13
-    },
-    {
-      "id": 5,
-      "name": "Saturne",
-      "shipRequired": 3,
-      "directions": {},
-      "childregions": [
-        {
-          "id": 13,
-          "name": "Lot of gas where you can\u0027t land",
-          "shipRequired": 9999,
-          "directions": {},
-          "childregions": [],
-          "entities": [],
-          "teleporters": [],
-          "inventory": {
-            "maxCapacity": 10,
             "items": []
           }
         }
@@ -353,7 +1141,7 @@
         "items": []
       },
       "type": "planet",
-      "landingRegion": 13
+      "landingRegion": 54
     }
   ]
 }

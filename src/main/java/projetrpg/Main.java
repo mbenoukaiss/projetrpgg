@@ -105,7 +105,7 @@ public class Main extends Application {
         Planet mars = new Planet(2, "Mars", null, 1);
         regions.add(mars);
         mars.addItemNeeded(Item.HATCHET);
-        Planet moon = new Planet(3, "Moon", null, 2);
+        Planet moon = new Planet(3, "Moon", null, 3);
         regions.add(moon);
         Planet venus = new Planet(4, "Venus", null, 2);
         regions.add(venus);
@@ -113,6 +113,9 @@ public class Main extends Application {
         saturn.setLandingRegion(new Region(54, "Heaven", "Heaven", saturn, saturn.getShipLevelRequired()));
         regions.add(saturn);
         saturn.addItemNeeded(Item.LEGENDARY_BOOK);
+
+        Region hotrock = new Region(4000, "Hot rock", "wow it's hot", venus, 3);
+        venus.setLandingRegion(hotrock);
 
         Region America = new Region(7, "America", "This is the America continent.", earth, 0);
         Region Europe = new Region(8, "Europe", "This is the Europe continent.", earth, 0);
@@ -171,10 +174,9 @@ public class Main extends Application {
                 "and improve your engine! In this very room you'll find a teleporter that will lead you to Asia, there you'll find the toolkit. But first, you'll need to repair it : find a screwdriver and repair" +
                 " the teleporter. (It is in America uhu)");
         ArrayList<Item> tpAsiaRequired = new ArrayList<>();
-        tpAsiaRequired.add(Item.SCREWDRIVER);
-        Teleporter tpToAsia = new Teleporter(1, "Teleporter To Asia", saulapp, false, tpAsiaRequired);
-        Teleporter tpFromAsia = new Teleporter(2, "Teleporter to saul's apartment", Asia, true, new ArrayList<>());
-        tpToAsia.link(tpFromAsia);
+        Pair<Teleporter, Teleporter> saulsapptp = mainMap.createTeleporters("Saul's appartment", Asia, saulapp);
+        saulsapptp.first.addItemToRepair(Item.SCREWDRIVER);
+        saulsapptp.second.repair();
         saulapp.addItemToInventory(Item.LASERGUN);
         America.addItemToInventory(Item.SCREWDRIVER);
         Asia.addItemToInventory(Item.TOOLKIT);
@@ -217,7 +219,8 @@ public class Main extends Application {
         //MMMMAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRRRSSSSSSSSSSS
         ////////////////////////////////////////////////////////////////
         int marsHP = 50, marsDamage = 30;
-        Region landingPlatform = new Region(1000, "Landing platform", "You are on the landing platform of Mars, it seems really calm, do you see that cliff ?", mars, 0);
+        Region landingPlatform = new Region(1000, "Landing platform", "You are on the landing platform of Mars, it seems really calm, do you see that cliff ?.", mars, 0);
+        mars.setLandingRegion(landingPlatform);
 
         Region terryposFarm = new Region(1010, "Terrypo's farm", "A few weird potatoes are growing here, someone is taking care of this farm.", mars, 0);
         terryposFarm.addItemToInventory(Item.GREEN_POTATO);
@@ -296,7 +299,7 @@ public class Main extends Application {
         frozenLake.addEntity(new NPC("Evil climbing shoe", frozenLake, EntityType.RANDOM_THING, false, 10, 0, ""));
 
         Quest betterShip = new Quest(150, "Better ship", "You needed a few upgrades in order to go further, matteo gave you the items you need" +
-                "ed to improve your radar and your reactors", 2);
+                "ed to improve your radar and your reactors in order to go to the moon", 2);
         betterShip.addObserver(mainMap.getMainCharacter());
         betterShip.linkRewardedItem(Item.MARTIAN_SWORD);
         Objective<Item> somePotatoes = new Objective<>("Get some potatoes", ObjectiveType.PICKUP);
@@ -318,16 +321,17 @@ public class Main extends Application {
         ////////////////////////////////////////////////////////////////////////////////
         Region moonLandingRegion = new Region(1501, "Moon's landing region", "This is the landing region of the planet moon, Everything" +
                 " seems calm, but you hear a roaring machine sound coming from the crater nearby", moon, moon.getShipLevelRequired());
+        moon.setLandingRegion(moonLandingRegion);
+
         Region crater = new Region(1640, "Crater", "A crater on the moon, you see a generator and you think to yourself what could it be ? " +
                 "Maybe you should try repairing it.\nYou may now start this quest : inspect.", moon, moon.getShipLevelRequired());
-        Teleporter generator = new Teleporter(122, "Generator", crater, false, new ArrayList<>());
         Region venusLandingRegion = new Region(3565, "Venu's landing region", "You teleported to the region Venus, you dont know where" +
                 "to go or what to do, but it seems as an entity wants to communicate with you", venus, venus.getShipLevelRequired());
-        Teleporter generatorFromVenus = new Teleporter(445, "Teleporter to the moon", venusLandingRegion, true, new ArrayList<>());
-        generator.link(generatorFromVenus);
-        generator.addItemToRepair(Item.SCREWDRIVER);
-        generator.addItemToRepair(Item.TOOLKIT);
-        generator.addItemToRepair(Item.SCREW);
+        Pair<Teleporter, Teleporter> generator = mainMap.createTeleporters("Generator", crater, venusLandingRegion);
+        generator.first.addItemToRepair(Item.SCREWDRIVER);
+        generator.first.addItemToRepair(Item.TOOLKIT);
+        generator.first.addItemToRepair(Item.SCREW);
+        generator.second.repair();
         Region moonCave = new Region(54, "Cave", "A cave in the crater, maybe you should see what's inside", crater, crater.getShipLevelRequired());
         moonCave.addItemToInventory(Item.SCREW);
         moonCave.addItemToInventory(Item.TOOLKIT);
@@ -335,7 +339,7 @@ public class Main extends Application {
         Quest inspect = new Quest(56, "Inspect", "As you repair the generator, you realize its a teleporter ! What could be on the other side ??", 3);
         Objective<Teleporter> takeGenerator = new Objective<>("Repair the generator", ObjectiveType.REPAIR);
         takeGenerator.addObserver(inspect);
-        takeGenerator.setConcernedObject(generator);
+        takeGenerator.setConcernedObject(generator.first);
         inspect.addObserver(player);
         inspect.linkObjective(takeGenerator);
         mainMap.addQuest(inspect);

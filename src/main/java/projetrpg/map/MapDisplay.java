@@ -22,15 +22,23 @@ public class MapDisplay {
     }
 
     public Canvas drawLocal() {
-        Canvas canvas = new Canvas(406.0, 265.0);
+        Canvas canvas = new Canvas(383.0, 265.0);
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.valueOf("333333"));
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.setFill(Color.valueOf("2B2B2B"));
+        gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 10, 10);
         drawRegion(gc);
         return canvas;
     }
 
     public Canvas drawPlanets() {
-        Canvas canvas = new Canvas(406.0, 220.0);
+        Canvas canvas = new Canvas(383.0, 220.0);
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.valueOf("333333"));
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.setFill(Color.valueOf("2B2B2B"));
+        gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 10, 10);
         drawPlanets(gc);
         return canvas;
     }

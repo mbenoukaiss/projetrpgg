@@ -18,14 +18,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox prefHeight="594.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="594.0" prefWidth="1247.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar styleClass="darker" VBox.vgrow="NEVER" />
-      <GridPane hgap="30.0" prefHeight="559.0" prefWidth="900.0" vgap="30.0" VBox.vgrow="ALWAYS">
+      <GridPane hgap="30.0" prefHeight="574.0" prefWidth="1267.0" vgap="30.0" VBox.vgrow="ALWAYS">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="555.0" minWidth="10.0" prefWidth="547.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="113.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="429.0" minWidth="10.0" prefWidth="388.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="602.0" minWidth="10.0" prefWidth="538.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.0" minWidth="10.0" prefWidth="179.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -33,16 +33,16 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <VBox GridPane.hgrow="NEVER" GridPane.rowSpan="3">
+            <VBox fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="383.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="383.0" GridPane.hgrow="SOMETIMES" GridPane.rowSpan="3">
                <children>
-                   <Canvas fx:id="mapDisplayCanvas" height="265.0" width="383.0" />
+                   <Canvas fx:id="mapDisplayCanvas" height="265.0" style="-fx-background-radius: 10;" width="383.0" />
                   <Label />
                   <Canvas fx:id="planetsDisplay" height="220.0" width="383.0" />
                </children>
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                  <TextArea id="logs" fx:id="locationField" editable="false" prefHeight="102.0" prefWidth="555.0" />
+                  <TextArea id="logs" fx:id="locationField" editable="false" prefHeight="120.0" prefWidth="555.0" />
                   <TextFlow id="regionDescription" prefHeight="20.0" VBox.vgrow="NEVER" />
                   <TextArea id="logs" fx:id="textLogs" editable="false" prefHeight="278.0" prefWidth="555.0" VBox.vgrow="ALWAYS" />
                </children>
@@ -53,24 +53,36 @@
                 <Button id="saveFile" mnemonicParsing="false" onAction="#buttonSave" text="Save" />
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="humanDisplay" layoutX="138.0" layoutY="7.0" onTouchPressed="#humanDisplay" prefHeight="16.0" prefWidth="46.0" text="Text" textFill="#ebe3e3" />
+                        <Label fx:id="humanDisplay" layoutX="138.0" layoutY="7.0" onTouchPressed="#humanDisplay" prefHeight="16.0" prefWidth="46.0" text="humanCount" textFill="#ebe3e3" />
                      </children>
                   </Pane>
                   <Button id="titleScreen" mnemonicParsing="false" onAction="#buttonHome" text="Home" />
                   <Button id="quit" mnemonicParsing="false" onAction="#buttonQuit" text="Quit" />
                </children>
             </HBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowSpan="3">
+            <HBox alignment="CENTER" prefHeight="56.0" prefWidth="113.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <VBox prefHeight="524.0" prefWidth="141.0" spacing="30.0" GridPane.columnIndex="2" GridPane.rowSpan="3">
                <children>
-                  <TextFlow id="hints" prefHeight="200.0" prefWidth="200.0">
+                  <VBox>
                      <children>
-                         <ListView id="mission" fx:id="objectivesDisplay" prefHeight="172.0" prefWidth="143.0" />
-                         <ListView id="inventory" fx:id="inventoryDisplay" maxWidth="-Infinity" prefHeight="161.0" prefWidth="143.0" VBox.vgrow="ALWAYS" />
-                         <ListView fx:id="spellsDisplay" prefHeight="173.0" prefWidth="144.0" />
-                     </children></TextFlow>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Quests" />
+                        <ListView id="mission" fx:id="objectivesDisplay" fixedCellSize="1.0" prefHeight="172.0" prefWidth="144.0" />
+                     </children>
+                  </VBox>
+                  <VBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Items" />
+                        <ListView id="inventory" fx:id="inventoryDisplay" prefHeight="147.0" prefWidth="144.0" />
+                     </children>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Spells" />
+                        <ListView fx:id="spellsDisplay" prefHeight="173.0" prefWidth="144.0" />
+                     </children>
+                  </VBox>
                </children>
             </VBox>
-            <HBox alignment="CENTER" prefHeight="56.0" prefWidth="113.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
          <padding>
             <Insets bottom="20.0" left="40.0" right="40.0" top="30.0" />

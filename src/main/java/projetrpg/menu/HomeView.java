@@ -56,8 +56,7 @@ public class HomeView {
                 if(!result.isPresent()) return;
             } while(result.get().isEmpty());
 
-            //TODO
-            main.launchMainGame(/*home.getSavesServices().create(result.get())*/null);
+            main.launchMainGame(home.getSavesServices().create(result.get()));
         });
         quitGame.setOnAction(e -> Platform.exit());
 

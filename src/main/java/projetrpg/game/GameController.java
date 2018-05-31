@@ -20,6 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -83,7 +85,7 @@ public class GameController implements Initializable {
      * The list view showing the inventory.
      */
     @FXML
-    private ListView<String> inventoryDisplay = new ListView<>();
+    private ListView<Text> inventoryDisplay = new ListView<>();
 
     /**
      * The text area showing the location of
@@ -97,14 +99,14 @@ public class GameController implements Initializable {
      * the player has to complete.
      */
     @FXML
-    private ListView<String> objectivesDisplay = new ListView<>();
+    private ListView<Text> objectivesDisplay = new ListView<>();
 
 
     /**
      * The list of the spells.
      */
     @FXML
-    private ListView<String> spellsDisplay = new ListView<>();
+    private ListView<Text> spellsDisplay = new ListView<>();
 
     @FXML
     private Canvas mapDisplayCanvas = new Canvas();
@@ -153,7 +155,7 @@ public class GameController implements Initializable {
         localMapDisplay();
         planetMapDisplay();
         humanDisplay();
-        updateSaveTime();   
+        updateSaveTime();
     }
 
     private void updateSaveTime() {
@@ -257,18 +259,16 @@ public class GameController implements Initializable {
      * Updates the inventory.
      */
     public void inventoryDisplay() {
-        ObservableList<String> items =FXCollections.observableArrayList();
-        items.add("Items : ");
+        inventoryDisplay.getItems().clear();
         for(Item i : game.save.getMap().getMainCharacter().getInventory().getAll()) {
-            items.add(i.getName());
+            insertListCell(inventoryDisplay, i.getName());
         }
         inventoryDisplay.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        inventoryDisplay.setItems(items);
         inventoryDisplay.getSelectionModel().selectFirst();
         if (game.save.getMap().getMainCharacter().getItemInHand() != null) {
-            inventoryDisplay.getSelectionModel().select(game.save.getMap().getMainCharacter().getItemInHand().getName());
+            inventoryDisplay.getSelectionModel().select(new Text(game.save.getMap().getMainCharacter().getItemInHand().getName()));
         } else {
-            inventoryDisplay.getSelectionModel().select("");
+            inventoryDisplay.getSelectionModel().clearSelection();
         }
 
     }
@@ -277,39 +277,19 @@ public class GameController implements Initializable {
      * Updates the objectives.
      */
     public void  objectivesDisplay() {
-        ObservableList<String> objectivs =FXCollections.observableArrayList();
-        objectivs.add("Quest : ");
+        objectivesDisplay.getItems().clear();
         if (game.save.getMap().getMainCharacter().getCurrentQuest() != null) {
-            objectivs.add(this.game.save.getMap().getMainCharacter().getCurrentQuest().getName() + ":");
-            objectivs.add("Objectivs : ");
+            insertListCell(objectivesDisplay, this.game.save.getMap().getMainCharacter().getCurrentQuest().getName() + ":");
+            insertListCell(objectivesDisplay, "Objectives : ");
             for (Objective o : game.save.getMap().getMainCharacter().getCurrentQuest().getObjectives()) {
                 if (!o.isFinished()) {
-                    objectivs.add("-" + o.getDescription());
+                    insertListCell(objectivesDisplay, "-" + o.getDescription());
                 }
             }
         }
-        objectivesDisplay.setItems(objectivs);
-        objectivesDisplay.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-            @Override
-            public ListCell<String> call(ListView<String> list) {
-                final ListCell cell = new ListCell() {
-                    private Text text;
 
-                    @Override
-                    public void updateItem(Object item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (!isEmpty()) {
-                            text = new Text(item.toString());
-                            text.setWrappingWidth(objectivesDisplay.getPrefWidth());
-                            setGraphic(text);
-                        }
-                    }
-                };
-
-                return cell;
-            }
-        });
         objectivesDisplay.getSelectionModel().selectFirst();
+
     }
 
     /**
@@ -325,14 +305,12 @@ public class GameController implements Initializable {
      * Updates the spells.
      */
     public void spellsDisplay() {
-        ObservableList<String> spells = FXCollections.observableArrayList();
-        spells.add("Spells : ");
+        spellsDisplay.getItems().clear();
         if (game.save.getMap().getMainCharacter().getAbilities() != null) {
             for (Ability a : game.save.getMap().getMainCharacter().getAbilities()) {
-                spells.add(a.getName());
+                insertListCell(spellsDisplay, a.getName());
             }
         }
-        spellsDisplay.setItems(spells);
         spellsDisplay.getSelectionModel().selectFirst();
     }
 
@@ -350,6 +328,13 @@ public class GameController implements Initializable {
 
     public void humanDisplay() {
         this.humanDisplay.setText(String.valueOf(this.game.getMap().getHumanCount()));
+    }
+
+    private void insertListCell(ListView<Text> l, String text) {
+        Text t = new Text(text);
+        t.setFill(Color.WHITE);
+        t.wrappingWidthProperty().bind(l.widthProperty());
+        l.getItems().add(t);
     }
 
 }
