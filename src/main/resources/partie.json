@@ -1,7 +1,7 @@
 {
   "name": "FacticeMap",
   "spawnpoint": 1,
-  "humancount": 100,
+  "humancount": 10000,
   "maincharacter": {
     "experience": 0,
     "inventory": {
@@ -10,7 +10,38 @@
     },
     "mana": 100,
     "baseMana": 100,
-    "abilities": {},
+    "abilities": [
+      [
+        {
+          "name": "Water Beam",
+          "minLevelRequired": 2,
+          "damage": 50.0,
+          "type": "AOE",
+          "cost": 20
+        },
+        false
+      ],
+      [
+        {
+          "name": "Fire Ball",
+          "minLevelRequired": 1,
+          "damage": 25.0,
+          "type": "LINE",
+          "cost": 15
+        },
+        false
+      ],
+      [
+        {
+          "name": "Earth Quake",
+          "minLevelRequired": 3,
+          "damage": 75.0,
+          "type": "HTH",
+          "cost": 45
+        },
+        false
+      ]
+    ],
     "baseDamage": 10,
     "observers": [],
     "name": "Hervé",
@@ -22,70 +53,40 @@
   },
   "quests": [
     {
-      "name": "Inspect",
-      "description": "As you repair the generator, you realize its a teleporter ! What could be on the other side ??",
-      "lrequired": 3,
-      "ereward": 56,
-      "objectives": [
-        {
-          "finished": false,
-          "description": "Repair the generator",
-          "type": "REPAIR",
-          "concerned": {
-            "class": "projetrpg.map.Teleporter",
-            "object": {
-              "id": 4,
-              "name": "Generator",
-              "repaired": false,
-              "link": 5,
-              "requirements": [
-                "SCREWDRIVER",
-                "TOOLKIT",
-                "SCREW"
-              ]
-            }
-          }
-        }
-      ],
-      "reward": []
-    },
-    {
-      "name": "Briefing",
-      "description": "You must be notified about whats going on!",
-      "lrequired": 0,
+      "name": "Gear Up",
+      "description": "Equip yourself and train a bit.",
+      "lrequired": 1,
       "ereward": 10,
       "objectives": [
         {
           "finished": false,
-          "description": "Talk to the space agency\u0027s headquarters\u0027s master",
-          "type": "TALK",
+          "description": "Pickup saul\u0027s laser",
+          "type": "PICKUP",
+          "concerned": {
+            "class": "projetrpg.entities.items.Item",
+            "object": "LASERGUN"
+          }
+        },
+        {
+          "finished": false,
+          "description": "Equip Saul\u0027s laser",
+          "type": "EQUIP",
+          "concerned": {
+            "class": "projetrpg.entities.items.Item",
+            "object": "LASERGUN"
+          }
+        },
+        {
+          "finished": false,
+          "description": "Kill the practise target",
+          "type": "KILL",
           "concerned": {
             "class": "projetrpg.entities.NPC",
-            "object": 1
+            "object": 4
           }
         }
       ],
       "reward": []
-    },
-    {
-      "name": "Final Battle",
-      "description": "You fight the evil entity, and are rewarded a book....You open your eyes wide open as you read the revelation of the book.... Saturne is a livable Planet, you need to go there as fast as possible",
-      "lrequired": 3,
-      "ereward": 5000,
-      "objectives": [
-        {
-          "finished": false,
-          "description": "Kill the final boss",
-          "type": "KILL",
-          "concerned": {
-            "class": "projetrpg.entities.NPC",
-            "object": 19
-          }
-        }
-      ],
-      "reward": [
-        "LEGENDARY_BOOK"
-      ]
     },
     {
       "name": "Kill the twins",
@@ -117,6 +118,103 @@
       ]
     },
     {
+      "name": "Final Battle",
+      "description": "You fight the evil entity, and are rewarded a book....You open your eyes wide open as you read the revelation of the book.... Saturne is a livable Planet, you need to go there as fast as possible",
+      "lrequired": 3,
+      "ereward": 5000,
+      "objectives": [
+        {
+          "finished": false,
+          "description": "Kill the final boss",
+          "type": "KILL",
+          "concerned": {
+            "class": "projetrpg.entities.NPC",
+            "object": 19
+          }
+        }
+      ],
+      "reward": [
+        "LEGENDARY_BOOK"
+      ]
+    },
+    {
+      "name": "Briefing",
+      "description": "You must be notified about whats going on!",
+      "lrequired": 0,
+      "ereward": 10,
+      "objectives": [
+        {
+          "finished": false,
+          "description": "Talk to the space agency\u0027s headquarters\u0027s master",
+          "type": "TALK",
+          "concerned": {
+            "class": "projetrpg.entities.NPC",
+            "object": 1
+          }
+        }
+      ],
+      "reward": []
+    },
+    {
+      "name": "Better ship",
+      "description": "You needed a few upgrades in order to go further, matteo gave you the items you needed to improve your radar and your reactors in order to go to the moon",
+      "lrequired": 2,
+      "ereward": 150,
+      "objectives": [
+        {
+          "finished": false,
+          "description": "Get rid of Matteo",
+          "type": "KILL",
+          "concerned": {
+            "class": "projetrpg.entities.NPC",
+            "object": 15
+          }
+        },
+        {
+          "finished": false,
+          "description": "Get some potatoes",
+          "type": "PICKUP",
+          "concerned": {
+            "class": "projetrpg.entities.items.Item",
+            "object": "GREEN_POTATO"
+          }
+        }
+      ],
+      "reward": [
+        "MARTIAN_SWORD",
+        "KNIFE",
+        "FLASHLIGHT"
+      ]
+    },
+    {
+      "name": "Inspect",
+      "description": "As you repair the generator, you realize its a teleporter ! What could be on the other side ??",
+      "lrequired": 3,
+      "ereward": 56,
+      "objectives": [
+        {
+          "finished": false,
+          "description": "Repair the generator",
+          "type": "REPAIR",
+          "concerned": {
+            "class": "projetrpg.map.Teleporter",
+            "object": {
+              "id": 4,
+              "name": "Generator",
+              "repaired": false,
+              "link": 5,
+              "requirements": [
+                "SCREWDRIVER",
+                "TOOLKIT",
+                "SCREW"
+              ]
+            }
+          }
+        }
+      ],
+      "reward": []
+    },
+    {
       "name": "first fight",
       "description": "Stop the bad guy in Bombai",
       "lrequired": 1,
@@ -135,73 +233,6 @@
       "reward": [
         "HATCHET"
       ]
-    },
-    {
-      "name": "Better ship",
-      "description": "You needed a few upgrades in order to go further, matteo gave you the items you needed to improve your radar and your reactors in order to go to the moon",
-      "lrequired": 2,
-      "ereward": 150,
-      "objectives": [
-        {
-          "finished": false,
-          "description": "Get some potatoes",
-          "type": "PICKUP",
-          "concerned": {
-            "class": "projetrpg.entities.items.Item",
-            "object": "GREEN_POTATO"
-          }
-        },
-        {
-          "finished": false,
-          "description": "Get rid of Matteo",
-          "type": "KILL",
-          "concerned": {
-            "class": "projetrpg.entities.NPC",
-            "object": 15
-          }
-        }
-      ],
-      "reward": [
-        "MARTIAN_SWORD",
-        "KNIFE",
-        "FLASHLIGHT"
-      ]
-    },
-    {
-      "name": "Gear Up",
-      "description": "Equip yourself and train a bit.",
-      "lrequired": 1,
-      "ereward": 10,
-      "objectives": [
-        {
-          "finished": false,
-          "description": "Kill the practise target",
-          "type": "KILL",
-          "concerned": {
-            "class": "projetrpg.entities.NPC",
-            "object": 4
-          }
-        },
-        {
-          "finished": false,
-          "description": "Equip Saul\u0027s laser",
-          "type": "EQUIP",
-          "concerned": {
-            "class": "projetrpg.entities.items.Item",
-            "object": "LASERGUN"
-          }
-        },
-        {
-          "finished": false,
-          "description": "Pickup saul\u0027s laser",
-          "type": "PICKUP",
-          "concerned": {
-            "class": "projetrpg.entities.items.Item",
-            "object": "LASERGUN"
-          }
-        }
-      ],
-      "reward": []
     }
   ],
   "regions": [
@@ -227,8 +258,8 @@
               "description": "The city of Cleveland",
               "shiprequired": 0,
               "directions": {
-                "EST": 12,
-                "SOUTH": 14
+                "SOUTH": 14,
+                "EST": 12
               },
               "childregions": [],
               "entities": [],
@@ -325,8 +356,8 @@
           "shiprequired": 0,
           "directions": {
             "SOUTH": 10,
-            "NORTH": 19,
-            "WEST": 8
+            "WEST": 8,
+            "NORTH": 19
           },
           "childregions": [
             {
@@ -338,16 +369,6 @@
               "childregions": [],
               "entities": [
                 {
-                  "id": 7,
-                  "baseDamage": 10,
-                  "dialogue": "Please save me! When you\u0027ve done so you\u0027ll be able to travel to mars in order to continue your adventure!",
-                  "name": "Taliyah\u0027s brother",
-                  "type": "VILLAGER",
-                  "hps": 100,
-                  "baseHps": 100,
-                  "isHostile": false
-                },
-                {
                   "id": 6,
                   "baseDamage": 20,
                   "dialogue": "I\u0027m going to kill you!",
@@ -356,6 +377,16 @@
                   "hps": 100,
                   "baseHps": 100,
                   "isHostile": true
+                },
+                {
+                  "id": 7,
+                  "baseDamage": 10,
+                  "dialogue": "Please save me! When you\u0027ve done so you\u0027ll be able to travel to mars in order to continue your adventure!",
+                  "name": "Taliyah\u0027s brother",
+                  "type": "VILLAGER",
+                  "hps": 100,
+                  "baseHps": 100,
+                  "isHostile": false
                 }
               ],
               "teleporters": [],
@@ -436,8 +467,8 @@
           "description": "This is the Europe continent.",
           "shiprequired": 0,
           "directions": {
-            "EST": 9,
             "SOUTH": 11,
+            "EST": 9,
             "WEST": 7
           },
           "childregions": [
@@ -529,7 +560,7 @@
                 {
                   "id": 2,
                   "baseDamage": 10,
-                  "dialogue": "Oh ! You must be Hervé ! I\u0027m Saul, you are about to begin your journey towards saving the universe. But first you gotta be ready : in my apartments you\u0027ll finda laser gun and a practise target. Gear up and show me whats you\u0027ve got ! Then you\u0027ll talk to my brother, Zahir, located in my apartment.\n You may now start this new quest : Gear Up ! ",
+                  "dialogue": "Oh ! You must be Hervé ! I\u0027m Saul, you are about to begin your journey towards saving the universe. But first you got to be ready : in my apartments you\u0027ll find a laser gun and a target practice. Gear up and show me what you\u0027ve got ! Then you\u0027ll talk to my brother, Zahir, located in my apartment.\n You may now start this new quest : Gear Up ! ",
                   "name": "Saul",
                   "type": "VILLAGER",
                   "hps": 100,
@@ -592,9 +623,9 @@
               "actualfuel": 50,
               "level": 0,
               "ameliorations": [
-                "REACTORS_AMELIORATION",
+                "ENGINE_AMELIORATION",
                 "RADAR_AMELIORATION",
-                "ENGINE_AMELIORATION"
+                "REACTORS_AMELIORATION"
               ]
             }
           ],
@@ -641,8 +672,8 @@
           "description": "You are on the landing platform of Mars, it seems really calm, do you see that cliff ?.",
           "shiprequired": 0,
           "directions": {
-            "NORTH": 1003,
-            "WEST": 1001
+            "WEST": 1001,
+            "NORTH": 1003
           },
           "childregions": [],
           "entities": [],
@@ -690,7 +721,7 @@
                       "isHostile": true
                     },
                     {
-                      "id": 16,
+                      "id": 17,
                       "baseDamage": 0,
                       "dialogue": "",
                       "name": "Evil climbing shoe",
@@ -700,7 +731,7 @@
                       "isHostile": false
                     },
                     {
-                      "id": 17,
+                      "id": 16,
                       "baseDamage": 0,
                       "dialogue": "",
                       "name": "Evil climbing shoe",
@@ -744,8 +775,8 @@
               "shiprequired": 0,
               "directions": {
                 "EST": 1006,
-                "NORTH": 1007,
-                "WEST": 1005
+                "WEST": 1005,
+                "NORTH": 1007
               },
               "childregions": [],
               "entities": [],
@@ -915,14 +946,14 @@
           "childregions": [],
           "entities": [
             {
-              "id": 10,
+              "id": 8,
               "baseDamage": 35,
-              "dialogue": "...my brothers became... crazy... run! You may now start your first quest on Mars : Kill the twins",
-              "name": "Nfroy",
+              "dialogue": "ספר ההזמנות",
+              "name": "Nfrey",
               "type": "MARTIAN",
               "hps": 55,
               "baseHps": 55,
-              "isHostile": false
+              "isHostile": true
             },
             {
               "id": 9,
@@ -935,14 +966,14 @@
               "isHostile": true
             },
             {
-              "id": 8,
+              "id": 10,
               "baseDamage": 35,
-              "dialogue": "ספר ההזמנות",
-              "name": "Nfrey",
+              "dialogue": "...my brothers became... crazy... run! You may now start your first quest on Mars : Kill the twins",
+              "name": "Nfroy",
               "type": "MARTIAN",
               "hps": 55,
               "baseHps": 55,
-              "isHostile": true
+              "isHostile": false
             }
           ],
           "teleporters": [],

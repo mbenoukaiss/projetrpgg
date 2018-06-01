@@ -610,7 +610,7 @@ public class CommandListener {
                     boolean isConcerned = false;
                     if (this.player.getCurrentQuest() != null) {
                         for (Objective o : this.player.getCurrentQuest().getObjectives()) {
-                            if (o.getType() == ObjectiveType.REPAIR && o.getConcernedObject() == t) {
+                            if (o.getType() == ObjectiveType.REPAIR && ((Teleporter)o.getConcernedObject()).getName().equalsIgnoreCase(t.getName())) {
                                 objectiveFound = o;
                                 isConcerned = true;
                             }
@@ -622,13 +622,13 @@ public class CommandListener {
                         objectiveFound.finish();
                         if (this.player.getCurrentQuest() == null) {
                             String message = "";
-                            if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
-                                message+=this.canLevelUp();
-                            }
                             message += ("You repaired " + t.getName() + ".") +
                                     ("You finished this objective : " + objectiveFound.getDescription() +
                                             ". You have now finished this quest : " + savedQuest.getDescription() + "!");
                             t.repair();
+                            if (this.player.canLevelUp(savedQuest.getExpRewarded())) {
+                                message+=this.canLevelUp();
+                            }
                             return message;
                         }
                         t.repair();

@@ -27,6 +27,9 @@ import projetrpg.game.Game;
 import projetrpg.game.GameView;
 import projetrpg.quest.*;
 import projetrpg.utils.AnnotationExclusionStrategy;
+import projetrpg.utils.ParameterView;
+
+import javax.swing.plaf.metal.MetalIconFactory;
 
 /**
  * Created on 30/03/18.
@@ -39,9 +42,12 @@ public class Main extends Application {
 
     private Stage primaryStage;
 
+    private ParameterView params;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        this.params = new ParameterView();
         this.savesServices = new SavesServices("./saves/");
 
         launchMenu();
@@ -69,6 +75,16 @@ public class Main extends Application {
         primaryStage.centerOnScreen();
     }
 
+    public void launchParams() {
+        Stage stage = new Stage();
+        stage.setTitle("Galaxy Explorer Params");
+        stage.getIcons().add(new Image("icon.png"));
+        stage.setScene(params.getScene());
+        stage.centerOnScreen();
+        stage.setResizable(false);
+        stage.show();
+    }
+
     public void launchMainGame(Save save) {
         this.primaryStage.setTitle("Galaxy Explorer");
 
@@ -92,6 +108,7 @@ public class Main extends Application {
     }
 
     private MainMap createTestMap() {
+
         MainMap mainMap = new MainMap("FacticeMap");
 
         ArrayList<Planet> regions = new ArrayList<>();
@@ -143,6 +160,13 @@ public class Main extends Application {
         Region StPetesburg = new Region(20, "St-Petersburg", "The city of St-Petersburg", Africa, 0);
 
         Player player = new Player("Hervé", 0, Europe, null, 100, 10, EntityType.PLAYER, 50, 100);
+
+        Ability fireBall = new Ability("Fire Ball", 1, 25, AttackType.LINE, 15);
+        Ability waterBeam = new Ability("Water Beam", 2, 50, AttackType.AOE, 20);
+        Ability earthQuake = new Ability("Earth Quake", 3, 75, AttackType.HTH, 45);
+        player.addAbbility(fireBall);
+        player.addAbbility(waterBeam);
+        player.addAbbility(earthQuake);
 
         NPC HervéBrother = new NPC("Robert", Paris, EntityType.VILLAGER, false, 100, 10, "Hey brother, " +
                 "Humanity is dying and only you can save us. Go to Berlin and talk to Paul, the space agency's headquarters's master.\n You may now start your first quest : " +
@@ -327,6 +351,7 @@ public class Main extends Application {
         generator.first.addItemToRepair(Item.TOOLKIT);
         generator.first.addItemToRepair(Item.SCREW);
         generator.second.repair();
+
         Region moonCave = new Region(54, "Cave", "A cave in the crater, maybe you should see what's inside", crater, crater.getShipLevelRequired());
         moonCave.addItemToInventory(Item.SCREW);
         moonCave.addItemToInventory(Item.TOOLKIT);
@@ -376,6 +401,9 @@ public class Main extends Application {
         return mainMap;
     }
 
+    public ParameterView getParams() {
+        return params;
+    }
 
     /**
      * Méthode de test pour la sérialisation/déserialisation

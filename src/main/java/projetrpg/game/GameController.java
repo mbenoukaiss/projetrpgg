@@ -33,6 +33,7 @@ import projetrpg.menu.save.SaveException;
 import projetrpg.menu.save.SavesServices;
 import projetrpg.observer.Observable;
 import projetrpg.quest.Objective;
+import projetrpg.utils.ParameterView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -132,7 +133,8 @@ public class GameController implements Initializable {
 
         String finalLogs = "You hear an astonishing sound, almost as if an earthquake was ongoing, you start panicking " +
                 "but you quickly take over your mind and think : WHATS GOING ON IM GONNA DIE AAAAAAAAAAAH.. Okay what should i do" +
-                "? Let's try and talk to my brother robert, he must be in Paris.\nType help in order to see the user's guide.";
+                "? Let's try and talk to my brother robert, he must be in Paris.\nType help in order to see the user's guide." +
+                "\nThe number you see below is the human count, beware, if it drops to 0 you wont save anyone!";
         graduallyDisplayText(finalLogs);
         inventoryDisplay();
         locationDisplay();
@@ -174,6 +176,10 @@ public class GameController implements Initializable {
         } catch(SaveException e) {
             e.printStackTrace();
         }
+    }
+
+    public void buttonParam() {
+        main.launchParams();
     }
 
     /**
@@ -316,7 +322,7 @@ public class GameController implements Initializable {
         Timeline timeline = new Timeline();
 
         KeyFrame keyFrame = new KeyFrame(
-                Duration.seconds(0.02),
+                Duration.seconds(this.main.getParams().getTextSpeed().getValue()),
                 event -> {
                     if (i.get() > finalLogs.length()) {
                         timeline.stop();
