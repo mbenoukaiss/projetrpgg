@@ -70,15 +70,6 @@ public class Objective<T> extends Observable {
     }
 
     /**
-     * Setter for the concerned object.
-     *
-     * @param concernedObject The new object.
-     */
-    public void setConcernedObject(T concernedObject) {
-        this.concernedObject = concernedObject;
-    }
-
-    /**
      * Getter for the description.
      *
      * @return The description of this objective.

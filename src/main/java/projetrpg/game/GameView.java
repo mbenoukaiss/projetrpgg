@@ -1,12 +1,9 @@
 package projetrpg.game;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Label;
 import projetrpg.Main;
-import projetrpg.map.MainMap;
 import projetrpg.map.MapDisplay;
 import projetrpg.menu.save.SavesServices;
 

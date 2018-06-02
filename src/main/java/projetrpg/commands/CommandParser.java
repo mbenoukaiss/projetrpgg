@@ -6,8 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Class used to parse a command.
@@ -161,27 +159,6 @@ public class CommandParser {
     }
 
     /**
-     * Unregisters a listener class.
-     *
-     * @param listener The class to unregister
-     */
-    public <T> void unregisterListener(Class<T> listener) {
-        Set<Method> methodsToRemove = new HashSet<>();
-
-        for (Method method : listener.getDeclaredMethods()) {
-            if(method.isAnnotationPresent(Listener.class)) {
-                methodsToRemove.add(method);
-            }
-        }
-
-        listeners.remove(listener);
-
-        for(Set<Method> mlist : methods.values()) {
-            mlist.removeAll(methodsToRemove);
-        }
-    }
-
-    /**
      * Registers a command fragment.
      *
      * @param command The command as a string
@@ -202,15 +179,6 @@ public class CommandParser {
      */
     public <T> void registerCommand(String command, Class<T> argType) {
         commands.put(command, new CommandFragment<>(command, argType, (player, arg) -> null));
-    }
-
-    /**
-     * Unregisters a command fragment.
-     *
-     * @param command The fragment to unregister
-     */
-    public void unregisterCommand(String command) {
-        commands.remove(command);
     }
 
 }

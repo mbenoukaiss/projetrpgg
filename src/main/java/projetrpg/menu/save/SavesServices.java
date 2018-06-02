@@ -36,16 +36,6 @@ public class SavesServices {
         if(!SAVE_FOLDER.exists()) SAVE_FOLDER.mkdir();
     }
 
-    public Save load(String name) throws SaveException {
-        File save = new File(SAVE_FOLDER, name + ".json");
-
-        if(!save.exists()) {
-            throw new SaveException("Save " + name + " does not exist.");
-        }
-
-        return load(save);
-    }
-
     public Save load(File file) throws SaveException {
         Save s = null;
         try {

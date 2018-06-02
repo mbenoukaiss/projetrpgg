@@ -55,10 +55,6 @@ public class Ability implements Describable {
         return this.name;
     }
 
-    public int getMinLevelRequired() {
-        return this.minLevelRequired;
-    }
-
     public double getDamage() {
         return this.damage;
     }

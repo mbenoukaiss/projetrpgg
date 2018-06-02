@@ -1,13 +1,11 @@
 package projetrpg.map;
 
 import com.google.gson.*;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import projetrpg.Describable;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
-import projetrpg.entities.player.Ship;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -329,10 +327,6 @@ public class Region implements Describable {
 
     public List<Item> getItemsNeeded() {
         return itemsNeeded;
-    }
-
-    public void addItemNeeded(Item item) {
-        if (!this.itemsNeeded.contains(item)) this.itemsNeeded.add(item);
     }
 
     public int getShipLevelRequired() {

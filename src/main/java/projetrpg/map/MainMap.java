@@ -3,13 +3,11 @@ package projetrpg.map;
 import com.google.gson.annotations.JsonAdapter;
 import projetrpg.entities.player.Player;
 import projetrpg.quest.Quest;
-import projetrpg.utils.Pair;
 
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.List;
 
 /**
  * Represents the whole map used in the game.
@@ -78,27 +76,6 @@ public class MainMap {
 
     public Collection<Quest> getQuests() {
         return quests;
-    }
-
-    /**
-     * Creates a pair of linked teleporters.
-     *
-     * @param name The name of the teleporters
-     * @param region1 Region of the first teleporter
-     * @param region2 Region of the second teleporter
-     * @return The teleporters in a pair.
-     */
-    public Pair<Teleporter, Teleporter> createTeleporters(
-                                String name, Region region1, Region region2) {
-
-        Teleporter t1 = new Teleporter(name, region1);
-        Teleporter t2 = new Teleporter(name, region2);
-        t1.link(t2);
-
-        region1.addTeleporter(t1);
-        region2.addTeleporter(t2);
-
-        return Pair.of(t1, t2);
     }
 
     /**

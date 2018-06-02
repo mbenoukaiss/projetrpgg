@@ -17,7 +17,10 @@ import java.util.Set;
  */
 public class Ship extends Region implements Describable{
 
-    private static final int TRAVEL_COST = 10;
+    /**
+     * The cost in humans of a travel.
+     */
+    public static final int TRAVEL_COST = 10;
 
     /**
      * The base fuel of the ship
@@ -37,21 +40,10 @@ public class Ship extends Region implements Describable{
     private int level;
 
     /**
-     * Possible ameliorations of the ship;
+     * Possible upgrades of the ship;
      */
     @Expose("ship improvements")
-    private Set<ShipAmelioration> ameliorations;
-
-    public Ship(int id, String name, Region parent, int baseFuel) {
-        super(id, name, "", parent, 0);
-        this.baseFuel = baseFuel;
-        this.actualFuel = this.baseFuel;
-        this.level = 0;
-        this.ameliorations = new HashSet<>();
-        this.ameliorations.add(ShipAmelioration.ENGINE_AMELIORATION);
-        this.ameliorations.add(ShipAmelioration.RADAR_AMELIORATION);
-        this.ameliorations.add(ShipAmelioration.REACTORS_AMELIORATION);
-    }
+    private Set<ShipAmelioration> upgrades;
 
     /**
      * Create a ship out of a region.
@@ -63,18 +55,10 @@ public class Ship extends Region implements Describable{
         this.baseFuel = baseFuel;
         this.actualFuel = this.baseFuel;
         this.level = 1;
-        this.ameliorations = new HashSet<>();
-        this.ameliorations.add(ShipAmelioration.ENGINE_AMELIORATION);
-        this.ameliorations.add(ShipAmelioration.RADAR_AMELIORATION);
-        this.ameliorations.add(ShipAmelioration.REACTORS_AMELIORATION);
-    }
-
-    /**
-     * Accessor for the base fuel of the ship
-     * @return the base fuel
-     */
-    public int getBaseFuel() {
-        return baseFuel;
+        this.upgrades = new HashSet<>();
+        this.upgrades.add(ShipAmelioration.ENGINE_AMELIORATION);
+        this.upgrades.add(ShipAmelioration.RADAR_AMELIORATION);
+        this.upgrades.add(ShipAmelioration.REACTORS_AMELIORATION);
     }
 
     /**
@@ -85,33 +69,37 @@ public class Ship extends Region implements Describable{
         return actualFuel;
     }
 
-    public void setActualFuel(int actualFuel) {
-        this.actualFuel = actualFuel;
-    }
-
-    public int getTravelCost() {
-        return TRAVEL_COST;
-    }
-
+    /**
+     * Getter for the level of the ship.
+     * @return The level of the ship
+     */
     public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
+    /**
+     * Upgrades a ship
+     * @param amelioration The upgrade to apply.
+     */
     public void improve(ShipAmelioration amelioration) {
         this.level += 1;
-        finishAmelioration(amelioration);
+        finishImprovement(amelioration);
     }
 
-    public Set<ShipAmelioration> getAmeliorations() {
-        return ameliorations;
+    /**
+     * Getter for the upgrades.
+     * @return Set of upgrades
+     */
+    public Set<ShipAmelioration> getUpgrades() {
+        return new HashSet<>(upgrades);
     }
 
-    private void finishAmelioration(ShipAmelioration a) {
-        this.ameliorations.remove(a);
+    /**
+     * Finishes an improvement.
+     * @param a The upgrade.
+     */
+    private void finishImprovement(ShipAmelioration a) {
+        this.upgrades.remove(a);
     }
 
     @Override
@@ -135,8 +123,8 @@ public class Ship extends Region implements Describable{
             regionPart.addProperty("actualfuel", ship.actualFuel);
             regionPart.addProperty("level", ship.level);
 
-            JsonArray ameliorations = jsonSerializationContext.serialize(ship.ameliorations).getAsJsonArray();
-            regionPart.add("ameliorations", ameliorations);
+            JsonArray ameliorations = jsonSerializationContext.serialize(ship.upgrades).getAsJsonArray();
+            regionPart.add("upgrades", ameliorations);
 
             return regionPart;
         }
@@ -152,7 +140,7 @@ public class Ship extends Region implements Describable{
             ship.level = jsonShip.get("level").getAsInt();
 
             Type ameliorationsType = new TypeToken<Set<ShipAmelioration>>(){}.getType();
-            ship.ameliorations = jsonDeserializationContext.deserialize(jsonShip.get("ameliorations"), ameliorationsType);
+            ship.upgrades = jsonDeserializationContext.deserialize(jsonShip.get("upgrades"), ameliorationsType);
 
             MapSerializer.setShip(ship);
             return ship;

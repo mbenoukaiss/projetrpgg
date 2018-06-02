@@ -2,7 +2,10 @@ package projetrpg.commands;
 
 import projetrpg.entities.player.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents a command typed by a user.

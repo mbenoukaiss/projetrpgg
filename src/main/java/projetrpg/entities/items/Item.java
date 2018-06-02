@@ -1,8 +1,6 @@
 package projetrpg.entities.items;
 
 import projetrpg.Describable;
-import projetrpg.entities.Entity;
-import projetrpg.map.Region;
 
 /**
  * Enumeration of all the items available in

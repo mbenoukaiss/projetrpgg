@@ -6,10 +6,11 @@ import projetrpg.entities.NPC;
 import projetrpg.entities.player.Player;
 import projetrpg.entities.player.Ship;
 import projetrpg.quest.Quest;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapSerializer implements  JsonSerializer<MainMap>, JsonDeserializer<MainMap> {
 

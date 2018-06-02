@@ -1,13 +1,9 @@
 package projetrpg.utils;
 
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class ParameterView  {
 

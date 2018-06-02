@@ -1,8 +1,8 @@
 package projetrpg.entities;
-import projetrpg.entities.player.Player;
+
 import projetrpg.game.Expose;
-import projetrpg.utils.SerializationIgnore;
 import projetrpg.map.Region;
+import projetrpg.utils.SerializationIgnore;
 
 /**
  * An entity.

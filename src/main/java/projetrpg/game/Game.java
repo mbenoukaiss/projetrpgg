@@ -1,6 +1,7 @@
 package projetrpg.game;
 
-import projetrpg.commands.*;
+import projetrpg.commands.CommandParser;
+import projetrpg.commands.InvalidAnnotationException;
 import projetrpg.entities.Entity;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Item;
@@ -14,8 +15,9 @@ import projetrpg.quest.Quest;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 /**

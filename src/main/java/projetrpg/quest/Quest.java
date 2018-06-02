@@ -4,8 +4,8 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import projetrpg.entities.items.Item;
 import projetrpg.observer.IObservable;
-import projetrpg.observer.Observable;
 import projetrpg.observer.IObserver;
+import projetrpg.observer.Observable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -50,32 +50,6 @@ public class Quest extends Observable implements IObserver, Comparable<Quest> {
     private Quest() {
 
     }
-
-    public Quest(int expRewarded, String name, String description, int levelRequired) {
-        this.expRewarded = expRewarded;
-        this.description = description;
-        this.name = name;
-        this.levelRequired = levelRequired;
-        this.objectives = new HashSet<>();
-        this.reward = new ArrayList<>();
-    }
-
-    /**
-     * Adds an objective to this quest.
-     *
-     * @param o The objective.
-     */
-    public void linkObjective(Objective o) {
-        this.objectives.add(o);
-        o.addObserver(this);
-    }
-
-    /**
-     * Adds an item to the list of items rewarded.
-     *
-     * @param i The item.
-     */
-    public void linkRewardedItem(Item i) { this.reward.add(i); }
 
     /**
      * The getter for the name of this quest.
@@ -149,12 +123,6 @@ public class Quest extends Observable implements IObserver, Comparable<Quest> {
         }
         if (over) {
             notifyObservers();
-        }
-    }
-
-    public void restart() {
-        for (Objective o : this.objectives) {
-            o.finished = false;
         }
     }
 

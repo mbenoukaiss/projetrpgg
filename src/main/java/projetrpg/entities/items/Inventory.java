@@ -52,17 +52,6 @@ public class Inventory implements Describable {
     }
 
     /**
-     * Moves all the items from this inventory to
-     * the other inventory.
-     *
-     * @param destination The receiver
-     */
-    public void transferContent(Inventory destination) {
-        destination.items.addAll(this.items);
-        this.items.clear();
-    }
-
-    /**
      * Returns the nth item
      *
      * @param n The index of the item
@@ -101,21 +90,4 @@ public class Inventory implements Describable {
         items.remove(i);
     }
 
-    /**
-     * Returns the amount of items that can be added.
-     *
-     * @return Available slots.
-     */
-    public int availableSlots() {
-        return maxCapacity-items.size();
-    }
-
-    /**
-     * Increase the capacity by n.
-     *
-     * @param n The amount of slots to add.
-     */
-    public void increaseCapacity(int n) {
-        this.maxCapacity += n;
-    }
 }

@@ -1,8 +1,6 @@
 package projetrpg.entities.player;
 
-import com.sun.org.apache.regexp.internal.RE;
-import com.sun.prism.ReadbackGraphics;
-import projetrpg.*;
+import projetrpg.Describable;
 import projetrpg.entities.*;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
@@ -257,16 +255,6 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
     }
 
     /**
-     * Adds an ability to the abilities.
-     * It is not considered as "learned" by default.
-     *
-     * @param a The new ability
-     */
-    public void addAbbility(Ability a) {
-        abilities.put(a, false);
-    }
-
-    /**
      * Getter for all the abilities this player
      * knows/learned.
      *
@@ -284,7 +272,6 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
      * @param a The ability to try to learn
      * @return The message
      */
-    //TODO: Change the return type?
     public String learn(Ability a) {
         if (!abilities.get(a)) {
             abilities.put(a, true);
@@ -398,18 +385,35 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         observers.clear();
     }
 
+    /**
+     * Setter of the ship.
+     * @param s The ship.
+     */
     public void setShip(Ship s) {
         this.ship = s;
     }
 
+    /**
+     * Getter for the ship
+     * @return The ship of the player.
+     */
     public Ship getShip() {
         return ship;
     }
 
+    /**
+     * Changes the current enemy.
+     * @param enemy The new enemy.
+     */
     public void setEnemy(NPC enemy) {
         this.enemy = enemy;
     }
 
+    /**
+     * Tells if a player can travel to a region.
+     * @param region The region.
+     * @return True if the player can travel to this region.
+     */
     public boolean canTravelTo(Region region) {
         ArrayList<Item> regionItems = new ArrayList<>(region.getItemsNeeded());
         for (Item i : this.getInventory().getAll()) {
@@ -419,12 +423,16 @@ public class Player extends Entity implements Describable, Damageable, Attacker,
         }
         if (!regionItems.isEmpty()) return false;
         if (this.getShip().getLevel() >= region.getShipLevelRequired() &&
-                this.getShip().getActualFuel() >= this.getShip().getTravelCost()) {
+                this.getShip().getActualFuel() >= Ship.TRAVEL_COST) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Accessor for the base mana.
+     * @return The base mana
+     */
     public int getBaseMana() {
         return baseMana;
     }

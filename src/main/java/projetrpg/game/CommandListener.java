@@ -2,13 +2,13 @@ package projetrpg.game;
 
 import projetrpg.Describable;
 import projetrpg.commands.Listener;
-import projetrpg.entities.EntityType;
-import projetrpg.entities.player.Ability;
 import projetrpg.entities.Damageable;
 import projetrpg.entities.Entity;
+import projetrpg.entities.EntityType;
 import projetrpg.entities.NPC;
 import projetrpg.entities.items.Inventory;
 import projetrpg.entities.items.Item;
+import projetrpg.entities.player.Ability;
 import projetrpg.entities.player.Player;
 import projetrpg.entities.player.Ship;
 import projetrpg.entities.player.ShipAmelioration;
@@ -22,7 +22,10 @@ import projetrpg.quest.Quest;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -789,7 +792,7 @@ public class CommandListener {
         if (!this.player.isInFight()) {
             if (this.player.getLocation() == this.player.getShip()) {
                 if (amelioration != null) {
-                    if (this.player.getShip().getAmeliorations().contains(amelioration)) {
+                    if (this.player.getShip().getUpgrades().contains(amelioration)) {
                         List<Item> shipItems = new ArrayList<>(amelioration.getItemsNeeded());
                         for (Item i : this.player.getInventory().getAll()) {
                             if (shipItems.contains(i)) {
@@ -834,7 +837,7 @@ public class CommandListener {
                         }
                     }
                     if (regionItems.isEmpty() && this.player.getShip().getLevel() >= r.getShipLevelRequired()
-                            && this.player.getShip().getActualFuel() >= this.player.getShip().getTravelCost()) {
+                            && this.player.getShip().getActualFuel() >= Ship.TRAVEL_COST) {
 
                         if (this.game.getMap().getRegions().contains(r)) {
                             this.player.move(((Planet) r).getLandingRegion());
