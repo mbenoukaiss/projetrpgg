@@ -51,7 +51,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                <children>
                    <Button id="saveFile" mnemonicParsing="false" onAction="#buttonSave" prefHeight="38.0" prefWidth="71.0" text="Save" />
-                   <Button id="params" mnemonicParsing="false" onAction="#buttonParam" prefHeight="38.0" prefWidth="99.0" text="Params" />
+                   <Button id="params" mnemonicParsing="false" onAction="#buttonParam" prefHeight="38.0" prefWidth="99.0" text="Settings" />
                    <Pane prefHeight="38.0" prefWidth="152.0" HBox.hgrow="ALWAYS">
                       <children>
                         <Label fx:id="humanDisplay" layoutX="69.0" layoutY="5.0" onTouchPressed="#humanDisplay" prefHeight="18.0" prefWidth="51.0" text="humanCount" textFill="#ebe3e3" />
